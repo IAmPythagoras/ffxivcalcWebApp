@@ -21,7 +21,7 @@ Configure the simulation to fit your requirements.
 
 ![simulateMainMenu2](https://github.com/IAmPythagoras/ffxivcalcWebApp/assets/62820030/a5d5ad7f-ea70-4254-be0d-6da7afe7074f)
 
-Get detailed results of the simulation and receive a warning for any action that could not have been done in game (due to failed requirement).
+Get detailed results of the simulation and receive a warning for any action that could not have been done in game (due to failed requirement). Download the 'simulation record' for a complete log of the simulation showing each event and what affected them.
 
 ![result1](https://github.com/IAmPythagoras/ffxivcalcWebApp/assets/62820030/ca492dda-4a08-4788-a460-7213bc60e023)
 
