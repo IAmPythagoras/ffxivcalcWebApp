@@ -1,8 +1,10 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
+Download here : https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=drive_link
+
 # ffxivcalc webapp
 
-FFXIVCALC is a web app made with electron/django that enables anyone to use the ffxivcalc python library to simulate combat from the game FFXIV Online. This app also has a gear solver (beta) that could let someone find (possibly) optimal gear composition given a rotation, a gear list, a food list, a materia list and other parameters of interest. You can download this app by going to this link (put link).
+FFXIVCALC is a web app made with electron/django that enables anyone to use the ffxivcalc python library to simulate combat from the game FFXIV Online. This app also has a gear solver (beta) that could let someone find (possibly) optimal gear composition given a rotation, a gear list, a food list, a materia list and other parameters of interest.
 
 This app is aimed at people with no coding knowledge but who still want to simulate combat without the use of spreadsheets. 
 
