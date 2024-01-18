@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/solverScript.js' %}"></script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+    <div style="float: left;margin: 0px;">
+<h3>
+BiS rotation solver
+</h3>
+</div>
+<div style="float: right;margin-right: 20px;">
+<button class="basicButton bigbutton" style="background-color:red;" onclick="getHelp()" title="Find a tutorial here">Help</button>
+</div>
+</header>
+<hr>
+<div>
+    <p>Import a fight layout</p>
+    <p class="underText">To create a fight layout. Go in "simulate fight" and save it.</p>
+    <button class="basicButton bigbutton" onclick="importFightLayout()" title="The solver will use the given saved fight to find a BiS.">
+    Import
+    </button>
+    <div id="loadedFileDiv"></div>
+</div>
+<hr>
+<div>
+    <p>Select a player to optimize :</p>
+    <button class="basicButton bigbutton" onclick="selectPlayerToOptOn()">Select</button>
+    <div id="selectedPlayerDiv"></div>
+</div>
+<hr>
+<div>
+    <p>Import a gear search space or create a gear search space</p>
+    <p class="underText" style="font-size: 10px;">Or download <a class="link" onclick="openPremadeGearSpace()">these</a> premade gear search space and then import them</p>
+    <div style="  display: flex;align-items: stretch;">
+    <button class="basicButton bigbutton" onclick="importGearSpace()" title="The solver will look for a BiS using the gear in this file.">
+        Import
+    </button>
+    <button class="basicButton bigbutton" onclick="createGearSpace(true)" title="Create your own gear search space." id="editCreateButton">
+        Create
+    </button>
+    </div>
+    <div id="gearSpaceFileDiv"></div>
+</div>
+<hr>
+<div>
+    <p>Select food search space</p>
+    <div>
+        <div>
+            <button class="basicButton bigbutton" onclick="appendFood()" title="Add a food to the current food search space">
+            Add food
+            </button>
+        </div>
+        <div>
+            <p>Current food search space : </p>
+            <div id="foodSearchSpaceViewer"><p style="color:red">Must have at least one food selected.</p></div>
+        </div>
+    </div>
+    <button class="basicButton bigbutton" onclick="removeFood()" title="Remove a food from the current food search space">
+        Remove food
+    </button>
+</div>
+
+<hr>
+
+<div>
+    <p>Select materia(s) to use :</p>
+    <p class="underText">At least 3 materias must be selected, ignoring speed related materias</p>
+    <div class="container" style="margin: 0px;"
+    title="">
+        <p class="underText">Critical hit : </p>
+        <input type="checkbox" id="critCheckbox" onchange="updateUseCritMat()" checked>
+    </div>
+    <div class="container" style="margin: 0px;"
+    title="">
+        <p class="underText">Determination : </p>
+        <input type="checkbox" id="DetCheckbox" onchange="updateUseDetMat()" checked>
+    </div>
+    <div class="container" style="margin: 0px;"
+    title="">
+        <p class="underText">Direct hit : </p>
+        <input type="checkbox" id="DHCheckbox" onchange="updateUseDHMat()" checked>
+    </div>
+    <div class="container" style="margin: 0px;"
+    title="">
+        <p class="underText">Tenacity : </p>
+        <input type="checkbox" id="TenCheckbox" onchange="updateUseTenMat()">
+    </div>
+</div>
+<hr>
+
+<div>
+    <p>Speed range selection :</p>
+    <div class="container" style="margin: 0px;" title="">
+        <p class="underText">Use Spell Speed materias (if not checked the solver will use Skill Speed materias) : </p>
+        <div id="spdTypeSelector">
+        <input type="checkbox" id="SpSCheckbox" onchange="updateUseSpS()">
+        </div>
+    </div>
+    <div>
+        <p id="spdSelecWarning" style="color:red;"></p>
+        <div class="container" style="margin: 2px;"
+        title="">
+            <p class="underText">Minimal speed value :  </p>
+            <input id="minSPDValue" type="number" value="400" min="400" max="4000" maxlength="4" onchange="updateMinSPD()">
+            <div id="minGCDTimerViewer"></div>
+        </div>
+        <div class="container" style="margin: 2px;"
+        title="">
+            <p class="underText">Maximal speed value : </p>
+            <input id="maxSPDValue" type="number" value="4000" min="400" max="4000" maxlength="4" onchange="updateMaxSPD()">
+            <div id="maxGCDTimerViewer"></div>
+        </div>
+    </div>
+</div>
+<hr>
+<div>
+    <div id="pietyRangeSelection">
+    <!-- <p>Other solver parameters </p> This is added when a healer is detected
+        <p class="underText">Minimum piety amount :</p>
+        <input id="minPietVal" type="number" maxlength="4" value="390"> -->
+    </div>
+    <div>
+        <p>Advanced parameters : </p>
+        <div class="container">
+        <p class="underText">Have the solver perform a default search (recommended in general but takes much more time)</p>
+        <input id="defaultSearchPattern" type="checkbox" onchange="updateDefaultSearchPattern()" checked>
+        </div>
+        <div id="nonDefaultSearchPatternDiv">
+
+        </div>
+    </div>
+</div>
+<hr>
+<div>
+    <button class="basicButton bigbutton" onclick="submit()">
+        Launch solver
+    </button>
+</div>
+</html>

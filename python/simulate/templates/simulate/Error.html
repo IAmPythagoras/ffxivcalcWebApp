@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+    <div class="marginHeader">
+        <div class="menu">
+        <a href="/simulate/" class="menu" style="text-decoration: none; color: inherit;">
+        <img src="{% static 'simulate/kirbo.png' %}" alt="Sussy Kirbo" style="margin-right: 10px;" width="40" height="40">
+        <h3 class="heading mainText marginZero">FFXIV Combat Simulator</h3>
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://github.com/IAmPythagoras/FFXIV-Combat-Simulator" title="github">
+        <img src="{% static 'simulate/github.png' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://discord.gg/mZXKUNy2sw" title="Discord server">
+        <img src="{% static 'simulate\discord.svg' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="/simulate/help" title="Help">
+        <img src="{% static 'simulate/help.png' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="/simulate/More" title="More">
+        <img src="{% static 'simulate/More.png' %}" width="40" height="40">
+        </a>
+    </div>
+    </div>
+</header>
+<hr>
+<center>
+<h2>Oh no, it appears there was an error):</h2>
+<p>
+{{ ErrorMessage }}
+</p>
+<img src="{% static 'simulate/Error_kirbo.jpg' %}">
+</center>
+</html>

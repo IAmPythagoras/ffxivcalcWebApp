@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<style>
+    .underText{
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+    }
+</style>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+<h3>
+BiS rotation solver
+</h3>
+<center><h2>Results</h2></center>
+</header>
+<hr>
+<div>
+    <h3>Solver parameters</h3>
+    <p>Materia space : <span class="underText">{{ matSpace }}</span></p>
+    <p>Food space : <span class="underText">{{ foodSpace }}</span></p>
+    <p>Use spell speed : <span class="underText">{{ useSS }}</span></p>
+    <p>Minimum speed amount : <span class="underText">{{ minSPD }}</span></p>
+    <p>Maximum speed amount : <span class="underText">{{ maxSPD }}</span></p>
+    <p>Oversaturation iterations pre : <span class="underText">{{ oversaturationPre }}</span></p>
+    <p>Oversaturation iterations post : <span class="underText">{{ oversaturationPost }}</span></p>
+    <p>Swap DH/Det before Speed : <span class="underText">{{ swapBefore }}</span></p>
+    <p>Player's name : <span class="underText">{{ playerName }}</span></p>
+    <p>Player's job : <span class="underText">{{ playerJob }}</span></p>
+</div>
+<div>
+    <center>
+    <div class="ResultDiv" style="width: 1000px;">
+        {% for line in text %}
+        <p style="margin-top: 0px;margin-bottom: 0px;">{{ line }}</p><br>
+        {% endfor %}
+    </div>
+    </center>
+</div>
+</html>

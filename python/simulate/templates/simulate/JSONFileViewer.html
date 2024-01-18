@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+
+</header>
+<hr>
+<body>
+<div style="text-align: center;">
+<h2>JSON file viewer</h2>
+</div>
+<div class="JSONViewer"><p>
+    {{ JSONFileStr }}
+</p></div>
+</body>
+</html>

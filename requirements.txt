@@ -1,0 +1,3 @@
+Django>=3.0,<=3.1
+ffxiv-combat-simulator @ git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@main
+whitenoise

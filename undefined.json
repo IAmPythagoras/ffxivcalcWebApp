@@ -1,0 +1,203 @@
+{
+    "data": {
+        "fightInfo": {
+            "RequirementOn": false,
+            "IgnoreMana": false,
+            "fightDuration": "500"
+        },
+        "PlayerList": [
+            {
+                "JobName": "BlackMage",
+                "PlayerName": "SussyPlayer",
+                "playerID": "0",
+                "weaponDelay": "3.00",
+                "stat": {
+                    "MainStat": "2945",
+                    "WD": "126",
+                    "Det": "1451",
+                    "Ten": "400",
+                    "SS": "840",
+                    "SkS": "400",
+                    "Crit": "2386",
+                    "DH": "1307"
+                },
+                "actionList": [
+                    {
+                        "actionName": "Paradox"
+                    },
+                    {
+                        "actionName": "FireI"
+                    },
+                    {
+                        "actionName": "FireIII"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireI"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    },
+                    {
+                        "actionName": "Despair"
+                    }
+                ],
+                "etro_gearset_url": "",
+                "Auras": []
+            },
+            {
+                "JobName": "Dancer",
+                "PlayerName": "Player1",
+                "playerID": "1",
+                "weaponDelay": "3",
+                "stat": {
+                    "MainStat": "390",
+                    "WD": "0",
+                    "Det": "400",
+                    "Ten": "400",
+                    "SS": "400",
+                    "SkS": "400",
+                    "Crit": "400",
+                    "DH": "400"
+                },
+                "actionList": [
+                    {
+                        "actionName": "ClosedPosition",
+                        "targetID": 0
+                    },
+                    {
+                        "actionName": "TechnicalStep"
+                    },
+                    {
+                        "actionName": "Emboite"
+                    },
+                    {
+                        "actionName": "Entrechat"
+                    },
+                    {
+                        "actionName": "Jete"
+                    },
+                    {
+                        "actionName": "Pirouette"
+                    },
+                    {
+                        "actionName": "TechnicalFinish"
+                    },
+                    {
+                        "actionName": "StandardStep"
+                    },
+                    {
+                        "actionName": "Entrechat"
+                    },
+                    {
+                        "actionName": "Jete"
+                    },
+                    {
+                        "actionName": "StandardFinish"
+                    }
+                ],
+                "etro_gearset_url": "",
+                "Auras": []
+            },
+            {
+                "JobName": "RedMage",
+                "PlayerName": "Player2",
+                "playerID": "2",
+                "weaponDelay": "3",
+                "stat": {
+                    "MainStat": "390",
+                    "WD": "0",
+                    "Det": "400",
+                    "Ten": "400",
+                    "SS": "400",
+                    "SkS": "400",
+                    "Crit": "400",
+                    "DH": "400"
+                },
+                "actionList": [
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": "5"
+                    },
+                    {
+                        "actionName": "EnchantedRiposte"
+                    },
+                    {
+                        "actionName": "EnchantedZwerchhau"
+                    },
+                    {
+                        "actionName": "EnchantedRedoublement"
+                    },
+                    {
+                        "actionName": "Verflare"
+                    },
+                    {
+                        "actionName": "Scorch"
+                    },
+                    {
+                        "actionName": "Resolution"
+                    },
+                    {
+                        "actionName": "EnchantedRiposte"
+                    },
+                    {
+                        "actionName": "EnchantedZwerchhau"
+                    },
+                    {
+                        "actionName": "EnchantedRedoublement"
+                    },
+                    {
+                        "actionName": "Verholy"
+                    },
+                    {
+                        "actionName": "Scorch"
+                    },
+                    {
+                        "actionName": "Resolution"
+                    }
+                ],
+                "etro_gearset_url": "",
+                "Auras": []
+            }
+        ]
+    },
+    "mode": false,
+    "TeamCompBonus": false,
+    "MaxPotencyPlentifulHarvest": false,
+    "nRandomIterations": 0
+}

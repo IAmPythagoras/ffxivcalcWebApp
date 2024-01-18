@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+<script>
+var intervalId = window.setTimeout(function(){
+    window.location.href = '/simulate/SimulationResult/'
+}, 2000);
+
+</script>
+</head>
+<html class="body">
+<header>
+    <div class="marginHeader">
+    <div class="menu">
+        <a href="/simulate/" class="menu" style="text-decoration: none; color: inherit;">
+        <img src="{% static 'simulate/kirbo.png' %}" alt="Sussy Kirbo" style="margin-right: 10px;" width="40" height="40">
+        <h3 class="heading mainText marginZero">FFXIV Combat Simulator</h3>
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://github.com/IAmPythagoras/FFXIV-Combat-Simulator" title="github">
+        <img src="{% static 'simulate/github.png' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://discord.gg/mZXKUNy2sw" title="Discord server">
+        <img src="{% static 'simulate/discord.svg' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="/simulate/help" title="Help">
+        <img src="{% static 'simulate/help.png' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="/simulate/More" title="More">
+        <img src="{% static 'simulate/More.png' %}" width="40" height="40">
+        </a>
+    </div>
+    </div>
+</header>
+<hr>
+<body style="text-align: center;">
+
+<h2>Your simulation is in queue.</h2>
+<p>There are <span id="PeopleInFront">0</span> person(s) in front of you.</p>
+<p style="color: rgba(255, 255, 255, 0.7);">(This page will refresh automatically upon the completion of your simulation)</p>
+</body>
+</html>

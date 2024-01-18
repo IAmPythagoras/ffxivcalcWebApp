@@ -1,0 +1,179 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv = "refresh" content = "0;url = /simulate/SimulationResult/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style>
+    @import url(//fonts.googleapis.com/css?family=Nunito);
+        .menu:hover{
+            background-color: #333;
+            border-radius: 10px;
+            transition-duration: 150ms;
+        }
+        .menu:not(:hover){
+            transition-duration: 150ms;
+        }
+        .marginHeader {
+            margin-left: 1%;
+            margin-right: 1%;
+            display: flex;
+        }
+        .center {
+        text-align: center;
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+        font-size: large;
+        }
+    
+        .heading {
+            font-family: 'Nunito';
+        }
+    
+        .body {
+            background-color: rgb(26, 26, 26);
+        }
+    
+        .mainText {
+            color: white;
+        }
+    
+        .marginZero {
+            margin: 0;
+        }
+    
+        .linkBox {
+            display:inline-block; 
+            width:400px; 
+            height:90px;
+            text-decoration: none;
+        }
+    
+        .menu{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-right: 20px;
+    
+        }
+    
+        p {
+            font-family: 'Nunito';
+            color: rgba(255, 255, 255, 0.9);
+        }
+    
+        h2 {
+            font-family: 'Nunito';
+            color: rgba(255, 255, 255, 0.95);
+        }
+    
+        hr {
+            width: 98%;
+            border: none;
+            height: 1px;
+            background-color: #333; 
+        }
+        .middleText {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            font-family: 'Nunito';
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .footingText {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-family: 'Nunito';
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .basicButton:hover{
+            background-color: rgb(65, 65, 65);
+            transition-duration: 150ms;
+            border-radius: 10px;
+        }
+        .basicButton:not(:hover){
+            transition-duration: 150ms;
+        }
+        .basicButton {
+            font-family: 'Nunito';
+            background-color: rgba(65, 65, 65, 0.695);
+            color: rgba(255, 255, 255, 0.95);
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .bigbutton {
+        padding: 10px 20px;
+        font-size: 30px;
+        margin: 4px 2px;
+    }
+    
+    #StatSelector {
+        position:relative;
+        right: 0px;
+        display: flex;
+    }
+    
+    #StatSelector input {
+        background-color: rgba(65, 65, 65, 0.695);
+        color: rgba(255, 255, 255, 0.7);
+        border-radius: 2px;
+        width: 35px;
+        border: none;
+        height: 20px;
+    }
+    .container {
+    margin: 5px;
+    display: flex;
+    }
+    
+    .container p {
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    
+    .PlayerStatInput{
+    position: absolute;
+    width: 800px;
+    height: 1000px;
+    margin: 0 auto; /* centers the div horizontally */
+    border: 1px solid white;
+    right: 10px;
+    }
+</style>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+    <div class="marginHeader">
+        <div class="menu">
+        <a href="/simulate/" class="menu" style="text-decoration: none; color: inherit;">
+        <img src="{% static 'simulate/kirbo.png' %}" alt="Sussy Kirbo" style="margin-right: 10px;" width="40" height="40">
+        <h3 class="heading mainText marginZero">FFXIV Combat Simulator</h3>
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://github.com/IAmPythagoras/FFXIV-Combat-Simulator" title="github">
+        <img src="{% static 'simulate/github.png' %}" width="40" height="40">
+        </a>
+    </div>
+    <div class="menu">
+        <a href="https://discord.gg/mZXKUNy2sw" title="Discord server">
+        <img src="{% static 'simulate/discord.svg' %}" width="40" height="40">
+        </a>
+    </div>
+    </div>
+</header>
+<hr>
+</html>

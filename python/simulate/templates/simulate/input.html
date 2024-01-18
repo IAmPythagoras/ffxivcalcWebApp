@@ -1,0 +1,170 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script type="text/javascript" src="{% static 'simulate/IconDict.js' %}"></script>
+<script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+        <div style="float: left;">
+        <button class="basicButton bigbutton" onclick="importFile()" title="Import a fight">
+        Import fight
+        </button>
+        <button class="basicButton bigbutton" onclick="saveFile()" title="Save the current fight">
+        Save fight
+        </button>
+        <button class="basicButton bigbutton" onclick="resetFile()" title="Create a new fight">
+        New fight
+        </button>
+        </div>
+        <div style="float: right;margin-right: 20px;"><button class="basicButton bigbutton" style="background-color:red;" onclick="getHelp()" title="Find a tutorial here">Help</button></div>
+        <center style="margin: 0px;"><h3 style="margin: 0px;">FFXIV Calc</h3></center>
+</header>
+<hr>
+<div>
+<div class="PlayerRoster" style="border-right: 1px solid #333;">
+    <div class="PlayerRosterText">
+    <h2><center>Player Roster</center></h2>
+    </div>
+    <!--This will let the user see the current roster and also add new players-->
+    <div class="PlayerRosterViewer" id="PlayerRosterViewer">  
+    </div>
+    <div class="PlayerRosterAdd">
+    <button class="AddPlayerButton basicButton bigbutton" onclick="addNewPlayer()">Add Player</button>
+    <p><span id="player_counter">0</span>/8 player(s)</p>
+    </div>
+</div>
+
+<div class="PlayerStatInput" style="border-bottom: 1px solid #333; ;">
+    <h2><center>Player configuration</center></h2>
+    <div id="PlayerConfigurationText">
+    <div id="StatSelector">
+        <!--This will let the user edit the stats of the currently selected player-->
+        <div class="container"><p>MainStat : </p><input id="MainStat" type="text" name="MainStat" value="390" maxlength="4"></div>
+        <div class="container"><p>Crit : </p><input id="Crit" type="text" name="Crit" value="400" maxlength="4"></div>
+        <div class="container"><p>Direct Hit : </p><input id="DH" type="text" name="DH" value="400" maxlength="4"></div>
+        <div class="container"><p>Weapon Damage : </p><input id="WD" type="text" name="WD" value="0" maxlength="4"></div>
+        <div class="container"><p>Skill Speed : </p><input id="SkS" type="text" name="SkS" value="400" maxlength="4"></div>
+        <div class="container"><p>Spell Speed : </p><input id="SpS" type="text" name="SpS" value="400" maxlength="4"></div>
+        <div class="container"><p>Determination : </p><input id="Det" type="text" name="Det" value="400" maxlength="4"></div>
+        <div class="container"><p>Tenacity : </p><input id="Ten" type="text" name="Ten" value="400" maxlength="4"></div>
+    </div>
+    <div class="container">
+        <p>Weapon delay : </p><input id="weaponDelay" type="number" name="MainStat" value="3.00">
+    </div>
+    <div class="container">
+        <!--Lets a user simply put an etro gear set link to import the stats-->
+        <p>You can also just use an etro gearset : </p>
+        <input type="text" style="margin-right: 10px;margin-left: 10px;" id="etroURL">
+        <button id="etroButton" class="basicButton bigbutton" onclick="importEtroGearSet()">Import</button>
+    </div>
+    <div style="align-items: center;">
+        <div class="container">
+        <p>Job :</p>
+        <select name="Job" id="Job" style="margin-right: 10px;margin-left: 10px;" onchange="LoadPlayerActionsPick(true)" selected="BlackMage">
+            <option value="BlackMage">BlackMage</option>
+            <option value="RedMage">RedMage</option>
+            <option value="Summoner">Summoner</option>
+            <option value="Ninja">Ninja</option>
+            <option value="Samurai">Samurai</option>
+            <option value="Reaper">Reaper</option>
+            <option value="Monk">Monk</option>
+            <option value="Dragoon">Dragoon</option>
+            <option value="Machinist">Machinist</option>
+            <option value="Dancer">Dancer</option>
+            <option value="Bard">Bard</option>
+            <option value="WhiteMage">WhiteMage</option>
+            <option value="Astrologian">Astrologian</option>
+            <option value="Sage">Sage</option>
+            <option value="Scholar">Scholar</option>
+            <option value="Gunbreaker">Gunbreaker</option>
+            <option value="Warrior">Warrior</option>
+            <option value="DarkKnight">DarkKnight</option>
+            <option value="Paladin">Paladin</option>
+        </select>
+        </div>
+    </div>
+        <div class="container">
+            <!--Lets a user simply put an etro gear set link to import the stats-->
+            <p>Player name :</p>
+            <input type="text" id="PlayerName" style="margin-right: 10px;margin-left: 10px;" onchange="UpdateName()" value="SussyPlayer" maxlength="30">
+        </div>
+    <div style="align-items: center;">
+        <p id="PlayerIDField"></p>
+    </div>
+    <div style="position: absolute;bottom: -15px;right: 5px;">
+    <p style="color: rgba(255, 255, 255, 0.7);">Note that the stats must include what is gained from food!</p>
+    </div>
+    </div>
+</div>
+<div class="PlayerActionListInput">
+        <!--This will let the user edit the actionList of the currently selected player-->
+    <div class="PlayerActionListViewer" id="PlayerActionListViewer">
+
+    </div>
+    <div class="PlayerActionListPick wrapper" id="ActionListPick">
+
+    </div>
+</div>
+</div>
+<div class="SubmitSimulation">
+    <hr>
+    <h2><center>Fight Configuration</center></h2>
+    <div>
+        <div class="container" style="margin: 0px;"
+        title="If an illegal action is detected the simulation will stop and return the current results.">
+            <p>Stop simulation if an illegal action is detected : </p>
+            <input type="checkbox" id="RequirementOnCheckBox" onchange="UpdateRequirement()">
+        </div>
+        <div class="container" style="margin: 0px;"
+        title="This will ignore the mana requirement of casting spells.">
+            <p>Ignore mana requirements : </p>
+            <input type="checkbox" id="IgnoreManaCheckBox" onchange="UpdateManaCheck()">
+        </div>
+        <div class="container" style="margin: 0px;"
+        title="This will give the 5% bonus regardless of team composition">
+            <p>5% bonus (regardless of team composition) : </p>
+            <input type="checkbox" id="TeamCompBonus" onchange="UpdateTeamCompBonus()">
+        </div>
+        <div class="container" style="margin: 0px;"
+        title="Plentiful Harvest will apply maximum potency regardless of team.">
+            <p>Have Plentiful Harvest always apply maximum potency : </p>
+            <input type="checkbox" id="MaxPotencyPlentifulHarvest" onchange="UpdateMaxPotencyPlentifulHarvest()">
+        </div>
+        <div class="container" style="margin: 0px;"
+        title="The maximum fight duration of the simulation in seconds. The simulation will stop
+        when the timer reaches that value and will return the current results. Must be a positive value and be lower than 150.">
+            <p>Fight Max Duration in seconds (fight starts at the first instance of damage) : </p>
+            <input id="FightDuration" type="number" value="500">
+        </div>
+        <div class="container" style="margin: 0px;"
+        title="The number of random simulations to perform to graph out the DPS distribution (higher is better, but longer) (Must be an int).">
+            <p>Number of random iterations to perform : </p>
+            <input id="nRandomIterations" type="number" value="0">
+        </div>
+        <!-- <p style="color: red;" id="NewTabAlert">The simulation's result will open in a new tab so make sure your browser is not blocking it</p> -->
+    </div>
+    <div id="ProcessingDiv" style="text-align: center;" hidden>
+        <!-- <p style="color: red;">Your simulation is in queue. A new page with the result will automatically open when your simulation has been processed.</p> -->
+        <img src="{% static 'simulate/processing.gif' %}" width="40" height="40">
+    </div>
+    <div><center>
+        <button class="basicButton bigbutton" onclick="Submit()"><span id="ButtonText">Simulate</span></button>
+    </div>
+    </center>
+    <div style="float:right;bottom:100px;position: relative;" class="container"
+     title="Sets the logging level to DEBUG.">
+        <p>DEBUG mode : </p>
+        <input type="checkbox" id="DebugMode" onchange="UpdateDebugMode()">
+    </div>
+</div>
+
+</html>

@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+
+</header>
+<div style="text-align: center;">
+<h2>Simulation Results</h2>
+<hr>
+<div title="Different return code of the simulation. Green means there were no failed requirements. Yellow means there was a failed requirement
+            but it wasn't fatal to the simulation. Red means there was a failed requirement that was fatal to the simulation.">
+<h3>Return Code :
+{% if WARNING %}
+<span class="dot" style="background-color: yellow;">
+{% elif CRITICAL %}<span class="dot" style="background-color: red;">
+{% else %}<span class="dot" style="background-color: green;">
+{% endif %}
+</span></h3></div>
+<br>
+</div>
+<center>
+<div class="ResultDiv">
+    {% for line in result_str %}
+    <p style="margin-top: 0px;margin-bottom: 0px;">{{ line }}</p><br>
+    {% endfor %}</div>
+    {% if mode %}
+    <button class="basicButton bigbutton" onclick="seeJSONFileViewer()">
+        JSON File
+    {% endif %}
+<button onclick="downloadSimulationRecord()" class="basicButton bigbutton" title="Download the simulation's record. The record is saved as a PDF file showing every damage event in the simulation with what buffs were applied to it, etc.">
+    Download simulation record
+</button>
+</center>
+{% if WARNING or CRITICAL%}
+<hr>
+<div>
+<center><h2>Simulation Logs</h2></center>
+{% if WARNING%}
+<p>There was at least one WARNING error during the simulation : </p>
+{% else %}
+<p>There was at least one critical error failed requirement that forced the simulation to stop : </p>
+{% endif %}
+<div class="JSONViewer">
+{% for log_line in log_str %}
+<p>{{ log_line }}</p>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+<hr><br>
+<div><center>
+    <h2>DPS Vs. Time</h2>
+    <img src="data:image/png;base64,{{ graph }}" style="border-radius: 5px;border: red solid 3px;width: 75%;height: 55%;">
+</center></div>
+{% if has_dist %}
+<hr><br>
+<div><center>
+    <h2>DPS Distribution</h2>
+    <img src="data:image/png;base64,{{ graph_dist }}" style="border-radius: 5px;border: red solid 3px;width: 75%;height: 55%;">
+</center></div>
+{% endif %}
+</html>

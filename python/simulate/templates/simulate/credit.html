@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+</header>
+<hr>
+
+<div style="width: 60%;right:20%;position:absolute">
+    <center><p>This webapp was done mostly by myself (Leonhard Euler @ Gilgamesh) and my partner (Harrow Levesque @ Gilgamesh) that helped with some revisions of the app. The simulator was started by myself in early 2022 and along the way I was helped by a lot of people without whom 
+               it would not have been possible. Here is everyone that helped build this project:
+    </p></center>
+    <hr style="width: 70%;">
+    <dl>
+        <dt>Pythagoras#6312 (Leonhard Euler @ Gilgamesh)</dt>
+        <dd> - That's me!</dd>
+        <dt>ne0dym#7837 (Harrow Levesque @ Gilgamesh)</dt>
+        <dd> - Writing early Dark Knight code, website revision, logo design (adapted from the work of TerminalMontage on Youtube)</dd>
+        <dt>Amarantine</dt>
+        <dd> - Gave general advice, assisted with validating the simulator's results and assisted with developing the rotation BiS solver</dd>
+        <dt>RedShadowHero</dt>
+        <dd> - Restructuring, assisting with and contributing to the code</dd>
+        <dt>Bri-Kun (Bri Kun @ Sargatanas)</dt>
+        <dd> - Assisting with networking code and FFLogs API</dd>
+        <dt>JavaJake</dt>
+        <dd> - Assisting with theoretical damage computation</dd>
+        <dt>SaintGermain</dt>
+        <dd> - Writing early Monk code</dd>
+        <dt>Apollo</dt>
+        <dd> - Putting me in contact with knowledgeable people and assisting with the code for working with etro</dd>
+    </dl> 
+    <hr style="width: 70%;">
+    <center><p>
+        I also give my thanks to The Balance, which provided me with a lot of knowleadge about the different jobs so I could implement them, 
+        and also gave me access to resources such as the Black Mage gear comparison spreadsheet which I used when trying to better 
+        understand how damage computation works in this game.
+    </p></center>
+</div>

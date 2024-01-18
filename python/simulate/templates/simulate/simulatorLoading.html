@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/simulatorLoadingScript.js' %}"></script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+<h3>
+ffxiv simulator
+</h3>
+</header>
+<hr>
+<div>
+    <p>The simulator is currently working. Please be patient, this could take a few seconds.</p>
+    <p class="underText">The results will automatically be shown once the solver is done.</p>
+</div>
+<div style="    background-color: black;left: 10px;width: 1000px;border-radius: 5px;border: 2px solid white;">
+    <p id="progressBar"></p>
+</div>
+<div id="test"></div>
+</html>

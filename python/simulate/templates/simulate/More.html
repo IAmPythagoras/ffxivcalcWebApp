@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+</header>
+<hr>
+<body>
+
+<div style="text-align: center;">
+<p>Find out more about the ffxiv-combat-simulator and other relevant alternative ressources made by other people.</p>
+</div>
+
+<hr>
+
+<div>
+<h2 style="color: white;">FFXIV Combat Simulator</h2>
+<p>
+    This is the simulator that powers this website. Started more than a year ago, the goal was to make a simulator for FFXIV publicly available and break away from the older method
+    of using spread sheets to optimize rotations. This simulator can do any number of player at the same time, for any amount of time, for any number of actions, for any players' stats and will 
+    accurately compute the expected DPS with raid buffs and personnal buffs taken into account. It has the option to check for the validity of a rotation and alert the user if a 
+    rotation is not legal in the game. It can accurately track a player's mana in order to plan rotations that require very precise mana tic and mana usage.
+</p>
+<p>
+    This simulator does not have any kind of rotation solver that would use A.I. (or any other algorithm) in order to automatically optimize a rotation. However there is a working (non-optimal) algorithm
+    that will attempt to find a BiS given an action list. You can read more about the "Rotation BiS Solver" on the github repo.
+</p>
+<p>
+    The simulator is still in active developement and I plan to continue adding more and more features to make it a more complete and accurate simulation environment.
+</p>
+<p>
+    For more information you can read the <a class="link" onclick="openDocumentation()">documentation</a>, read the repo, join the discord or send me a DM on discord <span style="color: red;">Pythagoras#6312</span>.
+</p>
+</div>
+
+<hr>
+
+<div>
+<h2 style="color: white;">Another FF14 Combat Sim</h2>
+<p>
+    This tool simulates the damage of given gearsets and rotations for one or more players and, produces the full distribution over damage values. This is an accurate 
+    <a class="link" onclick="openMonteCarlo()">Monte Carlo</a> simulation that gives the full range and distribution over all possible damage values, 
+    mimicking as closely as possible the intricacies of how damage is calculated in FF14 (e.g., snapshots, animation locks, etc.) with some caveats.
+</p>
+<p>
+    This Monte Carlo simulator is built primarily to allow others to build other tools on top of it, using the simulator as just a combat engine. Examples of such tools: 
+</p>
+<ol>
+    <li>general gear and rotation planning, optimizing for average damage, parsing (high-variance sets), and minimizing the chance of hitting enrage due to bad luck</li>
+    <li>fight-specific gear and rotation planning</li>
+    <li>speed kill planning</li>
+    <li>normalizing DPS logs to factor out "lucky" crit/dh farming</li>
+    <li>rotation solver (the code is architected to specifically work with the Tensorflow Agents library, and the modelling of actions, environments, rewards, etc. is already done. 
+        It could also probably work as a custom OpenAI Gym environment, though that hasn't been tested).</li>
+</ol>
+<p>
+    The simulator is built in Google's Colab, and can be run directly in a browser- no installation needed and it can be run without a PC (console and phones should work- don't you all have phones!?).
+    It is available as an open source project under Apache License 2.0. Please see the <a class="link" onclick="openAmarantineRepo()">repo</a> for more info, and feel free to reach out to 
+    <span style="color: red;">amarantine#6064</span> on discord if you have questions about the simulator or building tools on top of it.
+</p>
+</div>
+<hr>
+</body>
+</html>

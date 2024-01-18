@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/createGearSearchSpace.js' %}"></script>
+<style>
+    .underText{
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+    }
+</style>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+<h3>
+Create/Edit gear search space
+</h3>
+</header>
+<hr>
+<body>
+<div id="gearViewer">
+</div>
+
+<div class="container">
+    <button class="basicButton bigbutton" onclick="addGear()">Add new gear</button>
+    <button class="basicButton bigbutton" onclick="saveGear()">Save</button>
+</div>
+</body>
+</html>

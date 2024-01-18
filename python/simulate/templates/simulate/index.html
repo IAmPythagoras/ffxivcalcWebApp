@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+    <div class="marginHeader">
+    <div class="menu">
+        <p>Github<br>repo </p>
+        <img src="{% static 'simulate/github.png' %}" width="40" height="40" title="github" onclick="openGitHub()">
+    </div>
+    <div class="menu">
+        <p>Join the<br>discord! </p>
+        <img src="{% static 'simulate/discord.svg' %}" width="40" height="40" title="discord" onclick="openDiscord()">
+    </div>
+    <div class="menu">
+        <p>More </p>
+        <img src="{% static 'simulate/More.png' %}" width="40" height="40" title="Read more" onclick="openMore()">
+    </div>
+    </div>
+</header>
+<hr>
+    <left><h2>ffxivcalc Web App v1.0.0 (BETA)</h2></left>
+    <p class="underText">ffxivcalc version : {{ ffxivcalcVersion }}</p>
+    <p style="color: red;">Hey! If you have this program know that it is still under work and this is a beta version! If you see or experience any problems please let me know through discord:)</p>
+    <div class="body">
+        <div class="middleText left">
+            <div>
+                <p>The simulator lets you simulate a fight with up to 8 players and any number of actions.</p>
+                <button class="basicButton bigbutton" onclick="openSimulation()">
+                    Simulate a fight
+                </button>
+
+            </div>
+            <div>
+                <p>The rotation bis solver lets you attempt to find a BiS given a fight layout. In other words, it attemps to find the bis given a rotation for a specific player.</p>
+                <button class="basicButton bigbutton" onclick="openSolver()">
+                    Rotation BiS Solver (Beta)
+                </button>
+                <p class="underText">Note that the results might not be optimal and it is always better to recheck the damage using another DPS metric (to compare to another bis). You can read more about the testing of this solver and the results it gave on the github repo.</p>
+            </div>
+            <p>
+                If you require help you can click the help button above or join the discord and ask.
+            </p>
+        </div>
+    </div>
+    <hr>
+    <footer class="footingText">
+        <p><left>
+            Made by Leonhard Euler @ Gilgamesh and <a class="link" onclick="openCredit()">others</a>. 
+        </left></p>
+    </footer>
+</html>

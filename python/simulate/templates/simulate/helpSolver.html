@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+</header>
+<hr>
+<body>
+<div style="width:90%;right:5%;position: absolute;text-align: center;">
+    
+    <h1>BiS solver help</h1>
+
+    <p>This page will walk you through the solver's interface and different options.</p>
+    <p>
+        If you need any more help feel free to ask on the discord!
+    </p>
+    <hr style="width:70%;">
+
+    <div>
+    <h3>Select a fight layout</h3>
+    <img class="helpimg" style="height:100px;" src="{% static 'simulate/help/select_layout.png' %}">
+    <p>The solver needs a fight layout to run properly. Click on "Import" and select a valid saved file. A Fight layout
+        can be created and saved in the simulator.
+    </p>
+    </div>
+    <hr style="width:50%;">
+    <div>
+    <h3>Select a player</h3>
+    <img class="helpimg" style="height:100px;" src="{% static 'simulate/help/select_player.png' %}">
+    <p>
+        Once a fight layout has been selected click on "Select". This will open a dialog box
+        with all players of the fight layout. Choose one.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Select a gear space</h3>
+    <img class="helpimg" style="height:100px;" src="{% static 'simulate/help/gear_space.png' %}">
+    <p>
+        The gear search space is the list of gear pieces the solver will search on. Click "Create" to create a gear search
+        space. Click "Import" to import a valid gear search space file. Once a valid file is imported click on "Edit" to view 
+        the gear search space and edit any required values.
+    </p>
+    <img class="helpimg" style="height:150px;" src="{% static 'simulate/help/edit_space.png' %}">
+
+    <h4>Edit/Create gear space</h4>
+    <img class="helpimg" style="height:100px;" src="{% static 'simulate/help/add_gear.png' %}">
+    <p>
+        Click on "Add new gear" to add a new gear piece to the search space. Click "Save" to save the current gear search space as a file.
+        Note that any change done in this page do not reflect in the currently loaded gear search space. If you do changes to a gear search space, make sure to
+        click "Save" and import the new file in the solver.
+    </p>
+    <img class="helpimg" style="height:500px;" src="{% static 'simulate/help/edit_add_gear.png' %}">
+
+    <p>
+        Edit any required values of the gear. Click on "Remove" to remove that specific gear piece from
+        the gear search space.
+    </p>
+
+    <p>
+        Clicking "Edit" on a loaded gear search space will open a similar looking window except values
+        will already be edited.
+    </p>
+
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Select food search space</h3>
+    <img class="helpimg" style="height:150px;" src="{% static 'simulate/help/add_food.png' %}">
+    <p>
+        Click on "Add food" to be prompted with a dialog to select a food to add. The added food will appear
+        in the "Current food search space". Click on "Remove food" to remove food from the current food search space.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Materia search space</h3>
+    <img class="helpimg" style="height:150px;" src="{% static 'simulate/help/select_mat.png' %}">
+    <p>
+        Check the boxes of the materias you want. The solver needs a minimum of 3 selected materias types to run properly.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Speed type/range selection</h3>
+    <img class="helpimg" style="height:150px;" src="{% static 'simulate/help/speed_select.png' %}">
+    <p>
+        The first option lets the solver know if it is supposed to meld "Spell Speed" or "Skill Speeds" materias. This field is set automatically
+        depending on the select player, but change this value as needed.
+    </p>
+
+    <p>
+        Edit the value in "Minimal speed value" and "Maximal speed value" to set a range on the speed stat values the solver will consider.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Set minimum piety amount</h3>
+    <img class="helpimg" style="height:100px;" src="{% static 'simulate/help/piety.png' %}">
+    <p>
+        Edit the value of "Minimum piety amount" to force the solver to find gear sets that have the required piety.
+        Note that the solver will attempt to put piety materias if the piety amount is not reached for a gear set.
+        This option is only visible for healers.
+
+        WARNING : This can create issues if the value of the minimum piety and the minimum speed values are BOTH high.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+    <div>
+    <h3>Advanced parameters</h3>
+    <img class="helpimg" style="height:150px;" src="{% static 'simulate/help/advanced_param.png' %}">
+    <p>
+        "Oversaturation Iterations PreGear" corresponds to the amount of oversaturation iterations done before the solver
+        iteratively tries gear sets.
+
+        "Oversaturation Iterations PostGear" corresponds to the amount of oversaturation iterations done before the solver attemps
+        to find optimal materias. 
+
+        These values should be between 0-2. It is a good idea to try the solver with different values for these parameters.
+
+        You can read more about these parameters in the official git hub repo.
+    </p>
+
+    <p>
+        If "swapDHDetBeforeSpeed" is checked, then the solver will attempt to swap DH and Det materias before it attemps to reach the required Speed value with materias. If "swapDHDetBeforeSpeed" is unchecked
+        then the DH and Det swapping happens after the gear set has reached the required speed value.
+    </p>
+    </div>
+
+    <hr style="width:50%;">
+</div>
+</body>
+</html>

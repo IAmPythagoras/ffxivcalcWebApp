@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+</head>
+<html class="body">
+<header>
+</header>
+<hr>
+<body>
+<div style="width:90%;right:5%;position: absolute;text-align: center;">
+<div>
+<h1>Help</h1>
+<p>This page will walk you through the simulator's interface and different options.</p>
+<h2>Simulation Input</h2>
+<p>
+    In this page you will be asked to enter the different settings and input for the simulation. 
+    This includes adding players, giving the players stats and inputting actions for each player.
+    It contains 4 sections: Player Roster, Player Configuration, Action Viewer and Fight Configuration.
+</p>
+<p>
+    If you need any more help feel free to ask on the discord!
+</p>
+</div>
+
+<hr style="width:70%;">
+
+<div>
+<h3>Player Roster</h3>
+<img class="helpimg" style="height:500px;" src="{% static 'simulate/help/roster.png' %}">
+<p>
+    This shows all players added to the simulation, up to a maximum of 8 players. Their name will be displayed and the player currently being edited will have a white box around itself.  
+    To add players to the fight simulation, click the button "Add Player" at the bottom. You may edit or delete a player once it has been created.
+    When deleting a player, you will be asked if that is really what you want to do, and to be sure that no other player is targetting
+    this player with abilities (in which case the simulation will not work and you will receive an error).
+</p>
+</div>
+<hr style="width:50%;">
+<div>
+<h3>Player Configuration</h3>
+<img class="helpimg" style="width: 800px;" src="{% static 'simulate/help/player_configuration.png' %}">
+<p>
+    This section allows you to edit the selected player's stats by inputting the values in the appropriate text boxes.
+    You may also simply copy and paste the URL of an etro.gg gearset into the appropriate text-box. Then clicking the "Import" button will import automatically set the stats' value. Note that the stats must include bonuses gained from food.
+    You must select the player's job from the dropdown menu. The player's name may be edited, but the Player ID value cannot be modified.
+    Every player is automatically given a unique ID to be used in order to target them with actions. 
+</p>
+</div>
+<hr style="width:50%;">
+<div>
+<h3>Action Viewer</h3>
+<img class="helpimg" style="width: 800px;" src="{% static 'simulate/help/action_viewer.png' %}">
+<p>
+    This section allows the user to select actions to be performed by a specific player. The white upper box corresponds to the actions to be performed in
+    order of input (read left-right and top-bottom), and the grey lower box corresponds to the action pool of the player.
+    Certain actions that require a target will ask for a target ID; you must input the Player ID corresponding to the player you want to target with the
+    action. The action "wait_ability" corresponds to a length of time during which the player does nothing. When selected, you will be asked to enter
+    a valid wait time (which can be an integer or a float value). To add an action, click on the desired action in the lower box and it will
+    appear in the upper box. To remove an action at any given point, click on the action's icon in the upper box. Some actions will let you change their configuration
+    instead of deleting them, but you can still delete them by simply not changing the configuration.
+</p>
+</div>
+<hr style="width:50%;">
+<div>
+<h3>Fight Configuration</h3>
+<img class="helpimg" style="width: 800px;" src="{% static 'simulate/help/fight_configuration.png' %}">
+<p>
+    This section lets the user edit the simulation's configuration.
+    The "Stop simulation if an illegal action is detected" option will stop the simulation at the moment when a player performs an action that they should 
+    not be able to do in the game. If this option is not checked, the simulation will not stop, but you will be warned in the results that the action set 
+    for the player cannot be replicated in game. The "Ignore Mana Requirement" option will allow the simulation to ignore MP requirements when using 
+    an action, but you will not be warned if the simulation detects at any point that there was not enough MP for an action. The "5% bonus" option will 
+    allow the simulation to give the 5% main stat bonus regardless of the team composition. The "Have Plentiful Harvest always apply maximum potency" option 
+    will make every casting of plentiful harvest have maximum potency. The "Fight Max Duration" option is the maximum duration in seconds the fight will last for. 
+    Note that if every player has no more actions to do, the simulation will stop before the max duration is reached. The "Open result in a new tab" option will
+    display the result page in a new tab. Checking this box is recommended, as the inputs will not be saved if the user leaves and returns to the 
+    page. the "Number of random iterations to perform" value corresponds to the amount of random simulation the simulator will do in order to compute an estimate of the DPS distribution of the simulation.
+    The "DEBUG mode" option will display all the DEBUG logs from the simulation. This is not very useful to the common user and should stay unchecked.
+    The "Simulate" button will launch a simulation with the current configurations you have entered. You will then be taken to the result page or to an error page.
+</p>
+</div>
+<hr style="width:70%;">
+<div>
+<h2>Simulation Result</h2>
+<p>
+    This page will display the simulation's results. It contains the following sections: Result, Simulation Logs, Graph.
+</p>
+</div>
+
+<div>
+<h3>Result</h3>
+<img class="helpimg" style ="width: 800px;" src="{% static 'simulate/help/result_str.png' %}">
+<p>
+    This section displays the result of the simulation. The first thing to notice is the "Return Code". This indicates whether or not the simulation was a success.
+    A <span style="color:green;">green</span> circle corresponds to a successful simulation with all legal actions.
+    A <span style="color:yellow;">yellow</span> circle corresponds to a simulation with at least one illegal action.
+    A <span style="color:red;">red</span> circle corresponds to a simulation that was stopped because a player performed an illegal action. In other words, a red circle means 
+    the same thing as a yellow circle, but with the "Stop Simulation if an illegal action is detected" option checked.
+</p>
+<img class="helpimg" style="width:500px;" src="{% static 'simulate/help/result_yellow.png' %}" title="Yellow return code"> 
+
+<img class="helpimg" style="width:500px;" src="{% static 'simulate/help/result_red.png' %}" title="Red return code"> 
+<p>
+    The black box under the Return Code shows the simulation's results in text. It first displays the fight's duration in seconds.
+    Next, it will show the DPS (Damage Per Second), PPS (Potency Per Second), TP (Total Potency) and GCD (Number of GCDs) done by
+    every player in the simulation. It will then show the group's DPS, PPS and TP. Under the black box there is a "View Raw JSON file" button
+    which opens a page containing the JSON file corresponding to the simulation's input, which may be useful if you are using the python library directly.
+</p>
+</div>
+<hr style="width:50%;">
+<div>
+<h3>Simulation Logs</h3>
+<img class="helpimg" style ="width: 800px;" src="{% static 'simulate/help/log_warning.png' %}">
+<p>
+    This section will only be displayed if there was at least one warning or critical log. A warning log will cause a yellow return code and a critical
+    log will result in a red return code. There will also be some information regarding the errors detected. For example, in the above picture there are 2 warning
+    logs indicating "FailedRequirementEvent" as the cause of the error, the timestamp of the event at 0 seconds, the Player ID of the player who caused an error, 
+    the requirement's name (in this case "Paradox"), and whether the error was fatal to the simulation. The log may also display more information where applicable.
+</p>
+</div>
+<hr style="width:50%;">
+<div>
+<h3>DPS Vs. Time graph</h3>
+<img class="helpimg" style ="width: 800px;" src="{% static 'simulate/help/graph.png' %}">
+<p>
+    This section simply displays the resulting DPS graph of the simulation. You can see the DPS of every player against the duration of the simulation.
+</p>
+</div>
+</div>
+</body>
+</html>
