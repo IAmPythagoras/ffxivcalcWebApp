@@ -1,6 +1,6 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download here : https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=drive_link
+Download here : [https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=drive_link](https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=sharing)
 
 (This app is still in active development. Please report any issues to the discord so it can be fixed.)
 
