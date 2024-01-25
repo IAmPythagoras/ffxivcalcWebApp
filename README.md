@@ -1,6 +1,10 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download here : [https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=drive_link](https://drive.google.com/file/d/1sYM5_wqgy0Ccl9StT4fgbeNiQ2lF8Wch/view?usp=sharing)
+Download (zip) : https://drive.google.com/file/d/1G-wkZ5cqDP345WlzcDeyoLK1sUFWbtC9/view?usp=sharing
+
+Download (7z) : https://drive.google.com/file/d/1sC75l4t7BfidN96Uc4YfsCD6M-47714o/view?usp=sharing
+
+(Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
 (This app is still in active development. Please report any issues to the discord so it can be fixed.)
 
