@@ -10,53 +10,64 @@
 <script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
 <title>FFXIV Combat Simulator</title>
 <link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
+<style>
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+  </style>
 </head>
-<html class="body">
+<html class="body" style="width: 650px;">
 <header>
+
     <div class="marginHeader">
-    <div class="menu">
-        <p>Github<br>repo </p>
-        <img src="{% static 'simulate/github.png' %}" width="40" height="40" title="github" onclick="openGitHub()">
-    </div>
-    <div class="menu">
-        <p>Join the<br>discord! </p>
-        <img src="{% static 'simulate/discord.svg' %}" width="40" height="40" title="discord" onclick="openDiscord()">
-    </div>
-    <div class="menu">
-        <p>More </p>
-        <img src="{% static 'simulate/More.png' %}" width="40" height="40" title="Read more" onclick="openMore()">
+    <div style="display: flex;
+    align-items: center;
+    position: relative;">
+        <img src="{% static 'simulate/kirbo.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
+        <p>FFXIVCALC App v.1.1.0</p>
     </div>
     </div>
 </header>
 <hr>
-    <left><h2>ffxivcalc Web App v1.0.0 (BETA)</h2></left>
     <p class="underText">ffxivcalc version : {{ ffxivcalcVersion }}</p>
-    <p style="color: red;">Hey! If you have this program know that it is still under work and this is a beta version! If you see or experience any problems please let me know through discord:)</p>
+    <p style="color: red;">This app is still in active developement and there could still be some issues. If you enconter any please let me know through the discord!:)</p>
     <div class="body">
         <div class="middleText left">
             <div>
-                <p>The simulator lets you simulate a fight with up to 8 players and any number of actions.</p>
+                <p>The simulator lets you simulate a fight with up to 8 players.</p>
                 <button class="basicButton bigbutton" onclick="openSimulation()">
                     Simulate a fight
                 </button>
 
             </div>
             <div>
-                <p>The rotation bis solver lets you attempt to find a BiS given a fight layout. In other words, it attemps to find the bis given a rotation for a specific player.</p>
+                <p>The rotation bis solver lets you attempt to find a BiS given a rotation and player.</p>
                 <button class="basicButton bigbutton" onclick="openSolver()">
                     Rotation BiS Solver (Beta)
                 </button>
                 <p class="underText">Note that the results might not be optimal and it is always better to recheck the damage using another DPS metric (to compare to another bis). You can read more about the testing of this solver and the results it gave on the github repo.</p>
             </div>
-            <p>
-                If you require help you can click the help button above or join the discord and ask.
-            </p>
         </div>
+    </div>
+    <p>Other relevant links :</p>
+    <div class="menu" style="width: 200px;" onclick="openGitHub()">
+        <img src="{% static 'simulate/github.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
+        <p>GitHub repository</p>
+    </div>
+    <div class="menu" style="width: 200px;" onclick="openDiscord()">
+        <img src="{% static 'simulate/discord.svg' %}" width="40" height="40" title="github" style="margin-right: 5px;">
+        <p>Join the discord</p>
+    </div>
+    <div class="menu" style="width: 200px;" onclick="openMore()">
+        <img src="{% static 'simulate/More.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
+        <p>Read more/about other simulators</p>
     </div>
     <hr>
     <footer class="footingText">
         <p><left>
             Made by Leonhard Euler @ Gilgamesh and <a class="link" onclick="openCredit()">others</a>. 
         </left></p>
+        <p class="underText" style="size: 2px;">This app's icon was adapted from the work of TerminalMontage. I do not own the original art.</p>
     </footer>
 </html>

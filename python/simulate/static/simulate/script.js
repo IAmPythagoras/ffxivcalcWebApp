@@ -71,11 +71,11 @@ function openDiscord(){
 }
 
 function openMore(){
-    createWindow(1000,1000,"http://127.0.0.1:8000/simulate/More/")
+    createWindow(1050,1000,"http://127.0.0.1:8000/simulate/More/")
 }
 
 function openCredit(){
-    createWindow(1000,1000,"http://127.0.0.1:8000/simulate/credit/")
+    createWindow(1000,900,"http://127.0.0.1:8000/simulate/credit/")
 }
 
 /* 
@@ -787,7 +787,7 @@ function Submit(){
     xhr.onreadystatechange = function() {
                                  // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
     if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200 && InQueue) {
-            createWindow(1000,1000,'http://127.0.0.1:8000/simulate/simulationLoading/');
+            createWindow(1100,1000,'http://127.0.0.1:8000/simulate/simulationLoading/');
             InQueue = false;
             document.getElementById("ProcessingDiv").setAttribute("hidden", "true");
             document.getElementById("ButtonText").innerHTML = "Simulate"

@@ -11,11 +11,11 @@ var isStarted = false;
 
 const startDjangoServer = () =>
 {   //
-    //    djangoBackend = spawn.spawn('python\\appEnv\\Scripts\\python.exe',
-    //['python\\manage.py','runserver','--noreload'], {shell : true,});
-    //
-    djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
-        ['runserver','--noreload'], {shell : true,});
+    djangoBackend = spawn.spawn('python\\appEnv\\Scripts\\python.exe',
+    ['python\\manage.py','runserver','--noreload'], {shell : true,});
+    
+    //djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
+    //    ['runserver','--noreload'], {shell : true,});
     djangoBackend.stdout.on('data', data =>
     {
         console.log(`stdout:\n${data}`);
@@ -44,7 +44,7 @@ function checkStart(){
         const launchWindow = new BrowserWindow({
             title: "ffxivcalc",
             width : 700,
-            height: 700,
+            height: 870,
             webPreferences: {
                 nodeIntegration: true,
                 contextIsolation: false,
