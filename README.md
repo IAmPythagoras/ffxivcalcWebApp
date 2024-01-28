@@ -1,8 +1,8 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download (zip) : https://drive.google.com/file/d/1G-wkZ5cqDP345WlzcDeyoLK1sUFWbtC9/view?usp=sharing
+Download v1.1.0 (zip) : [https://drive.google.com/file/d/1G-wkZ5cqDP345WlzcDeyoLK1sUFWbtC9/view?usp=sharing](https://drive.google.com/file/d/1j3K4c4S9Qcd2LzLGnr2cI51cSYJZoq-E/view?usp=sharing)
 
-Download (7z) : https://drive.google.com/file/d/1sC75l4t7BfidN96Uc4YfsCD6M-47714o/view?usp=sharing
+Download v1.1.0 (7z) : [https://drive.google.com/file/d/1sC75l4t7BfidN96Uc4YfsCD6M-47714o/view?usp=sharing](https://drive.google.com/file/d/1rjAcovvg4AThoxUBemYNfC_hHbn93-Wj/view?usp=sharing)
 
 (Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
