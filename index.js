@@ -10,8 +10,8 @@ var djangoBackend = null;
 
 const startDjangoServer = () =>
 {   //
-    //djangoBackend = spawn.spawn('python',
-    //['python\\manage.py','runserver','--noreload'], {shell : true,});
+    djangoBackend = spawn.spawn('python',
+    ['python\\manage.py','runserver','--noreload'], {shell : true,});
     
     //djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
     //    ['runserver','--noreload'], {shell : true,});
