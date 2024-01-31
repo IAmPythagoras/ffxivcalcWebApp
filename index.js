@@ -15,7 +15,7 @@ const startDjangoServer = () =>
     
     //djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
     //    ['runserver','--noreload'], {shell : true,});
-        /*
+        
     djangoBackend.stdout.on('data', data =>
     {
         console.log(`stdout:\n${data}`);
@@ -37,7 +37,7 @@ const startDjangoServer = () =>
     {
         console.log(`message:\n${message}`);
     });
-    */
+    
     return djangoBackend;
 }
 
