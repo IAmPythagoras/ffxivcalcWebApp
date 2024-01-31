@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <script>
+            function pingServer(){
+                console.log("pinging");
+                xhr = new XMLHttpRequest();
+                var url = "http://127.0.0.1:8000/simulate/SimulationInput/";
+                xhr.open("CHECKSTART", url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.onreadystatechange = function() {
+                    if (xhr.responseText == "OK"){
+                        window.location.href = 'http://127.0.0.1:8000/simulate/';
+                    }
+                };
+                xhr.send();
+            };
+            window.setInterval(function(){
+                pingServer();
+            }, 500);
+        </script>
+        <style>
+            body{
+                background-color: rgb(26, 26, 26);
+            }
+        </style>
+    </head>
+    <body class="html">
+        <div style="margin-top: 400px;">
+        <center><h1 style="color: white;">Loading...</h1></center>
+        </div>
+    </body>
+</html>

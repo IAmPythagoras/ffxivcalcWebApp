@@ -30,6 +30,7 @@ log_stream = LogStream()
 logging.basicConfig(stream=log_stream)
 logging.getLogger("ffxivcalc").setLevel(level=logging.WARNING)
 
+@csrf_exempt
 def index(request):
     """
     This view is the homepage of the website.
@@ -42,6 +43,11 @@ def SimulationInput(request):
     """
     This view lets the user setup the simulation for what they want. It only sends the data and does not simulate.
     """
+
+    if request.method == "CHECKSTART":
+        # This gets pinged to know if server is up
+        return HttpResponse('OK', status=200)
+
     if request.method == "GETETRO":
         etroStatDict = get_gearset_data(request.body.decode("utf-8"))
         if etroStatDict == None:

@@ -15,4 +15,9 @@ module.exports = function( extractPath, electronVersion, platform, arch, done )
         console.log('Finished Copy icon');
         done();
     } );
+    fs.copy('loading.html', path.join( extractPath, 'resources/app/loading.html' ), () => {
+
+        console.log('Finished Copy loading.html');
+        done();
+    } );
  }
