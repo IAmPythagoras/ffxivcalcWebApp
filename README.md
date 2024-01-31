@@ -1,8 +1,8 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download v1.1.0 (zip) : [https://drive.google.com/file/d/1G-wkZ5cqDP345WlzcDeyoLK1sUFWbtC9/view?usp=sharing](https://drive.google.com/file/d/1j3K4c4S9Qcd2LzLGnr2cI51cSYJZoq-E/view?usp=sharing)
+Download v1.1.1 (zip) : https://drive.google.com/file/d/1DroCv0hsPqULN3IOuCxLpLmHm3A22FFm/view?usp=sharing
 
-Download v1.1.0 (7z) : [https://drive.google.com/file/d/1sC75l4t7BfidN96Uc4YfsCD6M-47714o/view?usp=sharing](https://drive.google.com/file/d/1rjAcovvg4AThoxUBemYNfC_hHbn93-Wj/view?usp=sharing)
+Download v1.1.1 (7z) : https://drive.google.com/file/d/1Iqyhj-YpFomrCdZ8aqnlKkG5qksOD54i/view?usp=sharing
 
 (Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
@@ -79,3 +79,9 @@ pyinstaller manage.py --additional-hooks-dir=extra-hooks --noconfirm --collect-d
 8- Follow any guide to package the electron app into an executable.
 
 If any of this is unclear or something doesn't work feel free to reach out on discord using the above discord and asking me (iampythagoras \ Pythagoras).
+
+# Update info :
+
+1.1.1 - Added a 'loading' page to fix issue where the server would launch after the page was loaded (resulted in blank page not updating).
+
+1.1.0 - Reworked some of the UI
