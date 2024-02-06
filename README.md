@@ -1,8 +1,8 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download v1.1.1 (zip) : https://drive.google.com/file/d/1eQFHajnjPPdwOo9xABTfoSSnJjeaqziu/view?usp=sharing
+Download v1.1.1(.1) (zip) : [https://drive.google.com/file/d/1eQFHajnjPPdwOo9xABTfoSSnJjeaqziu/view?usp=sharing](https://drive.google.com/file/d/1x8KuH_mgBWZaScJcOTFn7GazN_9NlRyC/view?usp=sharing)
 
-Download v1.1.1 (7z) : https://drive.google.com/file/d/19VDaiWVdcT9Vn13yP_NZq9ChD-nVxU8q/view?usp=sharing
+Download v1.1.1(.1) (7z) : [https://drive.google.com/file/d/19VDaiWVdcT9Vn13yP_NZq9ChD-nVxU8q/view?usp=sharing](https://drive.google.com/file/d/1HJONomBgzgVST9DuBJyDp2yWWjvNTgqE/view?usp=sharing)
 
 (Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
@@ -81,6 +81,8 @@ pyinstaller manage.py --additional-hooks-dir=extra-hooks --noconfirm --collect-d
 If any of this is unclear or something doesn't work feel free to reach out on discord using the above discord and asking me (iampythagoras \ Pythagoras).
 
 # Update info :
+
+1.1.1(.1) - Fixed import issues + fixed issue where 0 materia limit was a string + added better error log
 
 1.1.1 - Added a 'loading' page to fix issue where the server would launch after the page was loaded (resulted in blank page not updating).
 
