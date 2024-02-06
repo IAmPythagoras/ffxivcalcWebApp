@@ -388,8 +388,8 @@ function exportGearSearchSpace(){
         if (gearType == 0 && curGear["WD"] != 0) statList.push(["WD", curGear["WD"]]);
 
         var newEntry = {
-            "GearType" : gearType,
-            "MateriaLimit" : curGear["MateriaLimit"],
+            "GearType" :  parseInt(gearType),
+            "MateriaLimit" : parseInt(curGear["MateriaLimit"]),
             "Name" : curGear["Name"],
             "StatList" : statList
         }

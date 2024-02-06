@@ -10,12 +10,12 @@ var djangoBackend = null;
 
 const startDjangoServer = () =>
 {   //
-    djangoBackend = spawn.spawn('python',
-    ['python\\manage.py','runserver','--noreload'], {shell : true,});
+    //djangoBackend = spawn.spawn('python',
+    //['python\\manage.py','runserver','--noreload'], {shell : true,});
     
-    //djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
-    //    ['runserver','--noreload'], {shell : true,});
-        
+    djangoBackend = spawn.spawn('python\\dist\\manage\\manage.exe',
+        ['runserver','--noreload'], {shell : true,});
+
     djangoBackend.stdout.on('data', data =>
     {
         console.log(`stdout:\n${data}`);
@@ -54,10 +54,11 @@ function checkStart(){
             icon: 'icon.png'
         });
         remoteMain.enable(launchWindow.webContents);
-        //const appURL = "http://127.0.0.1:8000/simulate/";
+        const appURL = "http://127.0.0.1:8000/simulate/";
         const loadURL = `loading.html`;
         console.log('launching loading');
-        launchWindow.loadURL(`file://${__dirname}/loading.html`);;
+        launchWindow.loadURL(`file://${__dirname}/loading.html`);
+        //launchWindow.loadURL(appURL)
         
 }
 
@@ -69,7 +70,7 @@ function ElectronMainMethod(){
 app.whenReady().then(ElectronMainMethod);
 app.on('browser-window-created', (_, window) => {
     require("@electron/remote/main").enable(window.webContents);
-    //window.setMenu(null);
+    window.setMenu(null);
     //window.webContents.openDevTools();
     window.webContents.session.clearCache();
 })

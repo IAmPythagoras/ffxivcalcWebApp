@@ -228,11 +228,15 @@ def simulationLoading(request):
             
             return HttpResponse('200', status=200)
         except InvalidTarget as Error:
+            from traceback import format_exc
+            request.session['errorLog'] = format_exc()
             Msg = ("An action had an invalid target and the simulation was not able to continue.\n" +
             " Error message : " + str(Error) + ". If this persists reach out on discord.\n")
             request.session["ErrorMessage"] = Msg
             return HttpResponse('ERROR', status=200) 
         except Exception as Error:
+            from traceback import format_exc
+            request.session['errorLog'] = format_exc()
             Msg = ("An unknown error happened and '"+Error.__class__.__name__+"' was raised. If this persists reach out on discord.\n" +
                 " Error message : " + str(Error))
             request.session["ErrorMessage"] = Msg
@@ -432,7 +436,7 @@ def solverLoading(request):
             return HttpResponse('200', status=200)
         except Exception as Error:
             from traceback import format_exc
-            print(format_exc())
+            request.session["errorLog"] = format_exc()
             Msg = ("An unknown error happened and '"+Error.__class__.__name__+"' was raised. If this persists reach out on discord.\n" +
                    " Error message : " + str(Error))
             request.session["ErrorMessage"] = Msg
@@ -522,10 +526,15 @@ def Error(request):
                              # we simply display Error Message. Otherwise we take the message
                              # and remove it from the session.
     ErrorMessage = "Unknown Error Message."
+    errorLog = "Unknown error log"
     if ("ErrorMessage" in request.session.keys()):
         ErrorMessage = request.session["ErrorMessage"]
         del request.session["ErrorMessage"]
-    return render(request, 'simulate/Error.html', {"ErrorMessage" : ErrorMessage})
+    if ("errorLog" in request.session.keys()):
+        errorLog = request.session["errorLog"]
+        del request.session["errorLog"]
+
+    return render(request, 'simulate/Error.html', {"ErrorMessage" : ErrorMessage, "errorLog" : errorLog})
 
 def help(request):
     """

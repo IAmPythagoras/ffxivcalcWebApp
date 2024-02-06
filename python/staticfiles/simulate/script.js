@@ -389,7 +389,7 @@ function importFile() {
                 NumberOfPlayer++;
                 UpdateNumberPlayerDisplay();
             };
-            LoadPlayerConfiguration(nextPlayerID-1,save=false);
+            LoadPlayerConfiguration(currentEditPlayerID,save=false);
         }    
         catch(err){
             alert("There was an error when reading the file:" + err.message)
