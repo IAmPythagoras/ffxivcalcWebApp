@@ -16,6 +16,7 @@ var IconDict = {
         "Combust",
         "Gravity",
         "EarthlyStar",
+        "StellarDetonation",
         "Lightspeed",
         "Divination",
         "Draw",

@@ -121,7 +121,7 @@ function generateGearViewer(gearID,gearIndex){
                             '</div>'+
                             '<div class="container">'+
                                 '<p class="underText">Weapon Delay (s) :  </p>'+
-                                '<input id="'+gearID+'WeaponDelay"  onchange="changeWD('+gearIndex+')">'+
+                                '<input id="'+gearID+'WeaponDelay"  onchange="changeWeaponDelay('+gearIndex+')">'+
                             '</div>';
     }
 
@@ -340,6 +340,10 @@ function importGearSearchSpace(importSpace){
             newEntry[curGear["StatList"][j][0]] = curGear["StatList"][j][1];
         }
 
+        if ("WeaponDelay" in curGear){
+            newEntry["WeaponDelay"] = curGear["WeaponDelay"]
+        }
+
         gearSearchSpace.push(newEntry);
 
     }
@@ -384,8 +388,8 @@ function exportGearSearchSpace(){
         if (gearType == 0 && curGear["WD"] != 0) statList.push(["WD", curGear["WD"]]);
 
         var newEntry = {
-            "GearType" : gearType,
-            "MateriaLimit" : curGear["MateriaLimit"],
+            "GearType" :  parseInt(gearType),
+            "MateriaLimit" : parseInt(curGear["MateriaLimit"]),
             "Name" : curGear["Name"],
             "StatList" : statList
         }
@@ -418,7 +422,7 @@ window.onload = function (){
                                  // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
             
             //import the file
-            //console.log(xhr.responseText);
+            console.log(xhr.responseText);
             var res = JSON.parse(xhr.responseText.replaceAll("'",'"'));
             console.log(res);
             importGearSearchSpace(res["data"]);
