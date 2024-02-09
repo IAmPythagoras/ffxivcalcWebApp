@@ -30,6 +30,39 @@ log_stream = LogStream()
 logging.basicConfig(stream=log_stream)
 logging.getLogger("ffxivcalc").setLevel(level=logging.WARNING)
 
+
+def prepareData(data):
+    data["data"]["fightInfo"]["fightDuration"] = float(data["data"]["fightInfo"]["fightDuration"])
+    for player in data["data"]["PlayerList"]:
+
+        player["playerID"] = int(player["playerID"])
+        player["weaponDelay"] = float(player["weaponDelay"])
+        for key in player["stat"]:
+            player["stat"][key] = int(player["stat"][key])
+        for action in player["actionList"]:
+            if action["actionName"] == "WaitAbility":
+                action["waitTime"] = float(action["waitTime"])
+            if "targetID" in action.keys():
+                action["targetID"] = int(action["targetID"])
+        
+                                # We check if the player is a ninja. In which case we will have to 
+                                # change TenChiJin mudra's
+            if player["JobName"] == "Ninja":
+                for index in range(len(player["actionList"])):
+                    action = player["actionList"][index]
+                    if action["actionName"] == "TenChiJin":
+                                # Then we have to change the next Ten, Chi or Jin to Ten2, Chi2, Jin2
+                                # We just check the next 3 abilities and will add 2 if ten,chi or jin
+                            for i in range(index+1,index+4):
+                                if (player["actionList"][i]["actionName"] == "Ten" or
+                                    player["actionList"][i]["actionName"] == "Chi" or 
+                                    player["actionList"][i]["actionName"] == "Jin"):
+                                    player["actionList"][i]["actionName"] += "2" 
+
+                            # We are adding data that is willingly not editable by the user
+    data["data"]["fightInfo"]["time_unit"] = 0.01
+    data["data"]["fightInfo"]["ShowGraph"] = False
+
 @csrf_exempt
 def index(request):
     """
@@ -54,6 +87,19 @@ def SimulationInput(request):
                              # An error occured
             return HttpResponse('ERROR',status=200)
         return HttpResponse(str(etroStatDict),status=200)
+    
+    if request.method == "GETESTIMATE":
+        # This sends the time estimate of a player.
+        simulationData = json.loads(request.body) # simulation data is in this. This should only contain the player in question.
+        prepareData(simulationData)
+
+        fight = helper_backend.RestoreFightObject(simulationData)
+
+        timeEstimate = fight.PlayerList[0].computeTimeStamp()
+                             # For unclear reason I have to do it like that otherwise it refuses to convert back into a dict in JS
+        return HttpResponse(str({"currentTimeStamp" : timeEstimate["currentTimeStamp"], "untilNextGCD" : timeEstimate["untilNextGCD"], 
+                                 "dotTimer" : timeEstimate["dotTimer"], "buffTimer" : timeEstimate["buffTimer"]}),status=200)
+
 
     if request.method == "POST":
                              # Reset session
@@ -124,39 +170,10 @@ def simulationLoading(request):
                                     # Since some fields from the data were not of the right type, 
                                     # we are casting them into the expected type, as they will otherwise
                                     # fail the validation.
-            data["data"]["fightInfo"]["fightDuration"] = float(data["data"]["fightInfo"]["fightDuration"])
-            for player in data["data"]["PlayerList"]:
-
-                player["playerID"] = int(player["playerID"])
-                player["weaponDelay"] = float(player["weaponDelay"])
-                for key in player["stat"]:
-                    player["stat"][key] = int(player["stat"][key])
-                for action in player["actionList"]:
-                    if action["actionName"] == "WaitAbility":
-                        action["waitTime"] = float(action["waitTime"])
-                    if "targetID" in action.keys():
-                        action["targetID"] = int(action["targetID"])
-                
-                                        # We check if the player is a ninja. In which case we will have to 
-                                        # change TenChiJin mudra's
-                    if player["JobName"] == "Ninja":
-                        for index in range(len(player["actionList"])):
-                            action = player["actionList"][index]
-                            if action["actionName"] == "TenChiJin":
-                                        # Then we have to change the next Ten, Chi or Jin to Ten2, Chi2, Jin2
-                                        # We just check the next 3 abilities and will add 2 if ten,chi or jin
-                                    for i in range(index+1,index+4):
-                                        if (player["actionList"][i]["actionName"] == "Ten" or
-                                            player["actionList"][i]["actionName"] == "Chi" or 
-                                            player["actionList"][i]["actionName"] == "Jin"):
-                                            player["actionList"][i]["actionName"] += "2" 
-
-                                    # We are adding data that is willingly not editable by the user
-            data["data"]["fightInfo"]["time_unit"] = 0.01
-            data["data"]["fightInfo"]["ShowGraph"] = False
+            prepareData(data)
                                     # We will validate the final dictionnary before reading anything from it.
                                     # If it fails, the user is redirected to an Error view with a failed validation message.
-            print(data)
+            #print(data)
             if not attachmentValidation(data):
                 Msg = ("There was an error when validating the given data. Either there was a corruption of the data "+
                     "or something else happened. If this error persists please let me know through discord.")

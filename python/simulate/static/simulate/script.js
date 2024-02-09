@@ -586,6 +586,7 @@ corresponds to the ActionIden of the action.
 
                                 // Adjust the IndexInList of the other actions.
             updatePlayerActionListViewerAfterDeletion(ActionID, ActionList, action)
+            updateTimeEstimate() // Update time estimate
     }
 
 return delAction;
@@ -610,7 +611,7 @@ This function returns a function that adds an action to a player's action list. 
     if (IsAdded) {
 
                              // First check if player has reached action limit
-        if (PlayerConfigDict[currentEditPlayerID]["ActionList"].length>=120){alert("Action limit reached. Cannot add more than 120 actions per player.");return;}
+        //if (PlayerConfigDict[currentEditPlayerID]["ActionList"].length>=120){alert("Action limit reached. Cannot add more than 120 actions per player.");return;}
                                 // Giving new ActionIdentification since action we are adding
         
         //PlayerConfigDict[currentEditPlayerID]["NextActionID"]++;
@@ -638,6 +639,8 @@ This function returns a function that adds an action to a player's action list. 
                     }
                     PlayerConfigDict[currentEditPlayerID]["ActionList"].push(ActionDict);
                     addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted)
+                    updateTimeEstimate(); // Only update here since we only want to update when adding a new action and not when repopulating.
+                    // When repopulating the function updateTimeEstimate is called in 'LoadPlayerConfiguration'
                     return;
                 } else {
                     return;
@@ -662,9 +665,13 @@ This function returns a function that adds an action to a player's action list. 
             ActionDict["target"] = TargetID;
             PlayerConfigDict[currentEditPlayerID]["ActionList"].push(ActionDict);
             addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted)
+            updateTimeEstimate(); // Only update here since we only want to update when adding a new action and not when repopulating.
+            // When repopulating the function updateTimeEstimate is called in 'LoadPlayerConfiguration'
             return;
         }
         PlayerConfigDict[currentEditPlayerID]["ActionList"].push(ActionDict);
+        updateTimeEstimate(); // Only update here since we only want to update when adding a new action and not when repopulating.
+        // When repopulating the function updateTimeEstimate is called in 'LoadPlayerConfiguration'
     }
     else {
                              // Repopulating the ActionListViewer. So the Identification is simply the one given
@@ -686,6 +693,42 @@ return AddActionToPlayer;
 /*
 UPDATE FUNCTIONS
 */
+
+function updateTimeEstimate(reset = false){
+    // If reset is set to true, this function only resets the timer at 0 (visually only)
+    if (reset){
+        document.getElementById("timeStampEstimate").innerHTML = "0.00";
+        document.getElementById("gcdTimerEstimate").innerHTML = "0.00";
+        document.getElementById("dotTimerEstimate").innerHTML = "0.00";
+        document.getElementById("buffTimerEstimate").innerHTML = "0.00";
+        return;
+    }
+    // This function asks the server to compute a time estimate for the currently edited player.
+    // This function also displays them on the appropriate id.
+    
+    var xhr5 = new XMLHttpRequest();
+    var url = "/simulate/SimulationInput/";
+    xhr5.open("GETESTIMATE", url, true);
+    xhr5.setRequestHeader("Content-type", "application/json");
+    xhr5.onreadystatechange = function() {
+                                // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
+    if (xhr5.readyState == XMLHttpRequest.DONE && xhr5.status == 200) {
+        var strRes = xhr5.responseText.replaceAll("'",'"');
+        var res = JSON.parse(strRes);
+        document.getElementById("timeStampEstimate").innerHTML = String(res['currentTimeStamp']);
+        document.getElementById("gcdTimerEstimate").innerHTML = String(res['untilNextGCD']);
+        document.getElementById("dotTimerEstimate").innerHTML = String(res['dotTimer']);
+        document.getElementById("buffTimerEstimate").innerHTML = String(res['buffTimer']);
+        return;
+    }
+    }
+                                // Exports current fight data for the player being edited
+    var dataDict = exportPlayerConfigDict(updateTime = true);
+                                // Sends the request.
+    var data = JSON.stringify(dataDict);
+    xhr5.send(data);
+}
+
 function UpdatePlayerConfigurationEdit(NewValue){
 /*
 This function updates the inputs in the player configuration division.
@@ -817,8 +860,10 @@ function downloadSimulationRecord(){
     xhr.send(file + ".pdf");
 }
 
-function exportPlayerConfigDict(){
-    SavePlayerConfiguration(currentEditPlayerID);
+function exportPlayerConfigDict(updateTime = false){
+    // if updateTimeEstimate is set to true this function will only return the fight's info of the currently loaded player
+    // since we only want this one in the time estimate.
+    if (!updateTime){SavePlayerConfiguration(currentEditPlayerID);}
     
                                  // This dict represents the fight's parameter's value selected by the user.
     var FightInfo = {
@@ -831,6 +876,10 @@ function exportPlayerConfigDict(){
     var PlayerList = []
                                  // We will go through every player currently inputted and add them to PlayerList
     for (let key in PlayerConfigDict){
+
+                                 // If only want to update time estimate then we skip all those that aren't the presently edited player.
+        if (updateTime && PlayerConfigDict[key]["PlayerID"] != currentEditPlayerID){continue;}
+
         PlayerDict = PlayerConfigDict[key];
                                  // Validating the values of the stats
         for (let i in PlayerDict["Stat"]){
@@ -854,7 +903,12 @@ function exportPlayerConfigDict(){
                 }
             }
     
-            if (action["target"] != -1){nextAction["targetID"] = action["target"]}
+            if (action["target"] != -1){
+                // Of only for time update we only take the player of interest. To remove any
+                // issue due to targetted players not being there we make the player always target itself
+                if (updateTime){nextAction["targetID"] = PlayerDict["PlayerID"];}
+                else{nextAction["targetID"] = action["target"];}
+                }
             actionList.push(nextAction);
         }
                                      // We make sure that every player has at least one action. If not, we return and alert the user.
@@ -989,6 +1043,12 @@ function askTargetID(update=false,ignoreSelf=true){
     //return buttonToID[buttonID];
 }
 function addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted,isNew=true){
+    // Check if player actions is above base limit of 232 = 29*8
+    //if (PlayerConfigDict[currentEditPlayerID]["ActionList"].length>=1){
+        // If above we must add a new line
+    //    document.getElementById("PlayerActionListViewer").style="grid-template-rows: repeat(9, 50px);"
+    //}
+
     // Get the ActionListViewer to add the div.
     const ActionListViewer = document.getElementById("PlayerActionListViewer");
     PlayerJob = PlayerConfigDict[currentEditPlayerID]["Job"];
@@ -1047,6 +1107,7 @@ This function loads a player's data in the Player Configuration and ActionListVi
 */
                                 // If we want to save the currentEditPlayer's configuration, save=true (by default)
 if (save){SavePlayerConfiguration(currentEditPlayerID);}
+updateTimeEstimate(reset = true); // Reseting timer estimate viewer
 
                                 // This puts a white border around the player we want to edit.
 const box = document.getElementById('Player'+currentEditPlayerID+'Name');
@@ -1079,6 +1140,7 @@ PlayerConfigDict[currentEditPlayerID]["NextActionIndex"] = 0;
 
 LoadPlayerActionsPick(false /* ChangingJob */);
 LoadPlayerActionList();
+updateTimeEstimate(); // Update time estimate
     }
 function LoadPlayerActionList(){
 /*

@@ -103,7 +103,13 @@
             <input type="text" id="PlayerName" style="margin-right: 10px;margin-left: 10px;" onchange="UpdateName()" value="SussyPlayer" maxlength="30">
         </div>
     <div style="align-items: center;">
-        <p id="PlayerIDField"></p>
+        <p id="PlayerIDField" style="margin-bottom: 10px;">PlayerID : </p>
+        <div id="timerEstimateField" style="display: flex;">
+            <p style="margin-right: 10px;">Timestamp estimate : <span id="timeStampEstimate">0.00</span></p>
+            <p style="margin-right: 10px;">GCD timer : <span id="gcdTimerEstimate">0.00</span></p>
+            <p style="margin-right: 10px;">DOT timer : <span id="dotTimerEstimate">0.00</span> </p>
+            <p style="margin-right: 10px;">Buff timer : <span id="buffTimerEstimate">0.00</span> </p>
+        </div>
     </div>
     <div style="position: absolute;bottom: -15px;right: 5px;">
     <p style="color: rgba(255, 255, 255, 0.7);">Note that the stats must include what is gained from food!</p>
