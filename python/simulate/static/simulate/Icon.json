@@ -40,7 +40,10 @@
         "Surecast",
         "Swiftcast",
         "Synastry",
-        "wait_ability"
+        "wait_ability",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Bard": [
         "ApexArrow",
@@ -75,7 +78,10 @@
         "Troubadour",
         "wait_ability",
         "WandererMinuet",
-        "WardenPaean"
+        "WardenPaean",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "BlackMage": [
         "Addle",
@@ -112,7 +118,10 @@
         "Triplecast",
         "UmbralSoul",
         "wait_ability",
-        "Xenoglossy"
+        "Xenoglossy",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Dancer": [
         "ArmLength",
@@ -153,7 +162,10 @@
         "TechnicalStep",
         "Tillana",
         "wait_ability",
-        "Windmill"
+        "Windmill",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "DarkKnight": [
         "AbyssalDrain",
@@ -189,7 +201,10 @@
         "TheBlackestNight",
         "Unleash",
         "Unmend",
-        "wait_ability"
+        "wait_ability",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Dragoon": [
         "ArmLength",
@@ -226,7 +241,10 @@
         "VorpalThrust",
         "wait_ability",
         "WheelingThrust",
-        "WyrmwindThrust"
+        "WyrmwindThrust",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Gunbreaker": [
         "AbdomenTear",
@@ -266,7 +284,10 @@
         "SonicBreak",
         "Superbolide",
         "wait_ability",
-        "WickedTalon"
+        "WickedTalon",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Machinist": [
         "AirAnchor",
@@ -296,7 +317,10 @@
         "SplitShot",
         "Tactician",
         "wait_ability",
-        "Wildfire"
+        "Wildfire",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "Monk": [
         "Anatman",
@@ -332,7 +356,10 @@
         "TrueNorth",
         "TrueStrike",
         "TwinSnkes",
-        "wait_ability"
+        "wait_ability",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Ninja": [
         "AeolianEdge",
@@ -376,7 +403,10 @@
         "ThrowingDagger",
         "TrickAttack",
         "TrueNorth",
-        "wait_ability"
+        "wait_ability",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Paladin": [
         "ArmLength",
@@ -414,7 +444,10 @@
         "ShieldLob",
         "Shirk",
         "TotalEclipse",
-        "wait_ability"
+        "wait_ability",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Reaper": [
         "ArcaneCircle",
@@ -455,7 +488,10 @@
         "VoidReaping",
         "wait_ability",
         "WaxingSlice",
-        "WhorlOfDeath"
+        "WhorlOfDeath",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "RedMage": [
         "Acceleration",
@@ -493,7 +529,10 @@
         "Verstone",
         "Verthunder",
         "wait_ability",
-        "Zwerchhau"
+        "Zwerchhau",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Sage": [
         "Diagnosis",
@@ -531,7 +570,10 @@
         "Taurochole",
         "Toxikon",
         "wait_ability",
-        "Zoe"
+        "Zoe",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Samurai": [
         "ArmLengh",
@@ -573,7 +615,10 @@
         "TrueNorth",
         "wait_ability",
         "Yaten",
-        "Yukikaze"
+        "Yukikaze",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Scholar": [
         "Adloquium",
@@ -617,7 +662,10 @@
         "Surecast",
         "Swiftcast",
         "wait_ability",
-        "WhisperingDawn"
+        "WhisperingDawn",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Summoner": [
         "Addle",
@@ -657,7 +705,10 @@
         "Topaz",
         "TopazCatastrophe",
         "TryDisaster",
-        "wait_ability"
+        "wait_ability",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Warrior": [
         "ArmLength",
@@ -696,7 +747,10 @@
         "Tomahawk",
         "Upheaval",
         "Vengeance",
-        "wait_ability"
+        "wait_ability",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "WhiteMage": [
         "AfflatusMisery",
@@ -729,6 +783,9 @@
         "Temperance",
         "Tetragrammaton",
         "ThinAir",
-        "wait_ability"
+        "wait_ability",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ]
 }
