@@ -56,6 +56,31 @@ function createWindow(width, height, url) {
     win.loadURL(url);
   }
 
+function checkVersion(curVersion){
+    
+    var url = 'https://api.github.com/repos/IAmPythagoras/ffxivcalcWebApp/releases'
+    xhr6 = new XMLHttpRequest();
+    xhr6.open("GET", url, true);
+    xhr6.setRequestHeader("Content-type", "application/json");
+    xhr6.onreadystatechange = function() {
+                                 // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
+        var res = JSON.parse(xhr6.responseText.replaceAll("'",'"'));
+        outDated = false
+        mostRecent = ""
+        for (let i = 0;i<res.length;i++){
+           if (res[i]["name"] > curVersion){outDated = true;mostRecent=res[i]["name"];break;}
+        }
+
+        if (outDated){
+            document.getElementById("outDatedText").innerHTML = "Your version ("+curVersion+") is outdated compared to the most recent release on github ("+mostRecent+"). Please visit the github repository to update."
+        }
+
+    }
+                                 // Sends the request.
+    xhr6.send();
+}
+
+
 /* 
 
 MAIN MENU OPEN LINK
