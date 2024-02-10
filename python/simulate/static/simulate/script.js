@@ -92,7 +92,7 @@ function openGitHub(){
 }
 
 function openDiscord(){
-    require('electron').shell.openExternal("https://discord.gg/wz2fYhZV");
+    require('electron').shell.openExternal("https://discord.com/invite/mZXKUNy2sw");
 }
 
 function openMore(){
