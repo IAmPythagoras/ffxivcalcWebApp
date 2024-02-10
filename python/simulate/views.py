@@ -174,7 +174,8 @@ def simulationLoading(request):
                                     # We will validate the final dictionnary before reading anything from it.
                                     # If it fails, the user is redirected to an Error view with a failed validation message.
             #print(data)
-            if not attachmentValidation(data):
+            # Removed validation attached to the json file. Leaving code here in case.
+            if False:#not attachmentValidation(data):
                 Msg = ("There was an error when validating the given data. Either there was a corruption of the data "+
                     "or something else happened. If this error persists please let me know through discord.")
                 request.session["ErrorMessage"] = Msg
