@@ -16,6 +16,7 @@ var IconDict = {
         "Combust",
         "Gravity",
         "EarthlyStar",
+        "StellarDetonation",
         "Lightspeed",
         "Divination",
         "Draw",
@@ -51,7 +52,10 @@ var IconDict = {
         "Surecast",
         "Swiftcast",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Bard": [
         "BurstShot",
@@ -86,7 +90,10 @@ var IconDict = {
         "LegGraze",
         "ArmLength",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "BlackMage": [
         "Paradox",
@@ -122,7 +129,10 @@ var IconDict = {
         "LucidDreaming",
         "Sleep",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Dancer": [
         "Cascade",
@@ -164,7 +174,10 @@ var IconDict = {
         "LegGraze",
         "ArmLength",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "DarkKnight": [
         "HardSlash",
@@ -197,10 +210,14 @@ var IconDict = {
         "ArmLength",
         "Interject",
         "LowBlow",
+        "Grit",
         "Shirk",
         "Provoke",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Dragoon": [
         "TrueThrust",
@@ -235,7 +252,10 @@ var IconDict = {
         "ArmLength",
         "Bloodbath",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Gunbreaker": [
         "KeenEdge",
@@ -271,10 +291,14 @@ var IconDict = {
         "ArmLength",
         "Interject",
         "LowBlow",
+        "RoyalGuard",
         "Shirk",
         "Provoke",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Machinist": [
         "SplitShot",
@@ -305,7 +329,10 @@ var IconDict = {
         "LegGraze",
         "ArmLength",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "RangedLB1",
+        "RangedLB2",
+        "RangedLB3"
     ],
     "Monk": [
         "BootShine",
@@ -341,7 +368,10 @@ var IconDict = {
         "ArmLength",
         "Bloodbath",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Ninja": [
         "SpinningEdge",
@@ -386,7 +416,10 @@ var IconDict = {
         "ArmLength",
         "Bloodbath",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Paladin": [
         "FastBlade",
@@ -421,10 +454,14 @@ var IconDict = {
         "ArmLength",
         "Interject",
         "LowBlow",
+        "IronWill",
         "Shirk",
         "Provoke",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "Reaper": [
         "Slice",
@@ -466,7 +503,10 @@ var IconDict = {
         "ArmLength",
         "Bloodbath",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "RedMage": [
         "Jolt",
@@ -504,7 +544,10 @@ var IconDict = {
         "LucidDreaming",
         "Sleep",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Sage": [
         "Eukrasia",
@@ -540,7 +583,10 @@ var IconDict = {
         "Surecast",
         "Swiftcast",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Samurai": [
         "Hakaze",
@@ -581,7 +627,10 @@ var IconDict = {
         "ArmLength",
         "Bloodbath",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "MeleeLB1",
+        "MeleeLB2",
+        "MeleeLB3"
     ],
     "Scholar": [
         "BroilIV",
@@ -615,7 +664,10 @@ var IconDict = {
         "Surecast",
         "Swiftcast",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ],
     "Summoner": [
         "RuinIII",
@@ -656,7 +708,10 @@ var IconDict = {
         "LucidDreaming",
         "Sleep",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "CasterLB1",
+        "CasterLB2",
+        "CasterLB3"
     ],
     "Warrior": [
         "HeavySwing",
@@ -688,10 +743,14 @@ var IconDict = {
         "ArmLength",
         "Interject",
         "LowBlow",
+        "Defiance",
         "Shirk",
         "Provoke",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "TankLB1",
+        "TankLB2",
+        "TankLB3"
     ],
     "WhiteMage": [
         "Glare",
@@ -723,6 +782,9 @@ var IconDict = {
         "Surecast",
         "Swiftcast",
         "wait_ability",
-        "Potion"
+        "Potion",
+        "HealerLB1",
+        "HealerLB2",
+        "HealerLB3"
     ]
 }

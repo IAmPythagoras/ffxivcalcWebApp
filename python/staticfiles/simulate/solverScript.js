@@ -14,7 +14,7 @@ var fullFoodSearchSpace = ["Honeyed Dragonfruit (DH/Det)", "Dragonfruit Blend (S
                            "Caviar Sandwich (SpS/DH)", "Caviar Canapes (Crit/SpS)", "Marinated Broccoflower (Ten/Det)", "Broccoflower Stew (Det/Ten)"];
                              // Empty list that will hold the name of the food to use
 var playerOptIndex = 0;
-var selectedPlayerJob = ""
+var selectedPlayerJob = "NONE"
 
 var useCritMat = true;
 var useDHMat = true;
@@ -23,6 +23,8 @@ var useTenMat = false;
 var useSpS = false; // This value will be set automatically one a player is chosen according to its job.
                     // It can still be edited by the user for whatever reason they might have.
 var swapDHDetBeforeSpeed = true;
+var defaultSearchPattern = true; // This makes the solver do a search with pre/post iterations of 0-1,1-0,1-1, 2-1 and also alterns
+                                 // the value of swapDHDetBeforeSpeed
 
 var minSPDValue = 0; // SPD range
 var maxSPDValue = 4000;
@@ -46,6 +48,28 @@ function updateUseDetMat(){useDetMat=!useDetMat;}
 function updateUseTenMat(){useTenMat=!useTenMat;}
 function updateUseSpS(){useSpS=!useSpS;}
 function updateSwapDHDetBeforeSpeed(){swapDHDetBeforeSpeed=!swapDHDetBeforeSpeed;}
+function updateDefaultSearchPattern(){
+    defaultSearchPattern=!defaultSearchPattern;
+    // removing option if defaultSerachPattern is checked
+    if (defaultSearchPattern){document.getElementById("nonDefaultSearchPatternDiv").innerHTML = "";}
+    else {document.getElementById("nonDefaultSearchPatternDiv").innerHTML = ('<div class="container" style="margin: 2px;'+
+        'title="oversaturation iterations pre gear selection">'+
+           '<p class="underText">oversaturationIterationsPreGear </p>'+
+           '<input id="oversaturationIterationsPreGear" type="number" value="1">'+
+           '</div>'+
+           '<div class="container" style="margin: 2px;"'+
+           'title="oversaturation iterations post gear selection">'+
+           '<p class="underText">oversaturationIterationsPostGear </p>'+
+           '<input id="oversaturationIterationsPostGear" type="number" value="1">'+
+           ' </div>'+
+           '<div class="container" style="margin: 2px;"'+
+           'title="Swap DH/Det before Speed materia step">'+
+           '<p class="underText">swapDHDetBeforeSpeed </p>'+
+           '<input id="swapDHDetBeforeSpeed" type="checkbox" onchange="updateSwapDHDetBeforeSpeed()" checked>'+
+           '</div>');
+           swapDHDetBeforeSpeed = true; // Resetting this value since the checkbox is always checked
+        }
+}
 
 function updateMinPiety(){minPietyValue=document.getElementById("minPietVal").value;};
 function updateMinSPD(){minSPDValue=document.getElementById("minSPDValue").value;updateGCDTimerViewer(false);}
@@ -148,7 +172,7 @@ function resetSPDRange(){
 
 function resetPlayerOpt(){
     playerOptIndex = 0;
-    selectedPlayerJob = "";
+    selectedPlayerJob = "NONE";
     document.getElementById("selectedPlayerDiv").innerHTML = "";
 }
 
@@ -346,7 +370,7 @@ function importGearSpace(){
             return;
         }
     });
-    document.getElementById("gearSpaceFileDiv").innerHTML = '<p>Loaded file : </p><p class="underText">' + fileName[0] + '</p><button class="basicButton bigbutton" onclick="createGearSpace(false)">Edit space</button>;<p class="underText">If you edit make sure to reimport the file to apply the change(s).</p>';
+    document.getElementById("gearSpaceFileDiv").innerHTML = '<p>Loaded file : </p><p class="underText">' + fileName[0] + '</p><button class="basicButton bigbutton" onclick="createGearSpace(false)">Edit space</button><p class="underText">If you edit make sure to reimport the file to apply the change(s).</p>';
                                                             
 }
 
@@ -490,7 +514,14 @@ function submit(){
     // will be the one to start the solver and it will then open a result window.
 
 
-
+                             // Checking not empty fight
+    if (Object.keys(PlayerConfigDict).length == 0){alert("No fight layout selected. Please import one.");return;}
+                             // Checking selected a player
+    if (selectedPlayerJob == "NONE") {alert("No player selected from the loaded fight layout. Please select one.");return;}
+                             // Checking gear space
+    if (Object.keys(gearSpaceDict).length == 0) {alert("Gear search space is empty. Please import or create one.");return;}
+                             // Checking at least one food in food space
+    if (foodSearchSpace.length == 0) {alert("Food search space is empty. Please select at least one food.");return;}
                              // generating matSpace and checking for valid number
     var matSpace = [];
     if (useCritMat) matSpace.push(0);
@@ -499,6 +530,12 @@ function submit(){
     if (useTenMat) matSpace.push(5);
 
     if (matSpace.length<3) {alert("You need to select at least 3 different types of materia.");return;}
+                             // Checking valid spd limit
+    if (parseInt(minSPDValue) >= parseInt(maxSPDValue)) {alert("'Minimal speed value' cannot be higher than or equal to 'Maximal speed value'. ( "+ minSPDValue +" >= "  + maxSPDValue + ")");return;}
+    if (parseInt(maxSPDValue) - parseInt(minSPDValue) < 36) {alert("The difference between 'Minimal speed value' and 'Maximal speed value' must more than 36. ( "+ maxSPDValue +" -  "  + minSPDValue + " > 36)");return;}
+
+                             // Checking valid oversaturation iterations
+    if ( (! defaultSearchPattern) && parseInt(document.getElementById("oversaturationIterationsPostGear").value) + parseInt(document.getElementById("oversaturationIterationsPreGear").value) == 0) {alert("The total number of oversaturation iterations must be more than or 1.");return;}
 
     xhr = new XMLHttpRequest();
     var url = "http://127.0.0.1:8000/simulate/bisRotationSolver/";
@@ -511,21 +548,39 @@ function submit(){
         //return
     }
     }
-                             // Sends the request.
-    var data = {
-        "fight" : {"data" : PlayerConfigDict},
-        "gearSpace" : gearSpaceDict,
-        "playerIndex" : playerOptIndex,
-        "foodSpace" : foodSearchSpace,
-        "matSpace" : matSpace,
-        "minPiety" : minPietyValue,
-        "minSPD" : minSPDValue,
-        "maxSPD" : maxSPDValue,
-        "useSS" : useSpS,
-        "oversaturationPre":  document.getElementById("oversaturationIterationsPreGear").value,
-        "oversaturationPost" : document.getElementById("oversaturationIterationsPostGear").value,
-        "swapBefore" : swapDHDetBeforeSpeed
+    var data = {};
+    if (defaultSearchPattern){
+        // defaultSearchPattern is true
+        data = {
+            "fight" : {"data" : PlayerConfigDict},
+            "gearSpace" : gearSpaceDict,
+            "playerIndex" : playerOptIndex,
+            "foodSpace" : foodSearchSpace,
+            "matSpace" : matSpace,
+            "minPiety" : parseInt(minPietyValue),
+            "minSPD" : parseInt(minSPDValue),
+            "maxSPD" : parseInt(maxSPDValue),
+            "useSS" : useSpS,
+            "defaultSearchPattern" : true
+        }
     }
+    else{                    
+        data = {
+            "fight" : {"data" : PlayerConfigDict},
+            "gearSpace" : gearSpaceDict,
+            "playerIndex" : playerOptIndex,
+            "foodSpace" : foodSearchSpace,
+            "matSpace" : matSpace,
+            "minPiety" : parseInt(minPietyValue),
+            "minSPD" : parseInt(minSPDValue),
+            "maxSPD" : parseInt(maxSPDValue),
+            "useSS" : useSpS,
+            "oversaturationPre":  parseInt(document.getElementById("oversaturationIterationsPreGear").value),
+            "oversaturationPost" : parseInt(document.getElementById("oversaturationIterationsPostGear").value),
+            "swapBefore" : swapDHDetBeforeSpeed
+        }
+    }
+    // Sends the request.
     xhr.send(JSON.stringify(data));
 
     

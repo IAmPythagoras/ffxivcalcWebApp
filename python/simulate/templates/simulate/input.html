@@ -57,8 +57,8 @@
         <div class="container"><p>Crit : </p><input id="Crit" type="text" name="Crit" value="400" maxlength="4"></div>
         <div class="container"><p>Direct Hit : </p><input id="DH" type="text" name="DH" value="400" maxlength="4"></div>
         <div class="container"><p>Weapon Damage : </p><input id="WD" type="text" name="WD" value="0" maxlength="4"></div>
-        <div class="container"><p>Skill Speed : </p><input id="SkS" type="text" name="SkS" value="400" maxlength="4"></div>
-        <div class="container"><p>Spell Speed : </p><input id="SpS" type="text" name="SpS" value="400" maxlength="4"></div>
+        <div class="container"><p>Skill Speed : </p><input id="SkS" type="text" name="SkS" value="400" maxlength="4" onchange="updateTimeEstimate()"></div>
+        <div class="container"><p>Spell Speed : </p><input id="SpS" type="text" name="SpS" value="400" maxlength="4" onchange="updateTimeEstimate()"></div>
         <div class="container"><p>Determination : </p><input id="Det" type="text" name="Det" value="400" maxlength="4"></div>
         <div class="container"><p>Tenacity : </p><input id="Ten" type="text" name="Ten" value="400" maxlength="4"></div>
     </div>
@@ -103,7 +103,13 @@
             <input type="text" id="PlayerName" style="margin-right: 10px;margin-left: 10px;" onchange="UpdateName()" value="SussyPlayer" maxlength="30">
         </div>
     <div style="align-items: center;">
-        <p id="PlayerIDField"></p>
+        <p id="PlayerIDField" style="margin-bottom: 10px;">PlayerID : </p>
+        <div id="timerEstimateField" style="display: flex;">
+            <p style="margin-right: 10px;">Timestamp estimate : <span id="timeStampEstimate">0.00</span></p>
+            <p style="margin-right: 10px;">GCD timer : <span id="gcdTimerEstimate">0.00</span></p>
+            <p style="margin-right: 10px;">DOT timer : <span id="dotTimerEstimate">0.00</span> </p>
+            <p style="margin-right: 10px;">Buff timer : <span id="buffTimerEstimate">0.00</span> </p>
+        </div>
     </div>
     <div style="position: absolute;bottom: -15px;right: 5px;">
     <p style="color: rgba(255, 255, 255, 0.7);">Note that the stats must include what is gained from food!</p>

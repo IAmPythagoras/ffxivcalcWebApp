@@ -234,8 +234,8 @@ top: 0%;
 background-color: #c3c3c3;
 border-radius: 5px;
 display: grid;
-grid-template-columns: repeat(22,50px);
-grid-template-rows: repeat(8, 50px); /* Your number of rows */
+grid-template-columns: repeat(29,50px);
+grid-template-rows: repeat(10, 50px); /* Your number of rows */
 grid-auto-flow: row;
 direction: ltr;
 }

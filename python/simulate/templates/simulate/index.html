@@ -16,6 +16,9 @@
       overflow-y: hidden;
     }
   </style>
+<script>
+checkVersion("v1.2.0");
+</script>
 </head>
 <html class="body" style="width: 650px;">
 <header>
@@ -25,13 +28,15 @@
     align-items: center;
     position: relative;">
         <img src="{% static 'simulate/kirbo.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
-        <p>FFXIVCALC App v.1.1.1</p>
+        <p>FFXIVCALC App v.1.2.0</p>
+       
     </div>
     </div>
+    <p class="underText">ffxivcalc version : {{ ffxivcalcVersion }}</p>
 </header>
 <hr>
-    <p class="underText">ffxivcalc version : {{ ffxivcalcVersion }}</p>
-    <p style="color: red;">This app is still in active developement and there could still be some issues. If you enconter any please let me know through the discord!:)</p>
+    <p style="color: red;" id="outDatedText"></p>
+    <p class="underText">This app is still in active developement and there could still be some issues. If you enconter any please let me know through the discord!:)</p>
     <div class="body">
         <div class="middleText left">
             <div>
