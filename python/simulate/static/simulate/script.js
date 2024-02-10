@@ -702,7 +702,7 @@ function updateTimeEstimate(reset = false){
         document.getElementById("dotTimerEstimate").innerHTML = "0.00";
         document.getElementById("buffTimerEstimate").innerHTML = "0.00";
         return;
-    }
+    } else {SavePlayerConfiguration(currentEditPlayerID);} // Save to have SpS/SkS changed reflected
     // This function asks the server to compute a time estimate for the currently edited player.
     // This function also displays them on the appropriate id.
     
