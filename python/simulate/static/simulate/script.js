@@ -875,10 +875,10 @@ function Submit(){
 HELPER FUNCTIONS
 */
 
-function downloadSimulationRecord(){
+function downloadSimulationRecord(id){
     const {dialog} = require("@electron/remote");
     xhr = new XMLHttpRequest();
-    var url = "http://127.0.0.1:8000/simulate/SimulationResult/";
+    var url = "http://127.0.0.1:8000/simulate/SimulationResult/?id="+id;
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
     var file = dialog.showSaveDialogSync();

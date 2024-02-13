@@ -20,10 +20,17 @@ from .Stream import LogStream
 import os
 from tempfile import gettempdir
 
-
+# Local information saved
 buff = {'pb' : ""}
 buffSimulation = {'pb' : ""}
 searchPatternBuffer = {'curSearch' : [0,0,False]}
+
+
+                             # simulationRecordSave contains the simulation record of all session. Each session is given a
+                             # simulation record id which it can use to access its simulation record in 'simulationRecordSave'
+                             # The id is simply the last key + 1 (and 0 if there is no key).
+                             # This dictionnary is never reset and only resets once the app is relaunched (server closed and restarted)
+simulationRecordSave = {}
 
 
 log_stream = LogStream()
@@ -199,7 +206,6 @@ def simulationLoading(request):
             
             result_str, fig, fig2 = Event.SimulateFight(0.01,data["data"]["fightInfo"]["fightDuration"], vocal=False, PPSGraph=False, MaxTeamBonus=TeamBonusComp, MaxPotencyPlentifulHarvest=MaxPotencyPlentifulHarvest,n=nRandomIterations, loadingBarBuffer=buffSimulation, showProgress=False)
             
-            
             if mode: 
                                     # Reverting changes
                 logging.getLogger("ffxivcalc").setLevel(level=logging.WARNING)
@@ -230,35 +236,44 @@ def simulationLoading(request):
                 request.session['uri2'] = uri2
             else : uri2 = None
                                 # Requestion simulationRecord
-            fig3 = Event.simulationRecord.saveRecord(saveAsPDF=False)
-            buf3 = io.BytesIO()
-            fig3.savefig(buf3, format='pdf', dpi=200)
-            buf3.seek(0)
-            string3 = base64.b64encode(buf3.read())
-            uri3 = urllib.parse.quote(string3)
-            request.session["buf3"] = uri3
+            #fig3 = Event.simulationRecord.saveRecord(saveAsPDF=False)
+            #buf3 = io.BytesIO()
+            #fig3.savefig(buf3, format='pdf', dpi=200)
+            #buf3.seek(0)
+            #string3 = base64.b64encode(buf3.read())
+            #uri3 = urllib.parse.quote(string3)
+            #request.session["buf3"] = uri3
 
                                     # We will take the logs if any and check what the ReturnCode value is.
             ReturnCode = log_stream.ReturnCode
             request.session['ReturnCode'] = ReturnCode
             log_str = log_stream.to_str()
             request.session['log_str'] = log_str
-            
-            return HttpResponse('200', status=200)
+
+                             # Will add the event.simulation record to simulationRecordSave
+                             # and create an access id. This id will be sent back to the webpage that will remember it
+            sessionSimulationRecordId = 0
+            curId = list(simulationRecordSave.keys())
+            if len(curId) != 0:
+                             # It has other ids so give last + 1
+                sessionSimulationRecordId = int(curId[-1]) + 1
+            simulationRecordSave[sessionSimulationRecordId] = Event.simulationRecord
+
+            return HttpResponse(str({"status" : "200", "saveId" : sessionSimulationRecordId}), status=200)
         except InvalidTarget as Error:
             from traceback import format_exc
             request.session['errorLog'] = format_exc()
             Msg = ("An action had an invalid target and the simulation was not able to continue.\n" +
             " Error message : " + str(Error) + ". If this persists reach out on discord.\n")
             request.session["ErrorMessage"] = Msg
-            return HttpResponse('ERROR', status=200) 
+            return HttpResponse("ERROR", status=200) 
         except Exception as Error:
             from traceback import format_exc
             request.session['errorLog'] = format_exc()
             Msg = ("An unknown error happened and '"+Error.__class__.__name__+"' was raised. If this persists reach out on discord.\n" +
                 " Error message : " + str(Error))
             request.session["ErrorMessage"] = Msg
-            return HttpResponse('ERROR', status=200) 
+            return HttpResponse("ERROR", status=200) 
     return render(request, 'simulate/simulatorLoading.html',{})
 
 @csrf_exempt
@@ -267,15 +282,18 @@ def SimulationResult(request):
     This view will retrieve the data from the session and simulate the fight. It validates the file before simulating it.
     It then displays the result to the user.
     """
+
+    id = request.GET.get("id")
+
     if request.method == "POST":
-        pathToSave = request.body
-        # Saving at specified url.
-        with open(pathToSave, "wb") as binary_file:
-   
-            # Write bytes to file
-            b = urllib.parse.unquote(request.session["buf3"], encoding='utf-8', errors='replace')
-            a = base64.b64decode(b)
-            binary_file.write(a)
+        pathToSave = request.body.decode('ascii')
+        # Getting simulation record and saving at specified url.
+        simulationRecordSave[int(id)].saveRecord(saveAsPDF=False).savefig(
+                pathToSave,
+                dpi=200,
+                format='pdf',
+                bbox_inches='tight'
+                )
         return HttpResponse('200', status=200)
 
     if 'uri2' in request.session.keys() : uri2 = request.session['uri2']
@@ -283,7 +301,9 @@ def SimulationResult(request):
                                                                     
 
 
-    return render(request, 'simulate/SimulatingResult.html', {"result_str" : request.session['result_arr'], "graph" : request.session['uri'],"graph_dist" : uri2,"has_dist" : request.session['nRandomIterations'] > 0, "WARNING" : request.session['ReturnCode'] == 1 or request.session['mode'], "CRITICAL" : request.session['ReturnCode'] == 2, "log_str" : request.session['log_str'], "mode" : request.session['mode']})
+    return render(request, 'simulate/SimulatingResult.html', {"result_str" : request.session['result_arr'], "graph" : request.session['uri'],"graph_dist" : uri2,"has_dist" : request.session['nRandomIterations'] > 0, 
+                                                              "WARNING" : request.session['ReturnCode'] == 1 or request.session['mode'], "CRITICAL" : request.session['ReturnCode'] == 2, 
+                                                              "log_str" : request.session['log_str'], "mode" : request.session['mode'], 'saveId' : id})
 
 def helpSolver(request):
     """
