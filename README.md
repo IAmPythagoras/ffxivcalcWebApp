@@ -1,8 +1,8 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-Download v1.2.0 (zip) : https://drive.google.com/file/d/1fBNkHyx8EqBt5vwnTxf9tm9_QgS1MVBM/view?usp=sharing
+Download v1.1.1(.1) (zip) : [https://drive.google.com/file/d/1eQFHajnjPPdwOo9xABTfoSSnJjeaqziu/view?usp=sharing](https://drive.google.com/file/d/1x8KuH_mgBWZaScJcOTFn7GazN_9NlRyC/view?usp=sharing)
 
-Download v1.2.0 (7z) : https://drive.google.com/file/d/1V0bBv-JKaX3gW0MZalaH6Zd0DNvXWDvC/view?usp=sharing
+Download v1.1.1(.1) (7z) : [https://drive.google.com/file/d/19VDaiWVdcT9Vn13yP_NZq9ChD-nVxU8q/view?usp=sharing](https://drive.google.com/file/d/1HJONomBgzgVST9DuBJyDp2yWWjvNTgqE/view?usp=sharing)
 
 (Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
@@ -23,7 +23,7 @@ Join the discord by clicking the above image if you have any questions, wish to 
 
 Create a fight with up to 8 players, edit the stats of the player or use an etro gear set link to impor the stats, add actions for the player to perform, etc.
 
-![image](https://github.com/IAmPythagoras/ffxivcalcWebApp/assets/62820030/b958dcc1-1dd2-474c-a9d3-c46924c6f314)
+![simuateMainMenu](https://github.com/IAmPythagoras/ffxivcalcWebApp/assets/62820030/317850cc-9799-4a2f-a6b2-248d560d47a4)
 
 Configure the simulation to fit your requirements. 
 
@@ -81,15 +81,6 @@ pyinstaller manage.py --additional-hooks-dir=extra-hooks --noconfirm --collect-d
 If any of this is unclear or something doesn't work feel free to reach out on discord using the above discord and asking me (iampythagoras \ Pythagoras).
 
 # Update info :
-
-1.2.0 :
-- Added a 'time estimate' functionality to the rotation builder. The time estimate is not always accurate but will give a general idea. The time estimate usually falls within 0.5 second of the real time, but this can vary depending on jobs (Bard for example has a much bigger error amount   
-  when used with Army Paeon). This is an early feature so I will make sure to update it over the time so it becomes more and more accurate. (Thanks for Apollo and Caro for pointing out the need of such a feature :Prayge: ). The estimate also contains a 'gcdTimer' which indicates how long 
-  until the end of a GCD, a 'dotTImer' which indicates the timer of a dot (depends on job) and a 'buffTimer' which estimates the remaining time on buffs (depend on job).
-- Added Limit break actions. They do no damage but will lock the player for the duration of the Limit break. There is no lb bar generation yet.
-- Added a version checking letting the user know if their version of the app is outdated compared to the most recent version on github.
-- Fixed various issues
-- Now using ffxivcalc v0.8.910
 
 1.1.1(.1) - Fixed import issues + fixed issue where 0 materia limit was a string + added better error log
 
