@@ -43,7 +43,8 @@
     <button class="basicButton bigbutton" onclick="seeJSONFileViewer()">
         JSON File
     {% endif %}
-<button onclick="downloadSimulationRecord({{saveId}})" class="basicButton bigbutton" title="Download the simulation's record. The record is saved as a PDF file showing every damage event in the simulation with what buffs were applied to it, etc.">
+    <!--downloadSimulationRecord({{saveId}})-->
+<button onclick="openCustomizeSimulationRecord({{ saveId }})" class="basicButton bigbutton" title="Download the simulation's record. The record is saved as a PDF file showing every damage event in the simulation with what buffs were applied to it, etc.">
     Download simulation record
 </button>
 </center>

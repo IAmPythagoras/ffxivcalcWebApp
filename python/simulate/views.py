@@ -30,7 +30,7 @@ searchPatternBuffer = {'curSearch' : [0,0,False]}
                              # simulation record id which it can use to access its simulation record in 'simulationRecordSave'
                              # The id is simply the last key + 1 (and 0 if there is no key).
                              # This dictionnary is never reset and only resets once the app is relaunched (server closed and restarted)
-simulationRecordSave = {}
+eventSave = {}
 
 
 log_stream = LogStream()
@@ -250,16 +250,16 @@ def simulationLoading(request):
             log_str = log_stream.to_str()
             request.session['log_str'] = log_str
 
-                             # Will add the event.simulation record to simulationRecordSave
+                             # Will add the event record to eventSave
                              # and create an access id. This id will be sent back to the webpage that will remember it
-            sessionSimulationRecordId = 0
-            curId = list(simulationRecordSave.keys())
+            eventRecordId = 0
+            curId = list(eventSave.keys())
             if len(curId) != 0:
                              # It has other ids so give last + 1
-                sessionSimulationRecordId = int(curId[-1]) + 1
-            simulationRecordSave[sessionSimulationRecordId] = Event.simulationRecord
+                eventRecordId = int(curId[-1]) + 1
+            eventSave[eventRecordId] = Event
 
-            return HttpResponse(str({"status" : "200", "saveId" : sessionSimulationRecordId}), status=200)
+            return HttpResponse(str({"status" : "200", "saveId" : eventRecordId}), status=200)
         except InvalidTarget as Error:
             from traceback import format_exc
             request.session['errorLog'] = format_exc()
@@ -285,17 +285,6 @@ def SimulationResult(request):
 
     id = request.GET.get("id")
 
-    if request.method == "POST":
-        pathToSave = request.body.decode('ascii')
-        # Getting simulation record and saving at specified url.
-        simulationRecordSave[int(id)].saveRecord(saveAsPDF=False).savefig(
-                pathToSave,
-                dpi=200,
-                format='pdf',
-                bbox_inches='tight'
-                )
-        return HttpResponse('200', status=200)
-
     if 'uri2' in request.session.keys() : uri2 = request.session['uri2']
     else : uri2 = ""
                                                                     
@@ -304,6 +293,61 @@ def SimulationResult(request):
     return render(request, 'simulate/SimulatingResult.html', {"result_str" : request.session['result_arr'], "graph" : request.session['uri'],"graph_dist" : uri2,"has_dist" : request.session['nRandomIterations'] > 0, 
                                                               "WARNING" : request.session['ReturnCode'] == 1 or request.session['mode'], "CRITICAL" : request.session['ReturnCode'] == 2, 
                                                               "log_str" : request.session['log_str'], "mode" : request.session['mode'], 'saveId' : id})
+
+@csrf_exempt
+def simulationRecordCustomizeView(request):
+    """This view lets the user customize the output of the simulation record and lets the user download it (or the text version)
+    """
+
+    eventId = int(request.GET.get("id")) # Id of the associated event is stored in the url
+
+    if request.method == "POST":
+        rawData = json.loads(request.body)
+        data = rawData['scope']
+        startTime = float(data["startTime"])
+        endTime = float(data["endTime"])
+        trackAutos = bool(data["trackAutos"])
+        trackDOTs = bool(data["trackDOTs"])
+        idList = data["trackPlayer"]
+        for index in range(len(idList)):
+            idList[index] = int(idList[index])
+        pathToSave = rawData['path'].decode('ascii')
+        # Getting simulation record and saving at specified url.
+        eventSave[eventId].saveRecord(saveAsPDF=False,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList).savefig(
+                pathToSave,
+                dpi=200,
+                format='pdf',
+                bbox_inches='tight'
+                )
+        return HttpResponse('200', status=200)
+
+    if request.method == "GETRECORDLENGTH":
+        # This method returns the length in rows of the record under the current restriction
+        try:
+            data = json.loads(request.body)
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            print(idList)
+            nRows = eventSave[eventId].simulationRecord.getRecordLength(startTime, endTime, trackAutos, trackDOTs, idList)
+            print(nRows)
+            return HttpResponse(str({'nRows' : nRows, 'status' : 'OK'}))
+        except:
+            return HttpResponse(str({'status' : 'ERROR'}))
+
+                             # Generating player name and id tuple list
+    nameIdList = []
+    for player in eventSave[int(eventId)].PlayerList:
+        name = str(JobEnum.name_for_id(player.JobEnum)) + ("" if player.PlayerName == "" else " " + player.PlayerName) + " ID - " + str(player.playerID)
+        id = player.playerID
+        nameIdList.append((name,id))
+
+    return render(request, 'simulate/customizeRecord.html', {"playerList": nameIdList, "eventId" : eventId})
+    
 
 def helpSolver(request):
     """

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/customizeRecord.js' %}"></script>
+<style>
+    .underText{
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+    }
+</style>
+<script>
+    {% for player in playerList %}
+        addTrackedPlayer({{ player.1 }});
+    {% endfor %}
+    setEventId({{ eventId }});
+    getRecordLength();
+</script>
+<title>FFXIV Combat Simulator</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+
+<h3>Simulation record cuztomization</h3>
+<p class="underText">Number of rows of the record : <span id="nRows">0</span></p>
+<hr>
+
+<div>
+    <div class="container" title="The record will show pages after this start time.">
+    <p class="underText">Record start time :  </p>
+    <input id="startTime" type="number" value="0" min="0" max="9999" maxlength="5" onchange="updateStartTime()" style="margin-left: 2px;">
+    </div>
+    <div class="container" title="The record will show pages before this end time.">
+    <p class="underText">Record end time :  </p>
+    <input id="endTime" type="number" value="9999" min="0" max="9999" maxlength="5" onchange="updateEndTime()" style="margin-left: 2px;">
+    </div>
+    <div class="container" title="If unchecked the record will not show instances of autos.">
+    <p class="underText">Track autos : </p>
+    <input type="checkbox" id="trackAutos" onchange="updateTrackAutos()" checked>
+    </div>
+    <div class="container" title="If unchecked the record will not show instances of DOTs tic.">
+    <p class="underText">Track DOTs : </p>
+    <input type="checkbox" id="trackDOTs" onchange="updateTrackDOTs()" checked>
+    </div>
+    <hr>
+    <h4>Players to track : </h4>
+    <div id="playersToTrack">
+    {% for player in playerList %}
+        <div class="container"><p class="underText">{{ player.0 }}</p><input type="checkbox" id="trackPlayer{{ player.1 }}" onchange="updateTrackedPlayer({{ player.1 }})" checked></div>
+    {% endfor %}
+    </div>
+    <hr>
+
+</div>
+
+</body>
+</html>
