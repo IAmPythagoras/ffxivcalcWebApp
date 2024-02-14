@@ -13,6 +13,7 @@ var playerTracking = new Object();
                              // with a boolean value telling if the user wants to track
                              // this player in the record.
 var eventId = 0;
+var nRows = 0;
 //
 // INITIALIZE ID LIST
 //
@@ -82,6 +83,7 @@ function getRecordLength(){
         if (res["status"] == "ERROR"){alert("An error happened when retrieving the record's length.");return;}
         else if(res["status"] == "OK"){
             document.getElementById("nRows").innerHTML = res['nRows'];
+            nRows = parseInt(res['nRows']);
         }
     }
     var idList = [];
@@ -94,11 +96,43 @@ function getRecordLength(){
 }
 
 function downloadSimulationRecord(){
+
+                             // Check nRows
+    if (nRows == 0) {alert("The current record has no row. It must have at least 1.");return;}
+    else if (nRows >= 256){alert("The record has too many rows to safely export in PDF format (must be less than 256). Either reduce the number of rows or export in text format.");return;}
+
     const {dialog} = require("@electron/remote");
     xhr2 = new XMLHttpRequest();
     var url = "http://127.0.0.1:8000/simulate/simulationRecordCustomizeView/?id="+eventId;
-    xhr2.open("POST", url, true);
+    xhr2.open("GETPDF", url, true);
     xhr2.setRequestHeader("Content-type", "application/json");
+    xhr2.onreadystatechange = function() { 
+        if (xhr.responseText == 'ERROR'){alert("An unknown error happened while trying to save the record. Try to reduce the number of rows or reach out on discord of this issue persists.");}
+    };
     var file = dialog.showSaveDialogSync();
-    xhr2.send(file + ".pdf");
+    var idList = [];
+    for (var key in playerTracking){if(playerTracking[key]){idList.push(key);}}
+    var data=JSON.stringify({"scope" : {"startTime" : startTime, "endTime" : endTime, "trackAutos" : trackAutos,
+                                    "trackDOTs" : trackDOTs, "trackPlayer" : idList},
+                         "path" : file + ".pdf"})
+    xhr2.send(data);
+}
+
+function downloadSimulationRecordTxt(){
+    if (nRows == 0) {alert("The current record has no row. It must have at least 1.");return;}
+    const {dialog} = require("@electron/remote");
+    xhr3 = new XMLHttpRequest();
+    var url = "http://127.0.0.1:8000/simulate/simulationRecordCustomizeView/?id="+eventId;
+    xhr3.open("GETTXT", url, true);
+    xhr3.setRequestHeader("Content-type", "application/json");
+    xhr3.onreadystatechange = function() { 
+        if (xhr.responseText == 'ERROR'){alert("An unknown error happened while trying to save the record. Try to reduce the number of rows or reach out on discord of this issue persists.");}
+    };
+    var file = dialog.showSaveDialogSync();
+    var idList = [];
+    for (var key in playerTracking){if(playerTracking[key]){idList.push(key);}}
+    var data=JSON.stringify({"scope" : {"startTime" : startTime, "endTime" : endTime, "trackAutos" : trackAutos,
+                                    "trackDOTs" : trackDOTs, "trackPlayer" : idList},
+                         "path" : file + ".txt"})
+    xhr3.send(data);
 }

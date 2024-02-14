@@ -104,7 +104,7 @@ function openCredit(){
 }
 
 function openCustomizeSimulationRecord(id){
-    createWindow(1000,900,"http://127.0.0.1:8000/simulate/simulationRecordCustomizeView/?id="+id)
+    createWindow(500,725,"http://127.0.0.1:8000/simulate/simulationRecordCustomizeView/?id="+id)
 }
 
 

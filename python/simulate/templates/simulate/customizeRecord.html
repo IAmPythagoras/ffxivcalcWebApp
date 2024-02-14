@@ -12,6 +12,10 @@
         color: rgba(255, 255, 255, 0.7);
         font-size: 13px;
     }
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
 </style>
 <script>
     {% for player in playerList %}
@@ -54,7 +58,10 @@
     {% endfor %}
     </div>
     <hr>
-
+    <div class="container">
+        <button onclick="downloadSimulationRecord()" class="basicButton bigbutton" title="Download the simulation's record as a PDF.">Download simulation record (pdf)</button>
+        <button onclick="downloadSimulationRecordTxt()" class="basicButton bigbutton" title="Download the simulation's record as a text file.">Download simulation record (txt)</button>
+    </div>
 </div>
 
 </body>

@@ -301,25 +301,48 @@ def simulationRecordCustomizeView(request):
 
     eventId = int(request.GET.get("id")) # Id of the associated event is stored in the url
 
-    if request.method == "POST":
-        rawData = json.loads(request.body)
-        data = rawData['scope']
-        startTime = float(data["startTime"])
-        endTime = float(data["endTime"])
-        trackAutos = bool(data["trackAutos"])
-        trackDOTs = bool(data["trackDOTs"])
-        idList = data["trackPlayer"]
-        for index in range(len(idList)):
-            idList[index] = int(idList[index])
-        pathToSave = rawData['path'].decode('ascii')
-        # Getting simulation record and saving at specified url.
-        eventSave[eventId].saveRecord(saveAsPDF=False,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList).savefig(
-                pathToSave,
-                dpi=200,
-                format='pdf',
-                bbox_inches='tight'
-                )
-        return HttpResponse('200', status=200)
+    if request.method == "GETTXT":
+        try:
+            rawData = json.loads(request.body)
+            data = rawData['scope']
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            pathToSave = str(rawData['path'])
+            print("path : " + pathToSave)
+            # Getting simulation record and saving at specified url.
+            eventSave[eventId].simulationRecord.saveRecordText(path=pathToSave,customizeRecord=True,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList)
+            return HttpResponse('200', status=200)
+        except:
+            HttpResponse('ERROR', status=200)
+
+    if request.method == "GETPDF":
+        try:
+            rawData = json.loads(request.body)
+            data = rawData['scope']
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            pathToSave = str(rawData['path'])
+            print("path : " + pathToSave)
+            # Getting simulation record and saving at specified url.
+            eventSave[eventId].simulationRecord.saveRecord(customizeRecord=True,saveAsPDF=False,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList).savefig(
+                    pathToSave,
+                    dpi=200,
+                    format='pdf',
+                    bbox_inches='tight'
+                    )
+            return HttpResponse('200', status=200)
+        except:
+            HttpResponse('ERROR', status=200)
 
     if request.method == "GETRECORDLENGTH":
         # This method returns the length in rows of the record under the current restriction
