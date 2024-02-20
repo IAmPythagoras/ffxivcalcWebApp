@@ -130,16 +130,29 @@ function openAmarantineRepo(){
     require('electron').shell.openExternal("https://github.com/Amarantine-xiv/Another-FF14-Combat-Sim");
 }
 
+function openEtroLink(){
+    var link = document.getElementById("etroURL").value;
+
+    if (link.length == 0 || ! link.includes("etro.gg/gearset/")){return;} // Checks for no link or no etro in link
+
+    require('electron').shell.openExternal(link);
+}
+
 /*
 Save/Import functions
 */
 
-function importEtroGearSet(){
+function importEtroGearSet(saveEtroLink=false){
     // This function imports what is written in the etro url
     // and sets the fields' value accordingly.
 
     if (NumberOfPlayer == 0){
         alert("Add a player to import an etro gear set.");return;
+    }
+
+    if (saveEtroLink){
+        // This will save the etro link on the player's config
+        PlayerConfigDict["etro_gearset_url"] = document.getElementById("etroURL").value;
     }
 
     xhr = new XMLHttpRequest();
@@ -166,6 +179,8 @@ function importEtroGearSet(){
             document.getElementById("Ten").value =  res["Ten"];
             // Saving values
             SavePlayerConfiguration(currentEditPlayerID);
+            // updating time estimate
+            updateTimeEstimate();
         }
             // resetting button
         document.getElementById("etroButton").innerHTML="Import";
@@ -177,6 +192,8 @@ function importEtroGearSet(){
     xhr.send(data);
     document.getElementById("etroButton").innerHTML="Importing...";
     document.getElementById("etroButton").style.background = "red";
+
+
 
 }
 
@@ -275,7 +292,7 @@ function importFile() {
 
     
     var fileName = dialog.showOpenDialogSync({properties: ['openFile']});
-    alert(fileName[0]);
+    //alert(fileName[0]);
     fs.readFile(fileName[0], 'utf-8', (err, data) => {
         if(err){
             alert("An error ocurred reading the file :" + err.message);
@@ -361,6 +378,50 @@ function importFile() {
                 };
 
                 if ("weaponDelay" in player){PlayerConfigDict[id]['weaponDelay'] = player['weaponDelay'];}
+                
+
+                             // xhrRequestList contains a list of all xhr requests done to the server to get stats from etro.
+                             // idList is a list where the same index corresponds to the player id in PlayerConfigDict.
+                var xhrRequestList = [];
+                var idList = [];
+
+                if (player["etro_gearset_url"].length > 0){
+                    xhrRequestList.push(new XMLHttpRequest());
+                    //idList.push(id);
+                    var url = "http://127.0.0.1:8000/simulate/SimulationInput/";
+                    xhrRequestList[xhrRequestList.length -1 ].open("GETETRO", url, true);
+                    xhrRequestList[xhrRequestList.length -1 ].setRequestHeader("Content-type", "application/json");
+                    xhrRequestList[xhrRequestList.length -1 ].playerID = id; // custom field used to remember the player to update the stats of.
+                    xhrRequestList[xhrRequestList.length -1 ].onreadystatechange = function() {
+                                                 // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
+                        
+                        var res = JSON.parse(this.responseText.replaceAll("'",'"'));
+                        if (res["status"] == "ERROR"){
+                            alert("There was an error when importing the gear set from etro with url '" + PlayerConfigDict[playerID]["etro_gearset_url"] + "' . This could be an issue with etro, with the url or with the application. If this persists please reach out on discord.")
+                        }
+                        else {
+                            
+                
+                            // Replace the values
+                            PlayerConfigDict[this.playerID]["Stat"]["MainStat"] = res["MainStat"];
+                            PlayerConfigDict[this.playerID]["Stat"]["Crit"] =  res["Crit"];
+                            PlayerConfigDict[this.playerID]["Stat"]["DH"] =  res["DH"];
+                            PlayerConfigDict[this.playerID]["Stat"]["WD"]=  res["WD"];
+                            PlayerConfigDict[this.playerID]["Stat"]["SkS"] =  res["SkS"];
+                            PlayerConfigDict[this.playerID]["Stat"]["SS"] =  res["SS"];
+                            PlayerConfigDict[this.playerID]["Stat"]["Det"] =  res["Det"];
+                            PlayerConfigDict[this.playerID]["Stat"]["Ten"] =  res["Ten"];
+
+                            if (this.playerID == currentEditPlayerID){
+                                LoadPlayerConfiguration(currentEditPlayerID,save=false);
+                            }
+
+                        }
+                    }
+                                                 // Sends the request.
+                    var data = player["etro_gearset_url"];
+                    xhrRequestList[xhrRequestList.length -1 ].send(data);
+                }
 
                 for(let j = 0;j<playerActionList.length;j++){
 
@@ -635,7 +696,7 @@ This function returns a function that adds an action to a player's action list. 
                              // This value will uniquely represent the action in the ActionList.
                              // If IsAdded is true, then it will be created, if it is false the value in ActionIden will 
                              // be used.
-    var Identification = Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);;
+    var Identification = Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
                              // If the action is added (and not repopulated), we create an entirely new 
                              // entry for it in the actionlist of the player.
     if (IsAdded) {
@@ -720,6 +781,85 @@ This function returns a function that adds an action to a player's action list. 
 return AddActionToPlayer;
 }
 
+function insertActionAtIndex(actionName, index){
+    // This function inserts an action (with action name) at the given index
+    // for the currently edited player
+
+    var Identification = Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
+
+    ActionDict = {
+        "Action" : actionName,
+        "ActionID" : Identification, 
+        "IndexInList" : index,
+        "target" :  -1
+        };
+
+    var timeValid = true;
+    var targetValid = true;
+    var IsTargetted = TargetActionList.includes(actionName);
+
+    if (actionName == "wait_ability"){
+        //a
+        (async () => {await prompt("Time Select", "Input the time in seconds.", { defaultText: "1" }).then(text => {
+            if (text) {
+                console.log(text);
+                ActionDict["WaitTime"] = text;
+                if (validateWaitTime(ActionDict["WaitTime"])) 
+                {
+                alert("Invalid input for wait_ability. The action will not be added.");
+                timeValid = false;
+                return;
+                }
+            } else {
+                timeValid = false;
+                return;
+            }
+            conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName, Identification);
+        })})();
+        return; // Returns here since the async function above has done all the required logic.
+    }
+    else if(IsTargetted){
+        // Action requires a target.
+        var TargetID = askTargetID();
+        if (TargetID == -1){
+            // The user aborted the action
+            targetValid = false;
+        }
+
+        if (validateTarget(TargetID))
+        {
+        alert("Invalid target input. The action will not be added.");
+        targetValid = false;
+        }      
+        ActionDict["target"] = TargetID;
+    }
+
+    if (!targetValid){return;} // Required input is invalid or the user cancelled the operation.
+    conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName, Identification);
+}
+
+function conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName, Identification){
+
+    // This function inserts the new action in player action list, increments index of future actions, creates and add the new node (div)
+    // and increments the relevant player counters. Used in insertActionAtIndex().
+
+    PlayerConfigDict[currentEditPlayerID]["ActionList"].splice(index, 0, ActionDict); // Inserting the new action at the requested index.
+
+    for (let i = index+1;i < PlayerConfigDict[currentEditPlayerID]["ActionList"].length;i++){
+        // Will increment the 'indexInList' value of all these actions.
+        PlayerConfigDict[currentEditPlayerID]["ActionList"][i]["IndexInList"]++;
+    }
+
+                             // Creating new action div and inserting before the one the user dropped on.
+    var newDiv = createActionDiv(ActionDict,IsTargetted, PlayerConfigDict[currentEditPlayerID]["Job"], actionName, Identification);
+    document.getElementById('PlayerActionListViewer').insertBefore(newDiv,document.getElementById('PlayerActionListViewer').childNodes[index]);
+
+                             // Incrementing the ID and index. Always increments ID since this can only be done by adding.
+    PlayerConfigDict[currentEditPlayerID]["NextActionIndex"]++;
+    PlayerConfigDict[currentEditPlayerID]["NextActionID"]++;
+    updateTimeEstimate();
+}
+
 /*
 UPDATE FUNCTIONS
 */
@@ -742,15 +882,32 @@ function updateTimeEstimate(reset = false){
     xhr5.setRequestHeader("Content-type", "application/json");
     xhr5.onreadystatechange = function() {
                                 // When the request has been processed, the user is sent to the SimulationResult page. If there was an error the user is notified and we return.
-    if (xhr5.readyState == XMLHttpRequest.DONE && xhr5.status == 200) {
         var strRes = xhr5.responseText.replaceAll("'",'"');
         var res = JSON.parse(strRes);
-        document.getElementById("timeStampEstimate").innerHTML = String(res['currentTimeStamp']);
-        document.getElementById("gcdTimerEstimate").innerHTML = String(res['untilNextGCD']);
-        document.getElementById("dotTimerEstimate").innerHTML = String(res['dotTimer']);
-        document.getElementById("buffTimerEstimate").innerHTML = String(res['buffTimer']);
+
+        var curTimeStamp;
+        var untilNextGCD;
+        var dotTimer;
+        var buffTimer;
+
+        if (res["status"] == "ERROR"){
+            curTimeStamp = "ERROR";
+            untilNextGCD = "ERROR";
+            dotTimer = "ERROR";
+            buffTimer = "ERROR";
+        } 
+        else if (res["status"] == "OK"){
+            curTimeStamp = String(res['currentTimeStamp']);
+            untilNextGCD = String(res['untilNextGCD']);
+            dotTimer = String(res['dotTimer']);
+            buffTimer = String(res['buffTimer']);
+        }
+
+        document.getElementById("timeStampEstimate").innerHTML = curTimeStamp;
+        document.getElementById("gcdTimerEstimate").innerHTML = untilNextGCD;
+        document.getElementById("dotTimerEstimate").innerHTML = dotTimer ;
+        document.getElementById("buffTimerEstimate").innerHTML = buffTimer ;
         return;
-    }
     }
                                 // Exports current fight data for the player being edited
     var dataDict = exportPlayerConfigDict(updateTime = true);
@@ -952,7 +1109,7 @@ function exportPlayerConfigDict(updateTime = false){
             "weaponDelay" : PlayerDict["weaponDelay"],
             "stat" : PlayerDict["Stat"],
             "actionList" : actionList,
-            "etro_gearset_url" : "",//PlayerDict["etro_gearset_url"], -> Keeping it empty for now.
+            "etro_gearset_url" : PlayerDict["etro_gearset_url"],
             "Auras": []
         }
         PlayerList.push(PlayerConfig);
@@ -1081,18 +1238,26 @@ function addActionToActionListViewer(ActionID,Identification, ActionDict, IsTarg
 
     // Get the ActionListViewer to add the div.
     const ActionListViewer = document.getElementById("PlayerActionListViewer");
-    PlayerJob = PlayerConfigDict[currentEditPlayerID]["Job"];
                                 // Adding the new division in the ActionListViewer
-    const newAction = document.createElement('div');
-    newAction.setAttribute("title", ActionViewerDocTitle(ActionDict, IsTargetted));
-    newAction.innerHTML = '<img src="/static/simulate/PVEIcons/'+PlayerJob+'/'+ActionID+'.png" width="40px" height="40px" class="Icon">';
-    newAction.onclick = DelActionFromList(Identification);
-    newAction.setAttribute("id", Identification);
+    const newAction = createActionDiv(ActionDict, IsTargetted, PlayerConfigDict[currentEditPlayerID]["Job"], ActionID, Identification);
     ActionListViewer.appendChild(newAction);
                                 // Incrementing the ID and index
     PlayerConfigDict[currentEditPlayerID]["NextActionIndex"]++;
     if (isNew){PlayerConfigDict[currentEditPlayerID]["NextActionID"]++;}
     
+}
+
+function createActionDiv(ActionDict, IsTargetted, PlayerJob, actionName,Identification){
+    const newAction = document.createElement('div');
+    newAction.setAttribute("title", ActionViewerDocTitle(ActionDict, IsTargetted));
+    //newAction.setAttribute("ondrop", "drop(event)");
+    //newAction.setAttribute("ondragover","allowDrop(event)");
+    //newAction.setAttribute("ondragleave","dragLeave(event)");
+    newAction.innerHTML = '<img src="/static/simulate/PVEIcons/'+PlayerJob+'/'+actionName+'.png" width="40px" height="40px" class="Icon" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">';
+    newAction.onclick = DelActionFromList(Identification);
+    newAction.setAttribute("id", Identification);
+
+    return newAction;
 }
 /*
 USER INPUT FUNCTIONS
@@ -1126,7 +1291,8 @@ const box = document.getElementById("ActionListPick");
 for (var i = 0;i<IconNameList.length;i++){
     const newBox = document.createElement("div");
     newBox.setAttribute("class", "ActionPicker");
-    newBox.innerHTML = '<img src="/static/simulate/PVEIcons/'+PlayerJob+'/'+IconNameList[i]+'.png" title="'+IconNameList[i]+'" width="60px" height="60px" class="Icon" role="button">'+getFormatActionName(IconNameList[i]);
+    newBox.setAttribute("id" ,IconNameList[i]);
+    newBox.innerHTML = '<img src="/static/simulate/PVEIcons/'+PlayerJob+'/'+IconNameList[i]+'.png" title="'+IconNameList[i]+'" width="60px" height="60px" class="Icon" role="button" draggable="true">'+getFormatActionName(IconNameList[i]);
     newBox.onclick = CreateAddAction(IconNameList[i] /*ActionID*/, TargetActionList.includes(IconNameList[i]) /*IsTargetted*/, true /*IsAdded*/, -1 /*ActionIden*/);
     box.appendChild(newBox);
     }
@@ -1201,6 +1367,19 @@ PlayerConfigDict[PlayerID]["weaponDelay"] = document.getElementById("weaponDelay
 PlayerConfigDict[PlayerID]["etro_gearset_url"] = document.getElementById("etroURL").value;
     }
 
+
+function indexForActionId(actionId){
+    // This function returns the index in the currently edited player's action list of the given actionId
+    // It will return -1 if the index was not found.
+
+    for (let i = 0;i < PlayerConfigDict[currentEditPlayerID]["ActionList"].length;i++){
+        if (actionId == PlayerConfigDict[currentEditPlayerID]["ActionList"][i]["ActionID"]){
+            return i;
+        }
+    }
+    return -1;
+}
+
 // Main menu function
 
 function openSimulation(){
@@ -1222,6 +1401,48 @@ function seeJSONFileViewer(){
 function getHelp(){
     createWindow(1000,1000,'http://127.0.0.1:8000/simulate/help/')
 }
+
+/*
+DRAG AND DROP LOGIC
+*/
+
+function drag(ev){
+    ev.dataTransfer.setData('text', ev.target.id);
+}
+
+function drop(ev){
+    ev.preventDefault();
+    var actionName = ev.dataTransfer.getData("text").split("/").pop().split(".")[0]; // Cleanign the name to get only name of action
+
+                // Will validate actionName
+    var isValid = false;
+    for (let key in IconDict){
+            if (IconDict[key].includes(actionName)){isValid=true;break;}
+    }
+
+    if (!isValid){alert("The dropped action is invalid. The action will be aborted.");ev.target.classList.remove('dropHover');return;}
+
+    var dropId = ev.currentTarget.parentNode.id; // id of the action we are dropping on.
+                                      // So we will go through the current player's action list and look for the index.
+    
+    var actionIndex = indexForActionId(dropId); // Index of the action
+                                                // Prob cannot do static index on the division since we will remove some actions.
+                                                // So have to dynamically check the index.
+    
+    insertActionAtIndex(actionName, actionIndex); // Inserts action at the given index. Assumes for current player. This also modified the viewer.
+    ev.target.classList.remove('dropHover');
+}
+
+function allowDrop(ev){
+    ev.preventDefault();
+    ev.target.classList.add('dropHover');
+}
+
+function dragLeave(ev){
+    ev.preventDefault();
+    ev.target.classList.remove('dropHover');
+}
+
 
 /*
 CODE TO EXECUTE WHEN OPENING SimulationInput

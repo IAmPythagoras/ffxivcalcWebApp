@@ -89,23 +89,27 @@ def SimulationInput(request):
         return HttpResponse('OK', status=200)
 
     if request.method == "GETETRO":
-        etroStatDict = get_gearset_data(request.body.decode("utf-8"))
-        if etroStatDict == None:
-                             # An error occured
-            return HttpResponse('ERROR',status=200)
-        return HttpResponse(str(etroStatDict),status=200)
+        try:
+            etroStatDict = get_gearset_data(request.body.decode("utf-8"))
+            etroStatDict["status"] = "OK"
+            return HttpResponse(str(etroStatDict))
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
     
     if request.method == "GETESTIMATE":
         # This sends the time estimate of a player.
         simulationData = json.loads(request.body) # simulation data is in this. This should only contain the player in question.
-        prepareData(simulationData)
+        try:
+            prepareData(simulationData)
 
-        fight = helper_backend.RestoreFightObject(simulationData)
+            fight = helper_backend.RestoreFightObject(simulationData)
 
-        timeEstimate = fight.PlayerList[0].computeTimeStamp()
-                             # For unclear reason I have to do it like that otherwise it refuses to convert back into a dict in JS
-        return HttpResponse(str({"currentTimeStamp" : timeEstimate["currentTimeStamp"], "untilNextGCD" : timeEstimate["untilNextGCD"], 
-                                 "dotTimer" : timeEstimate["dotTimer"], "buffTimer" : timeEstimate["buffTimer"]}),status=200)
+            timeEstimate = fight.PlayerList[0].computeTimeStamp()
+                                # For unclear reason I have to do it like that otherwise it refuses to convert back into a dict in JS
+            return HttpResponse(str({"status" : "OK", "currentTimeStamp" : timeEstimate["currentTimeStamp"], "untilNextGCD" : timeEstimate["untilNextGCD"], 
+                                    "dotTimer" : timeEstimate["dotTimer"], "buffTimer" : timeEstimate["buffTimer"]}))
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
 
 
     if request.method == "POST":
