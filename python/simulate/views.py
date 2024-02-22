@@ -317,7 +317,7 @@ def simulationRecordCustomizeView(request):
             for index in range(len(idList)):
                 idList[index] = int(idList[index])
             pathToSave = str(rawData['path'])
-            print("path : " + pathToSave)
+            #print("path : " + pathToSave)
             # Getting simulation record and saving at specified url.
             eventSave[eventId].simulationRecord.saveRecordText(path=pathToSave,customizeRecord=True,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList)
             return HttpResponse('200', status=200)
@@ -336,7 +336,7 @@ def simulationRecordCustomizeView(request):
             for index in range(len(idList)):
                 idList[index] = int(idList[index])
             pathToSave = str(rawData['path'])
-            print("path : " + pathToSave)
+            #print("path : " + pathToSave)
             # Getting simulation record and saving at specified url.
             eventSave[eventId].simulationRecord.saveRecord(customizeRecord=True,saveAsPDF=False,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList).savefig(
                     pathToSave,
@@ -359,9 +359,9 @@ def simulationRecordCustomizeView(request):
             idList = data["trackPlayer"]
             for index in range(len(idList)):
                 idList[index] = int(idList[index])
-            print(idList)
+            #print(idList)
             nRows = eventSave[eventId].simulationRecord.getRecordLength(startTime, endTime, trackAutos, trackDOTs, idList)
-            print(nRows)
+            #print(nRows)
             return HttpResponse(str({'nRows' : nRows, 'status' : 'OK'}))
         except:
             return HttpResponse(str({'status' : 'ERROR'}))
@@ -488,16 +488,16 @@ def solverLoading(request):
 
                 for pattern in searchPattern:
                     searchPatternBuffer = pattern
-                    print("LOOKING FOR PATTERN : " + str(pattern))
+                    #print("LOOKING FOR PATTERN : " + str(pattern))
                     opt, t = BiSSolver(Event.deepCopy(), gearSpace,matSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=useSS,minSPDValue=minSPD,maxSPDValue=maxSPD, useNewAlgo=True, PlayerIndex=playerIndex,PlayerID=Event.PlayerList[playerIndex].playerID,
                                     oversaturationIterationsPreGear=pattern[0], oversaturationIterationsPostGear=pattern[1],findOptMateriaGearBF=True,swapDHDetBeforeSpeed=pattern[2], minPiety=minPiety, saveAsFile=False,
                                     showBar=False, loadingBarBuffer=buff,returnGearSet=False)
                     buff['pb'] = "" # reseting buffer
 
                     if opt > curBest:
-                        print("FOUND NEW BEST")
-                        print(curBest)
-                        print(opt)
+                        #print("FOUND NEW BEST")
+                        #print(curBest)
+                        #print(opt)
                         curBest = opt
                         curBestText = t
                         curBestPattern = pattern
