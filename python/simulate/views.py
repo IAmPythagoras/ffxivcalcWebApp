@@ -20,10 +20,17 @@ from .Stream import LogStream
 import os
 from tempfile import gettempdir
 
-
+# Local information saved
 buff = {'pb' : ""}
 buffSimulation = {'pb' : ""}
 searchPatternBuffer = {'curSearch' : [0,0,False]}
+
+
+                             # simulationRecordSave contains the simulation record of all session. Each session is given a
+                             # simulation record id which it can use to access its simulation record in 'simulationRecordSave'
+                             # The id is simply the last key + 1 (and 0 if there is no key).
+                             # This dictionnary is never reset and only resets once the app is relaunched (server closed and restarted)
+eventSave = {}
 
 
 log_stream = LogStream()
@@ -82,23 +89,27 @@ def SimulationInput(request):
         return HttpResponse('OK', status=200)
 
     if request.method == "GETETRO":
-        etroStatDict = get_gearset_data(request.body.decode("utf-8"))
-        if etroStatDict == None:
-                             # An error occured
-            return HttpResponse('ERROR',status=200)
-        return HttpResponse(str(etroStatDict),status=200)
+        try:
+            etroStatDict = get_gearset_data(request.body.decode("utf-8"))
+            etroStatDict["status"] = "OK"
+            return HttpResponse(str(etroStatDict))
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
     
     if request.method == "GETESTIMATE":
         # This sends the time estimate of a player.
         simulationData = json.loads(request.body) # simulation data is in this. This should only contain the player in question.
-        prepareData(simulationData)
+        try:
+            prepareData(simulationData)
 
-        fight = helper_backend.RestoreFightObject(simulationData)
+            fight = helper_backend.RestoreFightObject(simulationData)
 
-        timeEstimate = fight.PlayerList[0].computeTimeStamp()
-                             # For unclear reason I have to do it like that otherwise it refuses to convert back into a dict in JS
-        return HttpResponse(str({"currentTimeStamp" : timeEstimate["currentTimeStamp"], "untilNextGCD" : timeEstimate["untilNextGCD"], 
-                                 "dotTimer" : timeEstimate["dotTimer"], "buffTimer" : timeEstimate["buffTimer"]}),status=200)
+            timeEstimate = fight.PlayerList[0].computeTimeStamp()
+                                # For unclear reason I have to do it like that otherwise it refuses to convert back into a dict in JS
+            return HttpResponse(str({"status" : "OK", "currentTimeStamp" : timeEstimate["currentTimeStamp"], "untilNextGCD" : timeEstimate["untilNextGCD"], 
+                                    "dotTimer" : timeEstimate["dotTimer"], "buffTimer" : timeEstimate["buffTimer"]}))
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
 
 
     if request.method == "POST":
@@ -199,7 +210,6 @@ def simulationLoading(request):
             
             result_str, fig, fig2 = Event.SimulateFight(0.01,data["data"]["fightInfo"]["fightDuration"], vocal=False, PPSGraph=False, MaxTeamBonus=TeamBonusComp, MaxPotencyPlentifulHarvest=MaxPotencyPlentifulHarvest,n=nRandomIterations, loadingBarBuffer=buffSimulation, showProgress=False)
             
-            
             if mode: 
                                     # Reverting changes
                 logging.getLogger("ffxivcalc").setLevel(level=logging.WARNING)
@@ -230,35 +240,44 @@ def simulationLoading(request):
                 request.session['uri2'] = uri2
             else : uri2 = None
                                 # Requestion simulationRecord
-            fig3 = Event.simulationRecord.saveRecord(saveAsPDF=False)
-            buf3 = io.BytesIO()
-            fig3.savefig(buf3, format='pdf', dpi=200)
-            buf3.seek(0)
-            string3 = base64.b64encode(buf3.read())
-            uri3 = urllib.parse.quote(string3)
-            request.session["buf3"] = uri3
+            #fig3 = Event.simulationRecord.saveRecord(saveAsPDF=False)
+            #buf3 = io.BytesIO()
+            #fig3.savefig(buf3, format='pdf', dpi=200)
+            #buf3.seek(0)
+            #string3 = base64.b64encode(buf3.read())
+            #uri3 = urllib.parse.quote(string3)
+            #request.session["buf3"] = uri3
 
                                     # We will take the logs if any and check what the ReturnCode value is.
             ReturnCode = log_stream.ReturnCode
             request.session['ReturnCode'] = ReturnCode
             log_str = log_stream.to_str()
             request.session['log_str'] = log_str
-            
-            return HttpResponse('200', status=200)
+
+                             # Will add the event record to eventSave
+                             # and create an access id. This id will be sent back to the webpage that will remember it
+            eventRecordId = 0
+            curId = list(eventSave.keys())
+            if len(curId) != 0:
+                             # It has other ids so give last + 1
+                eventRecordId = int(curId[-1]) + 1
+            eventSave[eventRecordId] = Event
+
+            return HttpResponse(str({"status" : "200", "saveId" : eventRecordId}), status=200)
         except InvalidTarget as Error:
             from traceback import format_exc
             request.session['errorLog'] = format_exc()
             Msg = ("An action had an invalid target and the simulation was not able to continue.\n" +
             " Error message : " + str(Error) + ". If this persists reach out on discord.\n")
             request.session["ErrorMessage"] = Msg
-            return HttpResponse('ERROR', status=200) 
+            return HttpResponse("ERROR", status=200) 
         except Exception as Error:
             from traceback import format_exc
             request.session['errorLog'] = format_exc()
             Msg = ("An unknown error happened and '"+Error.__class__.__name__+"' was raised. If this persists reach out on discord.\n" +
                 " Error message : " + str(Error))
             request.session["ErrorMessage"] = Msg
-            return HttpResponse('ERROR', status=200) 
+            return HttpResponse("ERROR", status=200) 
     return render(request, 'simulate/simulatorLoading.html',{})
 
 @csrf_exempt
@@ -267,23 +286,95 @@ def SimulationResult(request):
     This view will retrieve the data from the session and simulate the fight. It validates the file before simulating it.
     It then displays the result to the user.
     """
-    if request.method == "POST":
-        pathToSave = request.body
-        # Saving at specified url.
-        with open(pathToSave, "wb") as binary_file:
-   
-            # Write bytes to file
-            b = urllib.parse.unquote(request.session["buf3"], encoding='utf-8', errors='replace')
-            a = base64.b64decode(b)
-            binary_file.write(a)
-        return HttpResponse('200', status=200)
+
+    id = request.GET.get("id")
 
     if 'uri2' in request.session.keys() : uri2 = request.session['uri2']
     else : uri2 = ""
                                                                     
 
 
-    return render(request, 'simulate/SimulatingResult.html', {"result_str" : request.session['result_arr'], "graph" : request.session['uri'],"graph_dist" : uri2,"has_dist" : request.session['nRandomIterations'] > 0, "WARNING" : request.session['ReturnCode'] == 1 or request.session['mode'], "CRITICAL" : request.session['ReturnCode'] == 2, "log_str" : request.session['log_str'], "mode" : request.session['mode']})
+    return render(request, 'simulate/SimulatingResult.html', {"result_str" : request.session['result_arr'], "graph" : request.session['uri'],"graph_dist" : uri2,"has_dist" : request.session['nRandomIterations'] > 0, 
+                                                              "WARNING" : request.session['ReturnCode'] == 1 or request.session['mode'], "CRITICAL" : request.session['ReturnCode'] == 2, 
+                                                              "log_str" : request.session['log_str'], "mode" : request.session['mode'], 'saveId' : id})
+
+@csrf_exempt
+def simulationRecordCustomizeView(request):
+    """This view lets the user customize the output of the simulation record and lets the user download it (or the text version)
+    """
+
+    eventId = int(request.GET.get("id")) # Id of the associated event is stored in the url
+
+    if request.method == "GETTXT":
+        try:
+            rawData = json.loads(request.body)
+            data = rawData['scope']
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            pathToSave = str(rawData['path'])
+            #print("path : " + pathToSave)
+            # Getting simulation record and saving at specified url.
+            eventSave[eventId].simulationRecord.saveRecordText(path=pathToSave,customizeRecord=True,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList)
+            return HttpResponse('200', status=200)
+        except:
+            HttpResponse('ERROR', status=200)
+
+    if request.method == "GETPDF":
+        try:
+            rawData = json.loads(request.body)
+            data = rawData['scope']
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            pathToSave = str(rawData['path'])
+            #print("path : " + pathToSave)
+            # Getting simulation record and saving at specified url.
+            eventSave[eventId].simulationRecord.saveRecord(customizeRecord=True,saveAsPDF=False,startTime=startTime,endTime=endTime,trackAutos=trackAutos,trackDOTs=trackDOTs, idList=idList).savefig(
+                    pathToSave,
+                    dpi=200,
+                    format='pdf',
+                    bbox_inches='tight'
+                    )
+            return HttpResponse('200', status=200)
+        except:
+            HttpResponse('ERROR', status=200)
+
+    if request.method == "GETRECORDLENGTH":
+        # This method returns the length in rows of the record under the current restriction
+        try:
+            data = json.loads(request.body)
+            startTime = float(data["startTime"])
+            endTime = float(data["endTime"])
+            trackAutos = bool(data["trackAutos"])
+            trackDOTs = bool(data["trackDOTs"])
+            idList = data["trackPlayer"]
+            for index in range(len(idList)):
+                idList[index] = int(idList[index])
+            #print(idList)
+            nRows = eventSave[eventId].simulationRecord.getRecordLength(startTime, endTime, trackAutos, trackDOTs, idList)
+            #print(nRows)
+            return HttpResponse(str({'nRows' : nRows, 'status' : 'OK'}))
+        except:
+            return HttpResponse(str({'status' : 'ERROR'}))
+
+                             # Generating player name and id tuple list
+    nameIdList = []
+    for player in eventSave[int(eventId)].PlayerList:
+        name = str(JobEnum.name_for_id(player.JobEnum)) + ("" if player.PlayerName == "" else " " + player.PlayerName) + " ID - " + str(player.playerID)
+        id = player.playerID
+        nameIdList.append((name,id))
+
+    return render(request, 'simulate/customizeRecord.html', {"playerList": nameIdList, "eventId" : eventId})
+    
 
 def helpSolver(request):
     """
@@ -397,16 +488,16 @@ def solverLoading(request):
 
                 for pattern in searchPattern:
                     searchPatternBuffer = pattern
-                    print("LOOKING FOR PATTERN : " + str(pattern))
+                    #print("LOOKING FOR PATTERN : " + str(pattern))
                     opt, t = BiSSolver(Event.deepCopy(), gearSpace,matSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=useSS,minSPDValue=minSPD,maxSPDValue=maxSPD, useNewAlgo=True, PlayerIndex=playerIndex,PlayerID=Event.PlayerList[playerIndex].playerID,
                                     oversaturationIterationsPreGear=pattern[0], oversaturationIterationsPostGear=pattern[1],findOptMateriaGearBF=True,swapDHDetBeforeSpeed=pattern[2], minPiety=minPiety, saveAsFile=False,
                                     showBar=False, loadingBarBuffer=buff,returnGearSet=False)
                     buff['pb'] = "" # reseting buffer
 
                     if opt > curBest:
-                        print("FOUND NEW BEST")
-                        print(curBest)
-                        print(opt)
+                        #print("FOUND NEW BEST")
+                        #print(curBest)
+                        #print(opt)
                         curBest = opt
                         curBestText = t
                         curBestPattern = pattern

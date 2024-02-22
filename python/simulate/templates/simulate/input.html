@@ -31,7 +31,7 @@
         </button>
         </div>
         <div style="float: right;margin-right: 20px;"><button class="basicButton bigbutton" style="background-color:red;" onclick="getHelp()" title="Find a tutorial here">Help</button></div>
-        <center style="margin: 0px;"><h3 style="margin: 0px;">FFXIV Calc</h3></center>
+        <center style="margin: 0px;"> <p class="underText" style="color:red;">New : You can now drag and drop actions from the selection menu to place it before an already placed action.</p></center>
 </header>
 <hr>
 <div>
@@ -67,9 +67,10 @@
     </div>
     <div class="container">
         <!--Lets a user simply put an etro gear set link to import the stats-->
-        <p>You can also just use an etro gearset : </p>
+        <p>Import an etro.gg gearset : </p>
         <input type="text" style="margin-right: 10px;margin-left: 10px;" id="etroURL">
         <button id="etroButton" class="basicButton bigbutton" onclick="importEtroGearSet()">Import</button>
+        <button id="etroButton" class="basicButton bigbutton" onclick="openEtroLink()">Open in etro</button>
     </div>
     <div style="align-items: center;">
         <div class="container">
@@ -121,8 +122,9 @@
     <div class="PlayerActionListViewer" id="PlayerActionListViewer">
 
     </div>
+    
     <div class="PlayerActionListPick wrapper" id="ActionListPick">
-
+        
     </div>
 </div>
 </div>

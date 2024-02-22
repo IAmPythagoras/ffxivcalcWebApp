@@ -78,6 +78,10 @@ function openCredit(){
     createWindow(1000,900,"http://127.0.0.1:8000/simulate/credit/")
 }
 
+function openCustomizeSimulationRecord(id){
+    createWindow(1000,900,"http://127.0.0.1:8000/simulate/simulationRecordCustomizeView/?id="+id)
+}
+
 /* 
 
 MORE OPEN LINK

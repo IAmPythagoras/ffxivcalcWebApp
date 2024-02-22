@@ -221,7 +221,7 @@ bottom: -300px;
 
 body {
 width: 100%;
-height: 1000px;
+height: 1100px;
 }
 
 .PlayerActionListViewer{
@@ -343,4 +343,18 @@ background-color: rgba(255, 255, 255, 0);
 .helpimg {
     border-radius: 15px;
     border: 2px solid rgba(68, 255, 0, 0.399);
+}
+
+.arrow{
+font-family: 'Nunito';
+color: rgba(0, 0, 0, 0.9);
+font-weight: bold;
+font-size:15px;
+}
+
+.dropHover {
+    background-color: rgba(0, 128, 0, 0.486);
+    border-radius: 5px;
+    border: 2px solid green;
+    
 }
