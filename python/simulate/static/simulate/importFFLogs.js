@@ -1,0 +1,56 @@
+var fight = {};
+const prompt = require('native-prompt')
+var fs = require('fs');
+const {app, BrowserWindow,dialog} = require("@electron/remote");
+const remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
+
+function importFFLog(){
+
+    document.getElementById("importButton").innerHTML = "Importing..."
+    document.getElementById("importButton").style = "background-color:red;"
+
+    var xhr = new XMLHttpRequest();
+    var url = "/simulate/importFFLogs/";
+    xhr.open("IMPORT", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.responseText.length == 0){return;}
+        var res = xhr.responseText.replaceAll("'",'"');
+        var res = JSON.parse(res);
+
+        if (res["status"] == "ERROR"){
+            alert("An error occured, action aborted. Error message : " + res["msg"]);
+        } else{
+            alert("Import was succesful. You can now save the fight by pressing the button.");
+            document.getElementById("saveButton").disabled = false;
+            fight = res["data"];
+        }
+
+        document.getElementById("importButton").innerHTML = "Import"
+        document.getElementById("importButton").style = ""
+
+        
+
+    }
+                                // Exports current fight data for the player being edited
+    
+                                // Sends the request.
+    var data = JSON.stringify({"code" : document.getElementById("code").value, "fightId" : document.getElementById("fightId").value});
+    xhr.send(data);
+}
+
+function saveImport(){
+    var file = dialog.showSaveDialogSync();
+    data = {"data" : fight, 
+            "mode" : false,
+            "TeamCompBonus" : false,
+            "MaxPotencyPlentifulHarvest" : false,
+            "nRandomIterations" : 0}
+    jsonData = JSON.stringify(data, null, 4);
+
+    fs.writeFile(file+".json", jsonData, function (err) { 
+        if (err) throw err; 
+        console.log('Saved!'); 
+    });
+}

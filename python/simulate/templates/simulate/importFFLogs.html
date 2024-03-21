@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
+<script type="text/javascript" src="{% static 'simulate/importFFLogs.js' %}"></script>
+<style>
+    .underText{
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+    }
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+</style>
+<title>Import fight from FFLogs</title>
+<link rel="icon" type="image/png" href="{% static 'simulate\kirbo.png' %}">
+</head>
+<html class="body">
+<h3>Import fight from FFLogs</h3>
+<hr>
+<p>The 'Record code' corresponds to the <span style="color:red;">red</span> part of the url and the 'Fight number' corresponds to the <span style="color:rgb(0, 190, 29)">green</span> part of the url.</p>
+<p class="underText">www.fflogs.com/reports/<span style="color:red;">X6v71cTnAqxyFYCw</span>#fight=<span style="color:rgb(0, 190, 29);">14</span>&type=damage-done</p>
+
+<hr>
+
+<p class="underText">Enter the information here.</p>
+
+<div>
+    <div class="container" title="Input the code of the record.">
+    <p class="underText" style="margin-right: 5px;">Record code :  </p>
+    <input id="code">
+    </div>
+    <div class="container" title="Input the number of the fight.">
+    <p class="underText" style="margin-right: 5px;">Fight number :  </p>
+    <input id="fightId">
+    </div>
+</div>
+
+<hr>
+<div class="container">
+    <button onclick="importFFLog()" id="importButton" class="basicButton bigbutton" title="Import and process the fight.">Import</button>
+    <button onclick="saveImport()" id="saveButton" class="basicButton bigbutton" title="Save the fight as a JSON file." disabled>Save</button>
+</div>
+
+</body>
+</html>
