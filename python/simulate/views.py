@@ -16,6 +16,7 @@ from ffxivcalc.Request.FFLogs_api import getSingleFightData
 from ffxivcalc.Request.etro_request import get_gearset_data
 from ffxivcalc.helperCode.exceptions import InvalidTarget
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
+from ffxivcalc.helperCode.helper_backend import RestoreFightObject, SaveFight
 from ffxivcalc import __version__
 from .Stream import LogStream
 import os
@@ -149,7 +150,7 @@ def importFFLogs(request):
             from traceback import format_exc
             Msg = ("An unknown error happened and "+Error.__class__.__name__+" was raised. If this persists reach out on discord.\n" +
                 " Error message : " + str(Error) + ". Please verify the given record code and fightId or reach out on discord if this persists.")
-            return HttpResponse(json.dumps({"status" : "ERROR", "msg" : Msg}), status=200) 
+            return HttpResponse(Msg, status=200) 
 
     return render(request, 'simulate/importFFLogs.html', {})
 

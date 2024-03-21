@@ -16,12 +16,13 @@ function importFFLog(){
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function() {
         if (xhr.responseText.length == 0){return;}
-        var res = xhr.responseText.replaceAll("'",'"');
-        var res = JSON.parse(res);
 
-        if (res["status"] == "ERROR"){
-            alert("An error occured, action aborted. Error message : " + res["msg"]);
+
+        if (xhr.responseText.includes("error")){
+            alert("An error occured, action aborted. Error message : " + xhr.responseText);
         } else{
+            var res = xhr.responseText.replaceAll("'",'"');
+            var res = JSON.parse(res);
             alert("Import was succesful. You can now save the fight by pressing the button.");
             document.getElementById("saveButton").disabled = false;
             fight = res["data"];
