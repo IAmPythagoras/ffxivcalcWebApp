@@ -24,7 +24,6 @@ function importFFLog(){
             var res = xhr.responseText.replaceAll("'",'"');
             var res = JSON.parse(res);
             alert("Import was succesful. You can now save it.");
-            document.getElementById("saveButton").disabled = false;
             fight = res["data"];
             saveImport();
         }
