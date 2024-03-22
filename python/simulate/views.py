@@ -137,7 +137,7 @@ def importFFLogs(request):
         # Import from fflogs
         try:
             importData = json.loads(request.body)
-            data = getSingleFightData("9b8e6c18-39d6-4ae0-91c7-e9221e699769", "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox", importData['code'], importData['fightId'])
+            data = getSingleFightData("","", importData['code'], importData['fightId'], max_time=importData["max_time"])
             data['status'] = "ok"
 
             for player in data["data"]["PlayerList"]:

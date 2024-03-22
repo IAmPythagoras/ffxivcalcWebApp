@@ -39,12 +39,16 @@
     <p class="underText" style="margin-right: 5px;">Fight number :  </p>
     <input id="fightId">
     </div>
+    <div class="container" title="Time limit of the fight.">
+    <p class="underText" style="margin-right: 5px;">Maximum timestamp value to import<br> (leave empty if you want the whole fight) : </p>
+    <input id="maxTime">
+    </div>
 </div>
 
 <hr>
 <div class="container">
     <button onclick="importFFLog()" id="importButton" class="basicButton bigbutton" title="Import and process the fight.">Import</button>
-    <button onclick="saveImport()" id="saveButton" class="basicButton bigbutton" title="Save the fight as a JSON file." disabled>Save</button>
+    <!-- <button onclick="saveImport()" id="saveButton" class="basicButton bigbutton" title="Save the fight as a JSON file." disabled>Save</button> -->
 </div>
 
 </body>

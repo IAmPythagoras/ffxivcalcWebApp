@@ -23,9 +23,10 @@ function importFFLog(){
         } else{
             var res = xhr.responseText.replaceAll("'",'"');
             var res = JSON.parse(res);
-            alert("Import was succesful. You can now save the fight by pressing the button.");
+            alert("Import was succesful. You can now save it.");
             document.getElementById("saveButton").disabled = false;
             fight = res["data"];
+            saveImport();
         }
 
         document.getElementById("importButton").innerHTML = "Import"
@@ -34,10 +35,10 @@ function importFFLog(){
         
 
     }
-                                // Exports current fight data for the player being edited
-    
-                                // Sends the request.
-    var data = JSON.stringify({"code" : document.getElementById("code").value, "fightId" : document.getElementById("fightId").value});
+
+    const maxTimeValue = document.getElementById("maxTime").value;
+    var maxTime = maxTimeValue.length == 0 ? 0 : maxTimeValue
+    var data = JSON.stringify({"code" : document.getElementById("code").value, "fightId" : document.getElementById("fightId").value, "max_time" : parseFloat(maxTime)});
     xhr.send(data);
 }
 
