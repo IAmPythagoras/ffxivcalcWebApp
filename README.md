@@ -1,5 +1,7 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
+(If you are updating you might have to restart your computer or kill the process 'manage' which is the local server hosting the site to have the new versions once you download it).
+
 Download v1.3.0 (zip) : [https://drive.google.com/file/d/1MFltOFjhKUclhWDjCz7ktuXpYKy2JDZd/view?usp=sharing](https://drive.google.com/file/d/1pzinOe1fCeXtUdHyn9kfO-sDoaPJTSzH/view?usp=sharing)
 
 Download v1.3.0 (7z) : [https://drive.google.com/file/d/1ZAe2CptVSQ2EbMz6rREzh8a8Nl3kF4XB/view?usp=sharing](https://drive.google.com/file/d/1ZXNDPy5hV6klmuqU92uI2U_QSWTFtVkD/view?usp=sharing)
