@@ -2,7 +2,7 @@
 
 Download v1.3.0 (zip) : [https://drive.google.com/file/d/1MFltOFjhKUclhWDjCz7ktuXpYKy2JDZd/view?usp=sharing](https://drive.google.com/file/d/1pzinOe1fCeXtUdHyn9kfO-sDoaPJTSzH/view?usp=sharing)
 
-Download v1.2.5 (7z) : [https://drive.google.com/file/d/1ZAe2CptVSQ2EbMz6rREzh8a8Nl3kF4XB/view?usp=sharing](https://drive.google.com/file/d/1ZXNDPy5hV6klmuqU92uI2U_QSWTFtVkD/view?usp=sharing)
+Download v1.3.0 (7z) : [https://drive.google.com/file/d/1ZAe2CptVSQ2EbMz6rREzh8a8Nl3kF4XB/view?usp=sharing](https://drive.google.com/file/d/1ZXNDPy5hV6klmuqU92uI2U_QSWTFtVkD/view?usp=sharing)
 (Both download versions are the same but 7z will extract faster, but it requires 7-zip to be installed while the zip will work natively on windows)
 
 (This app is still in active development. Please report any issues to the discord so it can be fixed.)
