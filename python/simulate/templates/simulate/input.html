@@ -9,7 +9,7 @@
 <script type="text/javascript" src="{% static 'simulate/IconDict.js' %}"></script>
 <script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
-<title>FFXIV Combat Simulator</title>
+<title>Fight editor</title>
 <link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
 <style>
     body {
@@ -34,7 +34,8 @@
         <center style="margin: 0px;"> <p class="underText" style="color:red;">New : You can now drag and drop actions from the selection menu to place it before an already placed action.</p></center>
 </header>
 <hr>
-<div>
+<div style="display: flex;flex-direction: column;">
+<div class="userPlayerDiv" id="userPlayerDiv">
 <div class="PlayerRoster" style="border-right: 1px solid #333;">
     <div class="PlayerRosterText">
     <h2><center>Player Roster</center></h2>
@@ -48,6 +49,7 @@
     </div>
 </div>
 
+<div class="rightSidePlayerViewer">
 <div class="PlayerStatInput" style="border-bottom: 1px solid #333; ;">
     <h2><center>Player configuration</center></h2>
     <div id="PlayerConfigurationText">
@@ -62,8 +64,9 @@
         <div class="container"><p>Determination : </p><input id="Det" type="text" name="Det" value="400" maxlength="4"></div>
         <div class="container"><p>Tenacity : </p><input id="Ten" type="text" name="Ten" value="400" maxlength="4"></div>
     </div>
-    <div class="container">
+    <div class="container" style="display: flex;">
         <p>Weapon delay : </p><input id="weaponDelay" type="number" name="MainStat" value="3.00">
+        <p style="color: rgba(255, 255, 255, 0.7); margin-left: 5px;">(Note that the stats must include what is gained from food!)</p>
     </div>
     <div class="container">
         <!--Lets a user simply put an etro gear set link to import the stats-->
@@ -72,7 +75,7 @@
         <button id="etroButton" class="basicButton bigbutton" onclick="importEtroGearSet()">Import</button>
         <button id="etroButton" class="basicButton bigbutton" onclick="openEtroLink()">Open in etro</button>
     </div>
-    <div style="align-items: center;">
+    <div style="align-items: center;display: flex;">
         <div class="container">
         <p>Job :</p>
         <select name="Job" id="Job" style="margin-right: 10px;margin-left: 10px;" onchange="LoadPlayerActionsPick(true)" selected="BlackMage">
@@ -97,23 +100,20 @@
             <option value="Paladin">Paladin</option>
         </select>
         </div>
-    </div>
         <div class="container">
             <!--Lets a user simply put an etro gear set link to import the stats-->
             <p>Player name :</p>
             <input type="text" id="PlayerName" style="margin-right: 10px;margin-left: 10px;" onchange="UpdateName()" value="SussyPlayer" maxlength="30">
         </div>
-    <div style="align-items: center;">
-        <p id="PlayerIDField" style="margin-bottom: 10px;">PlayerID : </p>
-        <div id="timerEstimateField" style="display: flex;">
-            <p style="margin-right: 10px;">Timestamp estimate : <span id="timeStampEstimate">0.00</span></p>
+    </div>
+    <div style="display: flex;">
+        <p id="PlayerIDField" style="margin-right: 10px;">PlayerID : </p>
+        <div id="timerEstimateField" style="display: flex;border-left: 1px solid rgba(255, 255, 255, 0.404);">
+            <p style="margin-right: 10px;margin-left: 5px;">Timestamp estimate : <span id="timeStampEstimate">0.00</span></p>
             <p style="margin-right: 10px;">GCD timer : <span id="gcdTimerEstimate">0.00</span></p>
             <p style="margin-right: 10px;">DOT timer : <span id="dotTimerEstimate">0.00</span> </p>
             <p style="margin-right: 10px;">Buff timer : <span id="buffTimerEstimate">0.00</span> </p>
         </div>
-    </div>
-    <div style="position: absolute;bottom: -15px;right: 5px;">
-    <p style="color: rgba(255, 255, 255, 0.7);">Note that the stats must include what is gained from food!</p>
     </div>
     </div>
 </div>
@@ -128,6 +128,8 @@
     </div>
 </div>
 </div>
+</div>
+
 <div class="SubmitSimulation">
     <hr>
     <h2><center>Fight Configuration</center></h2>
@@ -179,5 +181,5 @@
         <input type="checkbox" id="DebugMode" onchange="UpdateDebugMode()">
     </div>
 </div>
-
+</div>
 </html>

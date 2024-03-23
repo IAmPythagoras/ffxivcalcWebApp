@@ -37,6 +37,7 @@ const startDjangoServer = () =>
     {
         console.log(`message:\n${message}`);
     });
+    
 
     return djangoBackend;
 }
@@ -70,7 +71,7 @@ function ElectronMainMethod(){
 app.whenReady().then(ElectronMainMethod);
 app.on('browser-window-created', (_, window) => {
     require("@electron/remote/main").enable(window.webContents);
-    window.setMenu(null);
+    //window.setMenu(null);
     //window.webContents.openDevTools();
     window.webContents.session.clearCache();
 })

@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static 'simulate/style.css' %}"/>
 <script type="text/javascript" src="{% static 'simulate/script.js' %}"></script>
-<title>FFXIV Combat Simulator</title>
+<title>FFXIVCALC v1.3.0</title>
 <link rel="icon" type="image/png" href="{% static 'simulate/kirbo.png' %}">
 <style>
     body {
@@ -17,7 +17,7 @@
     }
   </style>
 <script>
-checkVersion("v1.2.5");
+checkVersion("v1.3.0");
 </script>
 </head>
 <html class="body" style="width: 650px;">
@@ -28,7 +28,7 @@ checkVersion("v1.2.5");
     align-items: center;
     position: relative;">
         <img src="{% static 'simulate/kirbo.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
-        <p>FFXIVCALC App v.1.2.5</p>
+        <p>FFXIVCALC App v.1.3.0</p>
        
     </div>
     </div>
@@ -36,20 +36,27 @@ checkVersion("v1.2.5");
 </header>
 <hr>
     <p style="color: red;" id="outDatedText"></p>
-    <p class="underText">This app is still in active developement and there could still be some issues. If you enconter any please let me know through the discord!:)</p>
+    <p class="underText">This app is still in active developement. If you enconter any please let me know through the discord!:)</p>
     <div class="body">
         <div class="middleText left">
             <div>
-                <p>The simulator lets you simulate a fight with up to 8 players.</p>
+                <p>Simulate a fight :</p>
                 <button class="basicButton bigbutton" onclick="openSimulation()">
-                    Simulate a fight
+                    Open fight editor
                 </button>
-
+                
             </div>
             <div>
-                <p>The rotation bis solver lets you attempt to find a BiS given a rotation and player.</p>
+                <p>Import a fight from FFLogs :</p>
+                <button class="basicButton bigbutton" onclick="importFromFFLogs()">
+                    Open import menu
+                </button>
+                <p class="underText">Import a fight from FFLogs and save it. Then import the saved JSON file in the fight editor to simulate it.</p>
+            </div>
+            <div>
+                <p>Use the rotation BiS solver (beta) :</p>
                 <button class="basicButton bigbutton" onclick="openSolver()">
-                    Rotation BiS Solver (Beta)
+                    Open the solver
                 </button>
                 <p class="underText">Note that the results might not be optimal and it is always better to recheck the damage using another DPS metric (to compare to another bis). You can read more about the testing of this solver and the results it gave on the github repo.</p>
             </div>
@@ -64,10 +71,10 @@ checkVersion("v1.2.5");
         <img src="{% static 'simulate/discord.svg' %}" width="40" height="40" title="github" style="margin-right: 5px;">
         <p>Join the discord</p>
     </div>
-    <div class="menu" style="width: 200px;" onclick="openMore()">
+    <!-- <div class="menu" style="width: 200px;" onclick="openMore()">
         <img src="{% static 'simulate/More.png' %}" width="40" height="40" title="github" style="margin-right: 5px;">
         <p>Read more/about other simulators</p>
-    </div>
+    </div> -->
     <hr>
     <footer class="footingText">
         <p><left>

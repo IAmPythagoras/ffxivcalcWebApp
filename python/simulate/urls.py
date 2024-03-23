@@ -11,6 +11,8 @@ urlpatterns = [
                             # ex : /simulate/createGearSearchSpace/
     path('createGearSearchSpace/', views.createGearSearchSpace, name='createGearSearchSpace'), 
                             # ex : /simulate/createGearSearchSpace/
+    path('importFFLogs/', views.importFFLogs, name='importFFLogs'), 
+                            # ex : /simulate/createGearSearchSpace/
     path('simulationRecordCustomizeView/', views.simulationRecordCustomizeView, name='simulationRecordCustomizeView'), 
                             # ex : /simulate/solverLoading/
     path('solverLoading/', views.solverLoading, name='solverLoading'), 

@@ -12,13 +12,22 @@ from ffxivcalc.helperCode import helper_backend
 from ffxivcalc.helperCode.exceptions import *
 from ffxivcalc.GearSolver.Gear import Food, translateGear, StatType
 from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
+from ffxivcalc.Request.FFLogs_api import getSingleFightData
 from ffxivcalc.Request.etro_request import get_gearset_data
 from ffxivcalc.helperCode.exceptions import InvalidTarget
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
+from ffxivcalc.helperCode.helper_backend import RestoreFightObject, SaveFight
 from ffxivcalc import __version__
 from .Stream import LogStream
 import os
 from tempfile import gettempdir
+
+# environ var
+# Please don't copy it will make me cry): 
+# I'm just stupid and don't knnow how to do it otherwise
+# Go get your own if you need any.
+os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
+os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
 
 # Local information saved
 buff = {'pb' : ""}
@@ -120,6 +129,30 @@ def SimulationInput(request):
                              # The simulation data is saved in the session. The user will now be redirected to the SimulationResult page
         return HttpResponse('200', status=200)
     return render(request, 'simulate/input.html', {})
+
+@csrf_exempt
+def importFFLogs(request):
+
+    if request.method == "IMPORT":
+        # Import from fflogs
+        try:
+            importData = json.loads(request.body)
+            data = getSingleFightData("","", importData['code'], importData['fightId'], max_time=importData["max_time"])
+            data['status'] = "ok"
+
+            for player in data["data"]["PlayerList"]:
+                if "'" in player["PlayerName"]:
+                    player["PlayerName"] = player["PlayerName"].replace("'", " ")
+                    
+            strData = json.dumps(data)
+            return HttpResponse(strData, status=200)
+        except Exception as Error:
+            from traceback import format_exc
+            Msg = ("An unknown error happened and "+Error.__class__.__name__+" was raised. If this persists reach out on discord.\n" +
+                " Error message : " + str(Error) + ". Please verify the given record code and fightId or reach out on discord if this persists.")
+            return HttpResponse(Msg, status=200) 
+
+    return render(request, 'simulate/importFFLogs.html', {})
 
 @csrf_exempt
 def WaitingQueue(request):

@@ -463,7 +463,7 @@ function importFile() {
                 
                                             // Every div has a unique ID to access it
                 box.setAttribute("id", "Edit"+id);
-                box.innerHTML = '<p id="Player'+id+'Name">'+PlayerConfigDict[id]["PlayerName"]+' ID - '+id+'</p><button class="basicButton" onclick="LoadPlayerConfiguration('+id+')">Edit</button><button class ="basicButton" style="background-color: red;position:absolute;right:5%;" onclick="DeletePlayer('+id+')">Delete</button></div>';
+                box.innerHTML = '<p id="Player'+id+'Name">'+PlayerConfigDict[id]["PlayerName"]+' ID - '+id+'</p><button class="basicButton" onclick="LoadPlayerConfiguration('+id+')">Edit</button><button class ="basicButton" style="background-color: red;margin-left:75%;" onclick="DeletePlayer('+id+')">Delete</button></div>';
                 box.setAttribute("style","background-color: #333;border-radius: 5px;border: 1px solid #333;");
                 boxWrapper.appendChild(box);
                                             // If there is no player, we have to set the currentEditPlayerID as the newly created playerID (nextPlayerID)
@@ -488,6 +488,10 @@ function importFile() {
 
     });
 };
+
+function importFromFFLogs(){
+    createWindow(605, 550, "http://127.0.0.1:8000/simulate/importFFLogs/")
+}
 
 /*
 VALIDATION FUNCTIONS
@@ -546,7 +550,7 @@ const boxWrapper = document.getElementById("PlayerRosterViewer");
 const box = document.createElement("div");
                              // Every div has a unique ID to access it
 box.setAttribute("id", "Edit"+nextPlayerID);
-box.innerHTML = '<p id="Player'+nextPlayerID+'Name">'+PlayerConfigDict[nextPlayerID]["PlayerName"]+' ID - '+nextPlayerID+'</p><button class="basicButton" onclick="LoadPlayerConfiguration('+nextPlayerID+')">Edit</button><button class ="basicButton" style="background-color: red;position:absolute;right:5%;" onclick="DeletePlayer('+nextPlayerID+')">Delete</button></div>';
+box.innerHTML = '<p id="Player'+nextPlayerID+'Name">'+PlayerConfigDict[nextPlayerID]["PlayerName"]+' ID - '+nextPlayerID+'</p><button class="basicButton" onclick="LoadPlayerConfiguration('+nextPlayerID+')">Edit</button><button class ="basicButton" style="background-color: red;margin-left:75%;" onclick="DeletePlayer('+nextPlayerID+')">Delete</button></div>';
 box.setAttribute("style","background-color: #333;border-radius: 5px;border: 1px solid #333;");
 boxWrapper.appendChild(box);
                              // If there is no player, we have to set the currentEditPlayerID as the newly created playerID (nextPlayerID)
@@ -1230,10 +1234,12 @@ function askTargetID(update=false,ignoreSelf=true){
     //return buttonToID[buttonID];
 }
 function addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted,isNew=true){
-    // Check if player actions is above base limit of 232 = 29*8
-    //if (PlayerConfigDict[currentEditPlayerID]["ActionList"].length>=1){
+    // Check if player actions is above base limit of 400 = 40 * 10
+    //if (PlayerConfigDict[currentEditPlayerID]["ActionList"].length>=400){
         // If above we must add a new line
-    //    document.getElementById("PlayerActionListViewer").style="grid-template-rows: repeat(9, 50px);"
+    //    var x = document.getElementById("userPlayerDiv");
+    //    var curHeight = parseInt(x.clientHeight) + 100;
+    //    x.style="height:"+curHeight +"px;"
     //}
 
     // Get the ActionListViewer to add the div.

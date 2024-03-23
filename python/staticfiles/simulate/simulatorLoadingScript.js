@@ -25,14 +25,16 @@ window.onload = function (){
     xhr.open("START", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
-
-      if (xhr.responseText == "200"){
-        // All worked and simulation was a success
-        window.location.replace("http://127.0.0.1:8000/simulate/SimulationResult/");
-      } else if (xhr.responseText == "ERROR"){
+      if (xhr.responseText == "ERROR" || xhr.responseText.length == 0){
         // ERROR
         window.location.replace("http://127.0.0.1:8000/simulate/Error/");
       }
+
+      var res = JSON.parse(xhr.responseText.replaceAll("'",'"'));
+      if (res['status'] == "200"){
+        // All worked and simulation was a success. Saving id in the link if the user wants to donwload the simulationRecord
+        window.location.replace("http://127.0.0.1:8000/simulate/SimulationResult/?id="+res['saveId']);
+      } 
     }
     xhr.send();
 }

@@ -93,7 +93,7 @@ line-height: 1.5;
 }
 
 .footing {
-position: absolute;
+/*position: absolute;*/
 bottom: 0;
 }
 
@@ -160,31 +160,24 @@ margin-top: 5px;
 }
 
 .PlayerStatInput{
-position: absolute;
-width: 75%;
-height: 280px;
-margin: 0 auto; /* centers the div horizontally */
-right: 10px;
+width: 100%;
+height:25%;
+max-height: 360px;
+margin-left: 1%;
 }
 
 .PlayerRoster{
-position: absolute;
-width: 20%;
-height: 100%;
-border: 0px solid white;
-left: 10px;
+/*/*position: absolute;*/
+width: 14%;
 }
 
 .PlayerRosterText{
-position: absolute;
+/*position: absolute;*/
 width: 100%;
-height: 10%;
-border: 0px solid white;
-top: 0px;
 }
 
 .PlayerRosterViewer{
-position: absolute;
+/*position: absolute;*/
 width: 95%;
 height: 80%;
 border: 0px solid white;
@@ -194,7 +187,7 @@ border-radius: 2px;
 }
 
 .PlayerRosterAdd{
-position: absolute;
+/*position: absolute;*/
 width: 100%;
 height: 10%;
 border: 0px solid white;
@@ -211,9 +204,10 @@ margin: 4px 2px;
 
 }
 .PlayerActionListInput{
-position: absolute;
-width: 75%;
-height: 89%;
+margin-left: 1%;
+margin-top: 0.5%;
+width: 95%;
+height: 75%;
 border: 0px solid white;
 right: 10px;
 bottom: -300px;
@@ -221,29 +215,43 @@ bottom: -300px;
 
 body {
 width: 100%;
-height: 1100px;
+height: 1300px;
+}
+
+.rightSidePlayerViewer{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+.userPlayerDiv {
+    width: 100%;
+    height:1300px;
+    display:flex;
+    flex-direction: row;
 }
 
 .PlayerActionListViewer{
-position: absolute;
-width: 94%;
-height: 49%;
+margin-bottom: 1%;
+width: 100%;
+height: 60%;
 border: 3px solid white;
 right: 3%;
 top: 0%;
 background-color: #c3c3c3;
 border-radius: 5px;
 display: grid;
-grid-template-columns: repeat(29,50px);
-grid-template-rows: repeat(10, 50px); /* Your number of rows */
+grid-template-columns: repeat(40,2.5%);
+grid-template-rows: repeat(12, 7.5%); /* Your number of rows */
 grid-auto-flow: row;
 direction: ltr;
 }
 
 .PlayerActionListPick{
-position: absolute;
-width: 94%;
-height: 49%;
+/*position: absolute;*/
+width: 100%;
+height: 35%;
 border: 3px solid black;
 right: 3%;
 bottom: 0%;
@@ -253,7 +261,7 @@ border-radius: 5px;
 
 .wrapper {
 display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
@@ -263,12 +271,10 @@ align-self: center;
 }
 
 .SubmitSimulation{
-position: absolute;
 width: 95%;
 height: 200px;
 border: 0px solid white;
 right: 2.5%;
-bottom: -500px;
 }
 dd {
     font-family: 'Nunito';
