@@ -215,7 +215,7 @@ bottom: -300px;
 
 body {
 width: 100%;
-height: 1100px;
+height: 1300px;
 }
 
 .rightSidePlayerViewer{
@@ -227,7 +227,7 @@ height: 1100px;
 
 .userPlayerDiv {
     width: 100%;
-    height:1200px;
+    height:1300px;
     display:flex;
     flex-direction: row;
 }
@@ -243,7 +243,7 @@ background-color: #c3c3c3;
 border-radius: 5px;
 display: grid;
 grid-template-columns: repeat(40,2.5%);
-grid-template-rows: repeat(10, 10%); /* Your number of rows */
+grid-template-rows: repeat(12, 7.5%); /* Your number of rows */
 grid-auto-flow: row;
 direction: ltr;
 }

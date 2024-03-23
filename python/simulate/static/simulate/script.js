@@ -490,7 +490,7 @@ function importFile() {
 };
 
 function importFromFFLogs(){
-    createWindow(500, 500, "http://127.0.0.1:8000/simulate/importFFLogs/")
+    createWindow(605, 550, "http://127.0.0.1:8000/simulate/importFFLogs/")
 }
 
 /*

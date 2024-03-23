@@ -15,6 +15,7 @@ function importFFLog(){
     xhr.open("IMPORT", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE){
         if (xhr.responseText.length == 0){return;}
 
 
@@ -32,7 +33,7 @@ function importFFLog(){
         document.getElementById("importButton").style = ""
 
         
-
+    }
     }
 
     const maxTimeValue = document.getElementById("maxTime").value;
