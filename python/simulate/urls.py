@@ -6,8 +6,10 @@ urlpatterns = [
     path('', views.index, name='index'),
                              # ex : /simulate/input/
     path('SimulationInput/', views.SimulationInput, name='SimulationInput'),
+                             # ex : /simulate/syncPlayer/
+    path('SimulationInput/', views.SimulationInput, name='SimulationInput'),
                             # ex : /simulate/bisRotationSolver/
-    path('bisRotationSolver/', views.bisRotationSolver, name='bisRotationSolver'),
+    path('syncPlayer/', views.SyncPlayerView, name='syncPlayer'),
                             # ex : /simulate/createGearSearchSpace/
     path('createGearSearchSpace/', views.createGearSearchSpace, name='createGearSearchSpace'), 
                             # ex : /simulate/createGearSearchSpace/

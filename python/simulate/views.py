@@ -41,6 +41,8 @@ searchPatternBuffer = {'curSearch' : [0,0,False]}
                              # This dictionnary is never reset and only resets once the app is relaunched (server closed and restarted)
 eventSave = {}
 
+fightSimulationSaveId = {}
+
 
 log_stream = LogStream()
 logging.basicConfig(stream=log_stream)
@@ -85,7 +87,22 @@ def index(request):
     This view is the homepage of the website.
     """
 
+    if request != None and request.method == "OPENEDITOR":
+        # Generate id for SimulationInput view.
+        curId = list(fightSimulationSaveId.keys())
+        newId = max(curId) + 1 if len(curId) > 0 else 1
+
+        fightSimulationSaveId[newId] = None
+
+        print(f'Generated id {newId}')
+        return HttpResponse(str({'id' : newId}), status=200)
+
     return render(request, 'simulate/index.html', {"ffxivcalcVersion" : str(__version__)})
+
+@csrf_exempt
+def SyncPlayerView(request):
+
+    return render(request, 'simulate/syncPlayer.html', {})
 
 @csrf_exempt                 # Will but csrf_exempt for now, since was causing issues. We are doing validations on the request anyway.
 def SimulationInput(request):
@@ -93,9 +110,15 @@ def SimulationInput(request):
     This view lets the user setup the simulation for what they want. It only sends the data and does not simulate.
     """
 
+    id = request.GET.get("id")
+    print(f"Retrieved id from simulationInput : {id}")
+
     if request.method == "CHECKSTART":
         # This gets pinged to know if server is up
         return HttpResponse('OK', status=200)
+    
+    if request.method == "GETID":
+        return HttpResponse(str({'id' : id}),status=200)
 
     if request.method == "GETETRO":
         try:

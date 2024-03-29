@@ -138,6 +138,22 @@ function openEtroLink(){
     require('electron').shell.openExternal(link);
 }
 
+function syncPlayer(){
+    // This function synchronizes all the player's prepull so they start damage at the same time.
+    // Computes and does the required changes then shows change log to user through another window.
+
+    var url = new URLSearchParams(window.location.search)
+    var id = url.get('id')
+
+    const top = new BrowserWindow();
+    child = new BrowserWindow({parent : top, modal: true, show: false})
+
+    child.loadURL("http://127.0.0.1:8000/simulate/syncPlayer/?id="+id)
+
+    //createWindow(500,725,);
+
+}
+
 /*
 Save/Import functions
 */
@@ -1389,7 +1405,17 @@ function indexForActionId(actionId){
 // Main menu function
 
 function openSimulation(){
-    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/')
+    xhr7 = new XMLHttpRequest();
+    xhr7.open("OPENEDITOR", "http://127.0.0.1:8000/simulate/", true);
+    xhr7.setRequestHeader("Content-type", "application/json");
+    xhr7.onreadystatechange = function() {
+    if (xhr7.readyState == XMLHttpRequest.DONE && xhr7.status == "200"){
+    var id = JSON.parse(xhr7.responseText.replaceAll("'",'"'))['id']
+    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/?id='+id);
+    }
+    }
+                                 // Sends the request.
+    xhr7.send();
 }
 
 function openSolver(){
