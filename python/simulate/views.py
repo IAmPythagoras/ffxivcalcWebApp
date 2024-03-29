@@ -117,8 +117,17 @@ def SimulationInput(request):
         # This gets pinged to know if server is up
         return HttpResponse('OK', status=200)
     
-    if request.method == "GETID":
-        return HttpResponse(str({'id' : id}),status=200)
+    if request.method == "SYNCPLAYER":
+                # This sends the time estimate of a player.
+        simulationData = json.loads(request.body) # simulation data is in this. This should only contain the player in question.
+        try:
+            prepareData(simulationData)
+            fight = helper_backend.RestoreFightObject(simulationData)
+            timeChange = fight.syncPlayerPrePull(editActionSet=False)
+            rDict = {str(key) : timeChange[key] for key in timeChange}
+            return HttpResponse(str(rDict), status=200)
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
 
     if request.method == "GETETRO":
         try:

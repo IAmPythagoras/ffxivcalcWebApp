@@ -145,12 +145,29 @@ function syncPlayer(){
     var url = new URLSearchParams(window.location.search)
     var id = url.get('id')
 
-    const top = new BrowserWindow();
-    child = new BrowserWindow({parent : top, modal: true, show: false})
+    syncReq = new XMLHttpRequest();
+    syncReq.open("SYNCPLAYER", "http://127.0.0.1:8000/simulate/SimulationInput/?id="+id, true)
+    syncReq.setRequestHeader("Content-type", "application/json");
+    syncReq.onreadystatechange = function() {
+        if (syncReq.readyState == XMLHttpRequest.DONE && syncReq.status == "200") {
+            var s = syncReq.responseText.replaceAll("'",'"');
+            var res = JSON.parse(s);
+            if (res['status'] == "ERROR"){alert("An error happened while trying to syncrhonize players.");}
+            else{
+                var msg = "The following changes will be done :\n"
+                for (key in res){
+                    var timeChange = res[key];
+                    var pName = PlayerConfigDict[key]["PlayerName"];
+                    msg += pName + " -> Adding " + timeChange + " seconds to prepull."
+                }
+                alert(msg);
+            }
+        }
+    }
 
-    child.loadURL("http://127.0.0.1:8000/simulate/syncPlayer/?id="+id)
+    var data = JSON.stringify(exportPlayerConfigDict());
+    syncReq.send(data);
 
-    //createWindow(500,725,);
 
 }
 
