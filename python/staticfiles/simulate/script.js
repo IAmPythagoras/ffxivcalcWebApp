@@ -142,6 +142,8 @@ function openEtroLink(){
 Save/Import functions
 */
 
+
+
 function importEtroGearSet(saveEtroLink=false){
     // This function imports what is written in the etro url
     // and sets the fields' value accordingly.
@@ -1389,11 +1391,22 @@ function indexForActionId(actionId){
 // Main menu function
 
 function openSimulation(){
-    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/')
+
+
+    xhr7 = new XMLHttpRequest();
+    xhr7.open("OPENEDITOR", url, true);
+    xhr7.setRequestHeader("Content-type", "application/json");
+    xhr7.onreadystatechange = function() {
+    if (xhr7.readyState == XMLHttpRequest.DONE && xhr7.status == "200")
+    var id = JSON.parse(xhr7.responseText.replaceAll("'",'"'))['id']
+    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/?id='+id);
+    }
+                                 // Sends the request.
+    xhr7.send();
 }
 
 function openSolver(){
-    createWindow(700,1000,'http://127.0.0.1:8000/simulate/bisRotationSolver/')
+    createWindow(700,1000,'http://127.0.0.1:8000/simulate/bisRotationSolver/');
 }
 
 /*
@@ -1401,11 +1414,11 @@ OPENING WINDOW FUNCTIONS
 */
 
 function seeJSONFileViewer(){
-    createWindow(1000,1000,'http://127.0.0.1:8000/simulate/JSONFileViewer/')
+    createWindow(1000,1000,'http://127.0.0.1:8000/simulate/JSONFileViewer/');
 }
 
 function getHelp(){
-    createWindow(1000,1000,'http://127.0.0.1:8000/simulate/help/')
+    createWindow(1000,1000,'http://127.0.0.1:8000/simulate/help/');
 }
 
 /*

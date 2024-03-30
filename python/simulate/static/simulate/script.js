@@ -8,7 +8,7 @@ var PlayerConfigDict = new Object();
 var NumberOfPlayer = 0;
                              // This represents the next given ID to a new player. Every player has a unique ID.
                              // This value is never decremented and is a unique value for every player, but it will be incremented every time we add a player.
-var nextPlayerID = 0;
+var nextPlayerID = 1;
                              // This represents the ID of the player being currently edited.
 var currentEditPlayerID = 0;
                              // This flag lets the code know if there is at least one player in the simulation.
@@ -136,6 +136,62 @@ function openEtroLink(){
     if (link.length == 0 || ! link.includes("etro.gg/gearset/")){return;} // Checks for no link or no etro in link
 
     require('electron').shell.openExternal(link);
+}
+
+function syncPlayer(){
+    // This function synchronizes all the player's prepull so they start damage at the same time.
+    // Computes and does the required changes then shows change log to user through another window.
+
+    var url = new URLSearchParams(window.location.search)
+    var id = url.get('id')
+
+    syncReq = new XMLHttpRequest();
+    syncReq.open("SYNCPLAYER", "http://127.0.0.1:8000/simulate/SimulationInput/?id="+id, true)
+    syncReq.setRequestHeader("Content-type", "application/json");
+    syncReq.onreadystatechange = function() {
+        if (syncReq.readyState == XMLHttpRequest.DONE && syncReq.status == "200") {
+            var s = syncReq.responseText.replaceAll("'",'"');
+            var res = JSON.parse(s);
+            if (res['status'] == "ERROR"){alert("An error happened while trying to syncrhonize players.");}
+            else{
+                var msg = "The following changes will be done :\n"
+                for (key in res){
+                    var timeChange = res[key];
+                    var pName = PlayerConfigDict[key]["PlayerName"];
+                    msg += pName + " -> Adding " + timeChange + " seconds to prepull.\n"
+                }
+                var uInput = dialog.showMessageBoxSync({
+                    title: "Confirm change",
+                    message: msg + "\nDo you want to make those changes?",
+                    buttons: ["Yes", "No"],
+                    cancelId: 1
+                });
+                if (uInput == 1) return; // Abort
+
+                for (key in res){
+                    var Identification = key+String(PlayerConfigDict[key]["NextActionID"]);
+                    var actionDict = {Action: "wait_ability",
+                                      ActionID: Identification,
+                                      IndexInList: 0,
+                                      WaitTime: String(res[key]),
+                                      target: -1};
+                    PlayerConfigDict[key]["ActionList"].splice(0, 0, actionDict);
+                    updatePlayerActionListIndexInList(key, 0);
+                    PlayerConfigDict[key]["NextActionIndex"]++;
+                    PlayerConfigDict[key]["NextActionID"]++;
+                }
+                                             // Creating new action div and inserting before the one the user dropped on.
+                var newDiv = createActionDiv(PlayerConfigDict[currentEditPlayerID]["ActionList"][0],false, PlayerConfigDict[currentEditPlayerID]["Job"], "wait_ability", PlayerConfigDict[currentEditPlayerID]["ActionList"][0][""]);
+                document.getElementById('PlayerActionListViewer').insertBefore(newDiv,document.getElementById('PlayerActionListViewer').childNodes[0]);
+                updateTimeEstimate();
+            }
+        }
+    }
+
+    var data = JSON.stringify(exportPlayerConfigDict());
+    syncReq.send(data);
+
+
 }
 
 /*
@@ -759,7 +815,7 @@ This function returns a function that adds an action to a player's action list. 
             }      
             ActionDict["target"] = TargetID;
             PlayerConfigDict[currentEditPlayerID]["ActionList"].push(ActionDict);
-            addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted)
+            addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted);
             updateTimeEstimate(); // Only update here since we only want to update when adding a new action and not when repopulating.
             // When repopulating the function updateTimeEstimate is called in 'LoadPlayerConfiguration'
             return;
@@ -789,7 +845,7 @@ function insertActionAtIndex(actionName, index){
     // This function inserts an action (with action name) at the given index
     // for the currently edited player
 
-    var Identification = Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
+    var Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
 
     ActionDict = {
         "Action" : actionName,
@@ -849,10 +905,7 @@ function conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName
 
     PlayerConfigDict[currentEditPlayerID]["ActionList"].splice(index, 0, ActionDict); // Inserting the new action at the requested index.
 
-    for (let i = index+1;i < PlayerConfigDict[currentEditPlayerID]["ActionList"].length;i++){
-        // Will increment the 'indexInList' value of all these actions.
-        PlayerConfigDict[currentEditPlayerID]["ActionList"][i]["IndexInList"]++;
-    }
+    updatePlayerActionListIndexInList(currentEditPlayerID, index);
 
                              // Creating new action div and inserting before the one the user dropped on.
     var newDiv = createActionDiv(ActionDict,IsTargetted, PlayerConfigDict[currentEditPlayerID]["Job"], actionName, Identification);
@@ -862,6 +915,13 @@ function conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName
     PlayerConfigDict[currentEditPlayerID]["NextActionIndex"]++;
     PlayerConfigDict[currentEditPlayerID]["NextActionID"]++;
     updateTimeEstimate();
+}
+
+function updatePlayerActionListIndexInList(pid, index){
+    for (let i = index+1;i < PlayerConfigDict[pid]["ActionList"].length;i++){
+        // Will increment the 'indexInList' value of all these actions.
+        PlayerConfigDict[pid]["ActionList"][i]["IndexInList"]++;
+    }
 }
 
 /*
@@ -1389,7 +1449,17 @@ function indexForActionId(actionId){
 // Main menu function
 
 function openSimulation(){
-    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/')
+    xhr7 = new XMLHttpRequest();
+    xhr7.open("OPENEDITOR", "http://127.0.0.1:8000/simulate/", true);
+    xhr7.setRequestHeader("Content-type", "application/json");
+    xhr7.onreadystatechange = function() {
+    if (xhr7.readyState == XMLHttpRequest.DONE && xhr7.status == "200"){
+    var id = JSON.parse(xhr7.responseText.replaceAll("'",'"'))['id']
+    createWindow(2000,1500,'http://127.0.0.1:8000/simulate/SimulationInput/?id='+id);
+    }
+    }
+                                 // Sends the request.
+    xhr7.send();
 }
 
 function openSolver(){

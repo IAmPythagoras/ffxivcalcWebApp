@@ -41,6 +41,8 @@ searchPatternBuffer = {'curSearch' : [0,0,False]}
                              # This dictionnary is never reset and only resets once the app is relaunched (server closed and restarted)
 eventSave = {}
 
+fightSimulationSaveId = {}
+
 
 log_stream = LogStream()
 logging.basicConfig(stream=log_stream)
@@ -84,8 +86,25 @@ def index(request):
     """
     This view is the homepage of the website.
     """
+    print(request)
+    if request != None and request.method == "OPENEDITOR":
+        # Generate id for SimulationInput view.
+        curId = list(fightSimulationSaveId.keys())
+        newId = max(curId) + 1 if len(curId) > 0 else 1
+
+        fightSimulationSaveId[newId] = None
+
+        print(f'Generated id {newId}')
+        return HttpResponse(str({'id' : newId}), status=200)
+        
+
 
     return render(request, 'simulate/index.html', {"ffxivcalcVersion" : str(__version__)})
+
+@csrf_exempt
+def SyncPlayerView(request):
+
+    return render(request, 'simulate/syncPlayer.html', {})
 
 @csrf_exempt                 # Will but csrf_exempt for now, since was causing issues. We are doing validations on the request anyway.
 def SimulationInput(request):
@@ -96,6 +115,27 @@ def SimulationInput(request):
     if request.method == "CHECKSTART":
         # This gets pinged to know if server is up
         return HttpResponse('OK', status=200)
+
+    if request!= None and request.method == "CLOSE":
+        print('closing')
+        import sys
+        sys.exit("Closing")
+        return HttpResponse('OK', status=200)
+
+    id = request.GET.get("id")
+    print(f"Retrieved id from simulationInput : {id}")
+    
+    if request.method == "SYNCPLAYER":
+                # This sends the time estimate of a player.
+        simulationData = json.loads(request.body) # simulation data is in this. This should only contain the player in question.
+        try:
+            prepareData(simulationData)
+            fight = helper_backend.RestoreFightObject(simulationData)
+            timeChange = fight.syncPlayerPrePull(editActionSet=False)
+            rDict = {str(key) : timeChange[key] for key in timeChange}
+            return HttpResponse(str(rDict), status=200)
+        except:
+            return HttpResponse(str({"status" : "ERROR"}))
 
     if request.method == "GETETRO":
         try:
