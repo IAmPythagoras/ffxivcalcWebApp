@@ -86,7 +86,7 @@ def index(request):
     """
     This view is the homepage of the website.
     """
-
+    print(request)
     if request != None and request.method == "OPENEDITOR":
         # Generate id for SimulationInput view.
         curId = list(fightSimulationSaveId.keys())
@@ -96,6 +96,8 @@ def index(request):
 
         print(f'Generated id {newId}')
         return HttpResponse(str({'id' : newId}), status=200)
+        
+
 
     return render(request, 'simulate/index.html', {"ffxivcalcVersion" : str(__version__)})
 
@@ -110,12 +112,18 @@ def SimulationInput(request):
     This view lets the user setup the simulation for what they want. It only sends the data and does not simulate.
     """
 
-    id = request.GET.get("id")
-    print(f"Retrieved id from simulationInput : {id}")
-
     if request.method == "CHECKSTART":
         # This gets pinged to know if server is up
         return HttpResponse('OK', status=200)
+
+    if request!= None and request.method == "CLOSE":
+        print('closing')
+        import sys
+        sys.exit("Closing")
+        return HttpResponse('OK', status=200)
+
+    id = request.GET.get("id")
+    print(f"Retrieved id from simulationInput : {id}")
     
     if request.method == "SYNCPLAYER":
                 # This sends the time estimate of a player.

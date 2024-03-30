@@ -8,7 +8,7 @@ var PlayerConfigDict = new Object();
 var NumberOfPlayer = 0;
                              // This represents the next given ID to a new player. Every player has a unique ID.
                              // This value is never decremented and is a unique value for every player, but it will be incremented every time we add a player.
-var nextPlayerID = 0;
+var nextPlayerID = 1;
                              // This represents the ID of the player being currently edited.
 var currentEditPlayerID = 0;
                              // This flag lets the code know if there is at least one player in the simulation.
@@ -158,9 +158,32 @@ function syncPlayer(){
                 for (key in res){
                     var timeChange = res[key];
                     var pName = PlayerConfigDict[key]["PlayerName"];
-                    msg += pName + " -> Adding " + timeChange + " seconds to prepull."
+                    msg += pName + " -> Adding " + timeChange + " seconds to prepull.\n"
                 }
-                alert(msg);
+                var uInput = dialog.showMessageBoxSync({
+                    title: "Confirm change",
+                    message: msg + "\nDo you want to make those changes?",
+                    buttons: ["Yes", "No"],
+                    cancelId: 1
+                });
+                if (uInput == 1) return; // Abort
+
+                for (key in res){
+                    var Identification = key+String(PlayerConfigDict[key]["NextActionID"]);
+                    var actionDict = {Action: "wait_ability",
+                                      ActionID: Identification,
+                                      IndexInList: 0,
+                                      WaitTime: String(res[key]),
+                                      target: -1};
+                    PlayerConfigDict[key]["ActionList"].splice(0, 0, actionDict);
+                    updatePlayerActionListIndexInList(key, 0);
+                    PlayerConfigDict[key]["NextActionIndex"]++;
+                    PlayerConfigDict[key]["NextActionID"]++;
+                }
+                                             // Creating new action div and inserting before the one the user dropped on.
+                var newDiv = createActionDiv(PlayerConfigDict[currentEditPlayerID]["ActionList"][0],false, PlayerConfigDict[currentEditPlayerID]["Job"], "wait_ability", PlayerConfigDict[currentEditPlayerID]["ActionList"][0][""]);
+                document.getElementById('PlayerActionListViewer').insertBefore(newDiv,document.getElementById('PlayerActionListViewer').childNodes[0]);
+                updateTimeEstimate();
             }
         }
     }
@@ -792,7 +815,7 @@ This function returns a function that adds an action to a player's action list. 
             }      
             ActionDict["target"] = TargetID;
             PlayerConfigDict[currentEditPlayerID]["ActionList"].push(ActionDict);
-            addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted)
+            addActionToActionListViewer(ActionID,Identification, ActionDict, IsTargetted);
             updateTimeEstimate(); // Only update here since we only want to update when adding a new action and not when repopulating.
             // When repopulating the function updateTimeEstimate is called in 'LoadPlayerConfiguration'
             return;
@@ -822,7 +845,7 @@ function insertActionAtIndex(actionName, index){
     // This function inserts an action (with action name) at the given index
     // for the currently edited player
 
-    var Identification = Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
+    var Identification = String(currentEditPlayerID)+String(PlayerConfigDict[currentEditPlayerID]["NextActionID"]);
 
     ActionDict = {
         "Action" : actionName,
@@ -882,10 +905,7 @@ function conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName
 
     PlayerConfigDict[currentEditPlayerID]["ActionList"].splice(index, 0, ActionDict); // Inserting the new action at the requested index.
 
-    for (let i = index+1;i < PlayerConfigDict[currentEditPlayerID]["ActionList"].length;i++){
-        // Will increment the 'indexInList' value of all these actions.
-        PlayerConfigDict[currentEditPlayerID]["ActionList"][i]["IndexInList"]++;
-    }
+    updatePlayerActionListIndexInList(currentEditPlayerID, index);
 
                              // Creating new action div and inserting before the one the user dropped on.
     var newDiv = createActionDiv(ActionDict,IsTargetted, PlayerConfigDict[currentEditPlayerID]["Job"], actionName, Identification);
@@ -895,6 +915,13 @@ function conclusionInsertActionAtIndex(index, ActionDict,IsTargetted, actionName
     PlayerConfigDict[currentEditPlayerID]["NextActionIndex"]++;
     PlayerConfigDict[currentEditPlayerID]["NextActionID"]++;
     updateTimeEstimate();
+}
+
+function updatePlayerActionListIndexInList(pid, index){
+    for (let i = index+1;i < PlayerConfigDict[pid]["ActionList"].length;i++){
+        // Will increment the 'indexInList' value of all these actions.
+        PlayerConfigDict[pid]["ActionList"][i]["IndexInList"]++;
+    }
 }
 
 /*
