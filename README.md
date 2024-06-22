@@ -1,5 +1,9 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
+Hi! I have stopped working on this project. If you are interested in ffxiv simulation/opti/parsing please visit my friend's website that offers xiv simulation (http://www.xivraider.com/). I am sure you will find what you might have been looking for here:)!
+
+-------------------------------------------------------------------
+
 (If you are updating you might have to restart your computer or kill the process 'manage' which is the local server hosting the site to have the new versions once you download it).
 
 Download v1.3.1 (zip) : https://drive.google.com/file/d/15FL8tPxak5CXIa8Tj8UQlhWMqp0OjiEV/view?usp=sharing
